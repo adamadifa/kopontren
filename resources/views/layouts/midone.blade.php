@@ -62,7 +62,7 @@ License: You must have a valid license purchased only from themeforest(the above
                     <!-- BEGIN: Account Menu -->
                     <div class="intro-x dropdown w-8 h-8 relative">
                         <div class="dropdown-toggle w-8 h-8 rounded-full overflow-hidden shadow-lg image-fit zoom-in">
-                            <img alt="Midone Tailwind HTML Admin Template" src="dist/images/profile-12.jpg">
+                            <img alt="Midone Tailwind HTML Admin Template" src="{{asset('dist/images/profile-12.jpg')}}">
                         </div>
                         <div class="dropdown-box mt-10 absolute w-56 top-0 right-0 z-20">
                             <div class="dropdown-box__content box bg-theme-38 text-white">

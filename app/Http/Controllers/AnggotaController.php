@@ -2,16 +2,25 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Anggota;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 
 class AnggotaController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $title = "Data Anggota";
-        $anggota = DB::table('koperasi_anggota')->paginate(10);
+
+        $query = Anggota::query();
+        $query->select('*');
+        if (isset($request->cari)) {
+            $query->where('nama_lengkap', 'like', "%" . $request->cari . "%");
+        }
+        $anggota = $query->paginate(10);
+        $anggota->appends($request->all());
+
         return view('anggota.index', compact('title', 'anggota'));
     }
 
@@ -22,17 +31,25 @@ class AnggotaController extends Controller
     }
 
 
-    public function edit($no_rek_anggota)
+    public function edit($no_anggota)
     {
         $title = "Edit Data Anggota";
-        $no_rek_anggota = Crypt::decrypt($no_rek_anggota);
-        $anggota = DB::table('koperasi_anggota')->where('no_rek_anggota', $no_rek_anggota)->first();
+        $no_anggota = Crypt::decrypt($no_anggota);
+        $anggota = DB::table('koperasi_anggota')->where('no_anggota', $no_anggota)->first();
         return view('anggota.edit', compact('title', 'anggota'));
     }
 
-    public function update($no_rek_anggota, Request $request)
+    public function show($no_anggota)
     {
-        $no_rek_anggota = Crypt::decrypt($no_rek_anggota);
+        $title = "Detail Data Anggota";
+        $no_anggota = Crypt::decrypt($no_anggota);
+        $anggota = DB::table('koperasi_anggota')->where('no_anggota', $no_anggota)->first();
+        return view('anggota.show', compact('title', 'anggota'));
+    }
+
+    public function update($no_anggota, Request $request)
+    {
+        $no_anggota = Crypt::decrypt($no_anggota);
         $request->validate([
             'nik' => 'required',
             'nama_lengkap' => 'required',
@@ -43,9 +60,9 @@ class AnggotaController extends Controller
         ]);
 
         $update = DB::table('koperasi_anggota')
-            ->where('no_rek_anggota', $no_rek_anggota)
+            ->where('no_anggota', $no_anggota)
             ->update([
-                'no_rek_anggota' => $no_rek_anggota,
+                'no_anggota' => $no_anggota,
                 'nik' => $request->nik,
                 'nama_lengkap' => $request->nama_lengkap,
                 'tempat_lahir' => $request->tempat_lahir,
@@ -82,23 +99,23 @@ class AnggotaController extends Controller
 
         //Cek Pendaftaran Terakhir
         $cekanggota = DB::table('koperasi_anggota')
-            ->select('no_rek_anggota')
-            ->where(DB::raw('left(no_rek_anggota,4)'), $format)
-            ->orderBy('no_rek_anggota', 'desc')
+            ->select('no_anggota')
+            ->where(DB::raw('left(no_anggota,4)'), $format)
+            ->orderBy('no_anggota', 'desc')
             ->first();
 
 
 
-        if (empty($cekanggota->no_rek_anggota)) {
-            $no_rek_anggota_terakhir = $format . "-" . "00000";
+        if (empty($cekanggota->no_anggota)) {
+            $no_anggota_terakhir = $format . "-" . "00000";
         } else {
-            $no_rek_anggota_terakhir = $cekanggota->no_rek_anggota;
+            $no_anggota_terakhir = $cekanggota->no_anggota;
         }
 
-        $no_rek_anggota = buatkode($no_rek_anggota_terakhir, $format . "-", 5);
+        $no_anggota = buatkode($no_anggota_terakhir, $format . "-", 5);
 
         $simpan = DB::table('koperasi_anggota')->insert([
-            'no_rek_anggota' => $no_rek_anggota,
+            'no_anggota' => $no_anggota,
             'nik' => $request->nik,
             'nama_lengkap' => $request->nama_lengkap,
             'tempat_lahir' => $request->tempat_lahir,
@@ -110,7 +127,20 @@ class AnggotaController extends Controller
         if ($simpan) {
             return redirect('/anggota')->with(['success' => 'Data Berhasil Disimpan']);
         } else {
-            return redirect('/anggota')->with(['success' => 'Data Gagal Disimpan']);
+            return redirect('/anggota')->with(['warning' => 'Data Gagal Disimpan']);
+        }
+    }
+
+    function destroy($no_anggota, Request $request)
+    {
+        $no_anggota = Crypt::decrypt($no_anggota);
+        $hapus = DB::table('koperasi_anggota')
+            ->where('no_anggota', $no_anggota)
+            ->delete();
+        if ($hapus) {
+            return redirect('/anggota')->with(['success' => 'Data Berhasil Dihapus']);
+        } else {
+            return redirect('/anggota')->with(['warning' => 'Data Gagal Dihapus']);
         }
     }
 }

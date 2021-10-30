@@ -21,6 +21,9 @@ License: You must have a valid license purchased only from themeforest(the above
         <title>Login - Midone - Tailwind HTML Admin Template</title>
         <!-- BEGIN: CSS Assets-->
         <link rel="stylesheet" href="{{asset('dist/css/app.css')}}" />
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@700&family=Yesteryear&display=swap" rel="stylesheet">
         <!-- END: CSS Assets-->
     </head>
     <!-- END: Head -->
@@ -30,17 +33,15 @@ License: You must have a valid license purchased only from themeforest(the above
                 <!-- BEGIN: Login Info -->
                 <div class="hidden xl:flex flex-col min-h-screen">
                     <a href="" class="-intro-x flex items-center pt-5">
-                        <img alt="Midone Tailwind HTML Admin Template" class="w-6" src="dist/images/logo.svg">
-                        <span class="text-white text-lg ml-3"> Mid<span class="font-medium">One</span> </span>
+                        <img alt="Midone Tailwind HTML Admin Template" class="w-20" src="{{asset('dist/images/tsarwah.png')}}">
                     </a>
                     <div class="my-auto">
-                        <img alt="Midone Tailwind HTML Admin Template" class="-intro-x w-1/2 -mt-16" src="dist/images/illustration.svg">
-                        <div class="-intro-x text-white font-medium text-4xl leading-tight mt-10">
-                            A few more clicks to
-                            <br>
-                            sign in to your account.
+                        <img alt="Midone Tailwind HTML Admin Template" class="-intro-x w-1/2 -mt-16" src="{{asset('dist/images/vector.png')}}">
+                        <div class="-intro-x text-2xl text-white" style="font-family: 'Aref Ruqaa', serif;">Kopontren Tsarwah</div>
+                        <div class="-intro-x text-white font-medium text-4xl leading-tight mt-2" style="font-family: 'Yesteryear', cursive;">
+                            Manfaat & Maslahat
                         </div>
-                        <div class="-intro-x mt-5 text-lg text-white">Manage all your e-commerce accounts in one place</div>
+                        <div class="-intro-x text-medium text-white">Jln. Raya Ancol No. 27 Kecamatan Sindangkasih Kabupaten Ciamis</div>
                     </div>
                 </div>
                 <!-- END: Login Info -->
@@ -52,7 +53,7 @@ License: You must have a valid license purchased only from themeforest(the above
                         </h2>
                         <form action="/postlogin" method="POST">
                             @csrf
-                            <div class="intro-x mt-2 text-gray-500 xl:hidden text-center">A few more clicks to sign in to your account. Manage all your e-commerce accounts in one place</div>
+
                             <div class="intro-x mt-8">
                                 <input type="text" name="email" class="intro-x login__input input input--lg border border-gray-300 block" placeholder="Email">
                                 <input type="password" name="password" class="intro-x login__input input input--lg border border-gray-300 block mt-4" placeholder="Password">
@@ -66,12 +67,6 @@ License: You must have a valid license purchased only from themeforest(the above
                             </div>
                             <div class="intro-x mt-5 xl:mt-8 text-center xl:text-left">
                                 <button class="button button--lg w-full xl:w-32 text-white bg-theme-1 xl:mr-3">Login</button>
-                                <button class="button button--lg w-full xl:w-32 text-gray-700 border border-gray-300 mt-3 xl:mt-0">Sign up</button>
-                            </div>
-                            <div class="intro-x mt-10 xl:mt-24 text-gray-700 text-center xl:text-left">
-                                By signin up, you agree to our
-                                <br>
-                                <a class="text-theme-1" href="">Terms and Conditions</a> & <a class="text-theme-1" href="">Privacy Policy</a>
                             </div>
                         </form>
                     </div>

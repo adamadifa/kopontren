@@ -4,11 +4,11 @@
 @section('content')
 <div class="intro-y col-span-12 lg:col-span-6">
     <div class="intro-y box p-5 mt-3">
-        <form method="post" action="/anggota/{{\Crypt::encrypt($anggota->no_rek_anggota)}}/update"  class="validate-form">
+        <form method="post" action="/anggota/{{\Crypt::encrypt($anggota->no_anggota)}}/update"  class="validate-form">
             @csrf
             <div class="intro-y col-span-12 flex flex-wrap sm:flex-no-wrap items-center mb-3">
                 <div class="font-medium mr-3">No. Rekening :</div>
-                <div class="font-medium">{{$anggota->no_rek_anggota}}</div>
+                <div class="font-medium">{{$anggota->no_anggota}}</div>
             </div>
             <div class="mb-3">
                 <x-inputtext label="NIK" field="nik" icon="credit-card" lebar="full" inline="false" datepicker="false" value="{{$anggota->nik}}" />
