@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DaftarController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\JenissimpananController;
+use App\Http\Controllers\SimpananController;
 use App\Http\Controllers\TabunganController;
 use Illuminate\Support\Facades\Route;
 
@@ -56,4 +57,9 @@ Route::middleware(['auth', 'ceklevel:admin'])->group(function () {
     Route::get('/tabungan/{kode_tabungan}/edit', [TabunganController::class, 'edit']);
     Route::post('/tabungan/{kode_tabungan}/update', [TabunganController::class, 'update']);
     Route::delete('/tabungan/{kode_tabungan}/delete', [TabunganController::class, 'destroy']);
+
+    //Simpanan
+
+    Route::get('/simpanan', [SimpananController::class, 'index']);
+    Route::get('/simpanan/{no_anggota}/show', [SimpananController::class, 'show']);
 });

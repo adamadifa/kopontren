@@ -41,10 +41,10 @@ License: You must have a valid license purchased only from themeforest(the above
             <!-- BEGIN: Side Menu -->
             <nav class="side-nav">
                 <a href="" class="intro-x flex items-center pl-5 pt-4">
-                    <img alt="Midone Tailwind HTML Admin Template" class="w-6" src="{{asset('dist/images/logo.svg')}}">
-                    <span class="hidden xl:block text-white text-lg ml-3"> Paci<span class="font-medium">fic</span> </span>
+                    <img alt="Midone Tailwind HTML Admin Template" class="w-20" src="{{asset('dist/images/tsarwah.png')}}">
+                    <span class="hidden xl:block text-white text-lg ml-3" > <span style="font-family: 'Yesteryear', cursive;">Tsarwah</span> </span>
                 </a>
-                <div class="side-nav__devider my-6"></div>
+                <div class="my-6"></div>
                 <ul>
                     @include('layouts.navbar')
                 </ul>
