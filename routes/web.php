@@ -62,4 +62,6 @@ Route::middleware(['auth', 'ceklevel:admin'])->group(function () {
 
     Route::get('/simpanan', [SimpananController::class, 'index']);
     Route::get('/simpanan/{no_anggota}/show', [SimpananController::class, 'show']);
+    Route::post('/simpanan/store', [SimpananController::class, 'store']);
+    Route::delete('/simpanan/{no_transaksi}/delete', [SimpananController::class, 'destroy']);
 });
