@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Anggota;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
@@ -76,5 +77,18 @@ class TabunganController extends Controller
         } else {
             return redirect('/tabungan')->with(['warning' => 'Data Gagal dihapus']);
         }
+    }
+
+    public function listrekening()
+    {
+        $title = "Data Rekening Tabungan";
+        return view('tabungan.listrekening', compact('title'));
+    }
+
+    public function autocompleteAnggota(Request $request)
+    {
+        $query = $request->get('query');
+        $filterResult = Anggota::where('nama_lengkap', 'LIKE', '%' . $query . '%')->get();
+        return response()->json($filterResult);
     }
 }

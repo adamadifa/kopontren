@@ -57,6 +57,8 @@ Route::middleware(['auth', 'ceklevel:admin'])->group(function () {
     Route::get('/tabungan/{kode_tabungan}/edit', [TabunganController::class, 'edit']);
     Route::post('/tabungan/{kode_tabungan}/update', [TabunganController::class, 'update']);
     Route::delete('/tabungan/{kode_tabungan}/delete', [TabunganController::class, 'destroy']);
+    Route::get('/rekening', [TabunganController::class, 'listrekening']);
+    Route::get('/autocompleteanggota', [TypeaheadController::class, 'autocompleteAnggota']);
 
     //Simpanan
 

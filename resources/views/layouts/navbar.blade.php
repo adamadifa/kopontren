@@ -1,49 +1,28 @@
-@php
-    $datamaster = ['anggota','anggota/*','jenissimpanan','jenissimpanan/*','tabungan','tabungan/*'];
-    $datatransaksi = [''];
-@endphp
-
-<li>
-    <a href="index.html" class="side-menu {{ request()->is(['dashboardadmin']) ? 'side-menu--active' : '' }}">
-        <div class="side-menu__icon"> <i data-feather="home"></i> </div>
-        <div class="side-menu__title"> Dashboard </div>
-    </a>
-</li>
-<li>
-    <a href="javascript:;" class="side-menu {{ request()->is($datamaster) ? 'side-menu--active' : '' }}">
-        <div class="side-menu__icon"> <i data-feather="layers"></i> </div>
-        <div class="side-menu__title"> Data Master <i data-feather="chevron-down" class="side-menu__sub-icon"></i> </div>
-    </a>
-    <ul class="{{ request()->is($datamaster) ? 'side-menu__sub-open' : '' }}">
-        <li>
-            <a href="/anggota" class="side-menu {{ request()->is(['anggota','anggota/*']) ? 'side-menu--active' : '' }}">
-                <div class="side-menu__icon"> <i data-feather="users"></i> </div>
-                <div class="side-menu__title">Anggota</div>
-            </a>
-        </li>
-        <li>
-            <a href="/jenissimpanan" class="side-menu {{ request()->is(['jenissimpanan','jenissimpanan/*']) ? 'side-menu--active' : '' }}">
-                <div class="side-menu__icon"> <i data-feather="shopping-bag"></i> </div>
-                <div class="side-menu__title">Jenis Simpanan</div>
-            </a>
-        </li>
-        <li>
-            <a href="/tabungan" class="side-menu {{ request()->is(['tabungan','tabungan/*']) ? 'side-menu--active' : '' }}">
-                <div class="side-menu__icon"> <i data-feather="book"></i> </div>
-                <div class="side-menu__title">Jenis Tabungan</div>
-            </a>
-        </li>
-    </ul>
-</li>
-<li>
-    <a href="/simpanan" class="side-menu {{ request()->is(['simpanan','simpanan/*']) ? 'side-menu--active' : '' }}">
-        <div class="side-menu__icon"> <i data-feather="briefcase"></i> </div>
-        <div class="side-menu__title"> Simpanan </div>
-    </a>
-</li>
-<li>
-    <a href="/tabungan" class="side-menu {{ request()->is(['dashboardadmin']) ? 'side-menu--active' : '' }}">
-        <div class="side-menu__icon"> <i data-feather="book-open"></i> </div>
-        <div class="side-menu__title"> Tabungan </div>
-    </a>
-</li>
+ <!-- BEGIN: Main Menu-->
+ <div class="main-menu menu-fixed menu-light menu-accordion menu-shadow" data-scroll-to-active="true">
+    <div class="navbar-header">
+        <ul class="nav navbar-nav flex-row">
+            <li class="nav-item mr-auto"><a class="navbar-brand" href="{{asset('html/ltr/vertical-menu-template/index.html')}}">
+                    <div class="brand-logo"></div>
+                    <h2 class="brand-text mb-0">Vuexy</h2>
+                </a></li>
+            <li class="nav-item nav-toggle"><a class="nav-link modern-nav-toggle pr-0" data-toggle="collapse"><i class="feather icon-x d-block d-xl-none font-medium-4 primary toggle-icon"></i><i class="toggle-icon feather icon-disc font-medium-4 d-none d-xl-block collapse-toggle-icon primary" data-ticon="icon-disc"></i></a></li>
+        </ul>
+    </div>
+    <div class="shadow-bottom"></div>
+    <div class="main-menu-content">
+        <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
+            <li class=" nav-item"><a href="/dashboard"><i class="feather icon-home"></i><span class="menu-title" data-i18n="Dashboard">Dashboard</span></a>
+            </li>
+            <li class=" navigation-header"><span>Data Master</span>
+            <li class=" nav-item"><a href="#"><i class="feather icon-grid"></i><span class="menu-title">Data Master</span></a>
+                <ul class="menu-content">
+                    <li class="{{ request()->is(['anggota','anggota/*']) ? 'active' : '' }}"><a href="/anggota"><i class="feather icon-users"></i><span class="menu-item">Anggota</span></a></li>
+                    <li class="{{ request()->is(['jenissimpanan','jenissimpanan/*']) ? 'active' : '' }}"><a href="/jenissimpanan"><i class="feather icon-book"></i><span class="menu-item">Jenis Simpanan</span></a></li>
+                    <li class="{{ request()->is(['tabungan','tabungan/*']) ? 'active' : '' }}"><a href="/tabungan"><i class="feather icon-book"></i><span class="menu-item">Jenis Tabungan</span></a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</div>
+<!-- END: Main Menu-->
