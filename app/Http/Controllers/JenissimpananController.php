@@ -48,6 +48,7 @@ class JenissimpananController extends Controller
 
     function update(Request $request, $kode_simpanan)
     {
+        $kode_simpanan = Crypt::decrypt($kode_simpanan);
         $request->validate([
             'kode_simpanan' => 'required',
             'nama_simpanan' => 'required'
@@ -69,6 +70,8 @@ class JenissimpananController extends Controller
 
     function destroy($kode_simpanan)
     {
+
+        dd($kode_simpanan);
         $kode_simpanan = Crypt::decrypt($kode_simpanan);
         $hapus = DB::table('koperasi_jenissimpanan')->where('kode_simpanan', $kode_simpanan)->delete();
         if ($hapus) {

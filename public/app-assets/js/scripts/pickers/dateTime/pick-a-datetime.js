@@ -48,13 +48,16 @@
     // Month Select Picker
     $('.pickadate-months').pickadate({
         selectYears: false,
-        selectMonths: true
+        selectMonths: true,
+        format: 'yyyy-mm-dd'
+
     });
 
     // Month and Year Select Picker
     $('.pickadate-months-year').pickadate({
         selectYears: true,
-        selectMonths: true
+        selectMonths: true,
+        format: 'yyyy-mm-dd'
     });
 
     // Short String Date Picker

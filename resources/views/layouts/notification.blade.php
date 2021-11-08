@@ -1,7 +1,9 @@
 @if ($message = Session::get('success'))
-<div class="rounded-md flex items-center px-5 py-4 mb-2 bg-theme-9 text-white">
-    <i data-feather="check" class="w-6 h-6 mr-2"></i>
-    {{$message}} <i data-feather="x" class="w-4 h-4 ml-auto"></i>
+<div class="alert alert-success" role="alert">
+    <h4 class="alert-heading">Success</h4>
+    <p class="mb-0">
+        {{$message}}
+    </p>
 </div>
 
 @endif
@@ -10,5 +12,10 @@
 @endif
 
 @if ($message = Session::get('warning'))
-<div class="rounded-md flex items-center px-5 py-4 mb-2 bg-theme-12 text-white"> <i data-feather="alert-circle" class="w-6 h-6 mr-2"></i> Awesome alert with icon <i data-feather="x" class="w-4 h-4 ml-auto"></i> </div>
+<div class="alert alert-warning" role="alert">
+    <h4 class="alert-heading">Warning</h4>
+    <p class="mb-0">
+        {{$message}}
+    </p>
+</div>
 @endif

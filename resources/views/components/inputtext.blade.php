@@ -1,12 +1,20 @@
-
-<div class="{{$inline}}">
-    <div class="relative">
-        <div class="absolute rounded-l w-10 h-full flex items-center justify-center" border text-gray-600"><i data-feather="{{$icon}}" class="text-sm"></i></div>
-        <input type="text" autocomplete="off" @isset($required) @if($required=="true") required @endif @endisset @isset($alignright) @if($alignright=="true") style="text-align: right"  @endif @endisset  @isset($readonly) @if($readonly=="true") readonly @endif @endisset  id="{{$field}}" @isset($value) value="{{old($field) ? old($field) : $value}}"
-        @else value="{{old($field)}}" @endisset  name="{{$field}}" class="input pl-12 w-{{$lebar}} border  @if($datepicker=='true') datepicker @endif   @error($field) error @enderror" placeholder="{{$label}}">
+<div class="form-group  @error($field) error @enderror"">
+    <div class=" form-label-group position-relative has-icon-left">
+    <div class="controls">
+        <input type="text" autocomplete="off" id="{{$field}}" @isset($value)
+            value="{{old($field) ? old($field) : $value}}" @else value="{{old($field)}}" @endisset
+            class="form-control @isset($datepicker) pickadate-months-year picker__input @endisset" name="{{$field}}"
+            placeholder="{{$label}}">
+        <div class="form-control-position">
+            <i class="{{$icon}}"></i>
+        </div>
+        @error($field)
+        <div class="help-block">
+            <ul role="alert">
+                <li>{{$message}}</li>
+            </ul>
+        </div>
+        @enderror
     </div>
-    @error($field)
-    <label id="name-error" class="error" for="name">{{ucwords($message)}}</label>
-    @enderror
 </div>
-
+</div>

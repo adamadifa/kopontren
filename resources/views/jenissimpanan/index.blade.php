@@ -1,63 +1,84 @@
 @extends('layouts.midone')
-@section('titlepage',$title)
-@section('titlemain',$title)
+@section('titlepage','Data Anggota')
 @section('content')
-<div class="intro-y col-span-12 flex justify-between flex-wrap sm:flex-no-wrap items-center mt-2">
-    <div class="flex flex-wrap">
-        <a href="/jenissimpanan/create" class="button text-white bg-theme-3 shadow-md mr-2">Tambah Jenis Simpanan</a>
-        <div class="dropdown relative">
-            <button class="dropdown-toggle button px-2 box text-gray-700">
-                <span class="w-5 h-5 flex items-center justify-center"> <i class="w-4 h-4" data-feather="plus"></i> </span>
-            </button>
-            <div class="dropdown-box mt-10 absolute w-40 top-0 left-0 z-20">
-                <div class="dropdown-box__content box p-2">
-                    <a href="" class="flex items-center block p-2 transition duration-300 ease-in-out bg-white hover:bg-gray-200 rounded-md"> <i data-feather="printer" class="w-4 h-4 mr-2"></i> Print </a>
-                    <a href="" class="flex items-center block p-2 transition duration-300 ease-in-out bg-white hover:bg-gray-200 rounded-md"> <i data-feather="file-text" class="w-4 h-4 mr-2"></i> Export to Excel </a>
-                    <a href="" class="flex items-center block p-2 transition duration-300 ease-in-out bg-white hover:bg-gray-200 rounded-md"> <i data-feather="file-text" class="w-4 h-4 mr-2"></i> Export to PDF </a>
+<div class="content-wrapper">
+    <div class="content-header row">
+        <div class="content-header-left col-md-9 col-12 mb-2">
+            <div class="row breadcrumbs-top">
+                <div class="col-12">
+                    <h2 class="content-header-title float-left mb-0">Jenis Simpanan</h2>
+                    <div class="breadcrumb-wrapper col-12">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/anggota">Jenis Simpanan</a>
+                            </li>
+                        </ol>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+    <div class="content-body">
+        <!-- Data list view starts -->
+        <!-- DataTable starts -->
 
-<div class="intro-y col-span-12">
-    @include('layouts.notification')
-</div>
-<div class="intro-y col-span-6 overflow-auto lg:overflow-visible">
-    <table class="table table-report -mt-2">
-        <thead>
-            <tr>
-                <th class="text-center whitespace-no-wrap">NO</th>
-                <th class="whitespace-no-wrap">KODE SIMPANAN</th>
-                <th class="whitespace-no-wrap">NAMA SIMPANAN</th>
-                <th class="text-center whitespace-no-wrap">AKSI</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($jenissimpanan as $d)
-                <tr>
-                    <td>{{$loop->iteration}}</td>
-                    <td>{{$d->kode_simpanan}}</td>
-                    <td>{{$d->nama_simpanan}}</td>
-                    <td>
-                        <div class="flex justify-center items-center">
-                            <a class="flex items-center text-theme-1" href="/jenissimpanan/{{\Crypt::encrypt($d->kode_simpanan)}}/edit"> <i data-feather="edit" class="w-4 h-4 mr-1"></i></a>
-                            <form class="flex items-center text-theme-6" method="POST" id="deleteform" action="/jenissimpanan/{{Crypt::encrypt($d->kode_simpanan)}}/delete">
-                                @csrf
-                                @method('DELETE')
-                                <button class="delete-confirm"><i data-feather="trash-2" class="w-4 h-4 mr-1"></i></button>
-                            </form>
+        @include('layouts.notification')
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <a href="/jenissimpanan/create" class="btn btn-primary"><i
+                                class="feather icon-file-plus mr-1"></i>Tambah</a>
+
+                        <div class="table-responsive mt-2">
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>NO</th>
+                                        <th>KODE</th>
+                                        <th>NAMA SIMPANAN</th>
+                                        <th>AKSI</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($jenissimpanan as $d)
+                                    <tr>
+                                        <td class="text-center">{{$loop->iteration}}</td>
+                                        <td class="">{{$d->kode_simpanan}}</td>
+                                        <td class="">{{$d->nama_simpanan}}</td>
+                                        <td class="table-report__action w-56">
+                                            <div class="btn-group" role="group" aria-label="Basic example">
+                                                <a class="ml-1"
+                                                    href="/jenissimpanan/{{\Crypt::encrypt($d->kode_simpanan)}}/edit"><i
+                                                        class="feather icon-edit"></i></a>
+                                                <form method="POST" id="deleteform"
+                                                    action="/jenissimpanan/{{$d->kode_simpanan}}/delete">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <a class="delete-confirm ml-1">
+                                                        <i class="feather icon-trash danger"></i>
+                                                    </a>
+                                                </form>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+
                         </div>
-                    </td>
-                </tr>
-            @endforeach
-        </tbody>
-    </table>
+
+                        <!-- DataTable ends -->
+                    </div>
+                </div>
+                <!-- Data list view end -->
+            </div>
+        </div>
+    </div>
 </div>
 @endsection
 @push('myscript')
 <script>
-  $(function(){
+    $(function(){
         $('.delete-confirm').on('click', function (event) {
             event.preventDefault();
             const url = $(this).attr('href');

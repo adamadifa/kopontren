@@ -1,39 +1,107 @@
 @extends('layouts.midone')
-@section('titlepage',$title)
-@section('titlemain',$title)
+@section('titlepage','Data Anggota')
 @section('content')
-<div class="intro-y col-span-12 lg:col-span-12">
-<div class="intro-y box px-5 pt-5 mt-5">
-    <div class="flex flex-col lg:flex-row border-b border-gray-200 pb-5 -mx-5">
-        <div class="flex flex-1 px-5 items-center justify-center lg:justify-start">
-            <div class="w-20 h-20 sm:w-24 sm:h-24 flex-none lg:w-32 lg:h-32 image-fit relative">
-                <img alt="Midone Tailwind HTML Admin Template" class="rounded-full" src="{{asset('dist/images/profile-14.jpg')}}">
-                <div class="absolute mb-1 mr-1 flex items-center justify-center bottom-0 right-0 bg-theme-1 rounded-full p-2"> <i class="w-4 h-4 text-white" data-feather="camera"></i> </div>
+<div class="content-wrapper">
+    <div class="content-header row">
+        <div class="content-header-left col-md-9 col-12 mb-2">
+            <div class="row breadcrumbs-top">
+                <div class="col-12">
+                    <h2 class="content-header-title float-left mb-0">Detail Anggota</h2>
+                    <div class="breadcrumb-wrapper col-12">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/anggota">Anggota</a></li>
+                            <li class="breadcrumb-item"><a href="#">Detail Anggota</a></li>
+                        </ol>
+                    </div>
+                </div>
             </div>
-            <div class="ml-5">
-                <div class="w-24 sm:w-40 truncate sm:whitespace-normal font-medium text-lg">{{$anggota->nama_lengkap}}</div>
-                <div class="text-gray-600">{{$anggota->no_anggota}}</div>
-            </div>
-        </div>
-        <div class="flex mt-6 lg:mt-0 items-center lg:items-start flex-1 flex-col justify-center text-gray-600 px-5 border-l border-r border-gray-200 border-t lg:border-t-0 pt-5 lg:pt-0">
-            <div class="truncate sm:whitespace-normal flex items-center mt-3"> <i data-feather="credit-card" class="w-4 h-4 mr-2"></i> {{$anggota->nik}} </div>
-            <div class="truncate sm:whitespace-normal flex items-center"> <i data-feather="mail" class="w-4 h-4 mr-2"></i> russellcrowe@left4code.com </div>
-            <div class="truncate sm:whitespace-normal flex items-center"> <i data-feather="calendar" class="w-4 h-4 mr-2"></i> {{$anggota->tempat_lahir}}, {{$anggota->tanggal_lahir}} </div>
-            <div class="truncate sm:whitespace-normal flex items-center"> <i data-feather="map" class="w-4 h-4 mr-2"></i> {{$anggota->alamat}} </div>
-            <div class="truncate sm:whitespace-normal flex items-center"> <i data-feather="phone" class="w-4 h-4 mr-2"></i> {{$anggota->no_hp}} </div>
-        </div>
-        <div class="mt-6 lg:mt-0 flex-1 px-5 border-t lg:border-0 border-gray-200 pt-5 lg:pt-0">
-            <div class="text-xl text-center lg:text-left lg:mt-5">Saldo :</div>
-            <div class="text-4xl text-center lg:text-left font-medium">Rp. 100.000.000</div>
         </div>
     </div>
-    <div class="nav-tabs flex flex-col sm:flex-row justify-center lg:justify-start"> <a data-toggle="tab" data-target="#dashboard" href="javascript:;" class="py-4 sm:mr-8 active">Dashboard</a> <a data-toggle="tab" data-target="#account-and-profile" href="javascript:;" class="py-4 sm:mr-8">Account & Profile</a> <a data-toggle="tab" data-target="#activities" href="javascript:;" class="py-4 sm:mr-8">Activities</a> <a data-toggle="tab" data-target="#tasks" href="javascript:;" class="py-4 sm:mr-8">Tasks</a> </div>
-</div>
+    <div class="content-body">
+        <!-- page users view start -->
+        <section class="page-users-view">
+            <div class="row">
+                <!-- account start -->
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Anggota</div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="users-view-image">
+                                    <img src="{{asset('app-assets/images/no photo.png')}}"
+                                        class="users-avatar-shadow w-100 rounded mb-2 pr-2 ml-1" alt="avatar">
+                                </div>
+                                <div class="col-12 col-sm-9 col-md-6 col-lg-5">
+                                    <table>
+                                        <tr>
+                                            <td class="font-weight-bold">No Anggota</td>
+                                            <td>{{$anggota->no_anggota}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="font-weight-bold">NIK</td>
+                                            <td>{{$anggota->nik}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="font-weight-bold">Nama Lengkap</td>
+                                            <td>{{$anggota->nama_lengkap}}</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div class="col-12 col-md-12 col-lg-5">
+                                    <table class="ml-0 ml-sm-0 ml-lg-0">
+                                        <tr>
+                                            <td class="font-weight-bold">TTL</td>
+                                            <td>{{$anggota->tempat_lahir}}, {{date("d M
+                                                Y",strtotime($anggota->tanggal_lahir))}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="font-weight-bold">No HP</td>
+                                            <td>{{$anggota->no_hp}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="font-weight-bold">Alamat</td>
+                                            <td>{{$anggota->alamat}}</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- account end -->
+                <!-- information start -->
+                <div class="col-md-6 col-12 ">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title mb-2">Saldo Simpanan</div>
+                        </div>
+                        <div class="card-body">
+
+                        </div>
+                    </div>
+                </div>
+                <!-- information start -->
+                <!-- social links end -->
+                <div class="col-md-6 col-12 ">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title mb-2">Saldo Tabungan</div>
+                        </div>
+                        <div class="card-body">
+
+                        </div>
+                    </div>
+                </div>
+                <!-- social links end -->
+                <!-- permissions start -->
+
+                <!-- permissions end -->
+            </div>
+        </section>
+        <!-- page users view end -->
+
+    </div>
 </div>
 @endsection
-@push('myscript')
-<script>
-
-</script>
-@endpush
-

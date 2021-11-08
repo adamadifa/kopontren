@@ -19,10 +19,28 @@
     </div>
     <div class="content-body">
         <!-- Data list view starts -->
-            <!-- DataTable starts -->
+        <!-- DataTable starts -->
+        @include('layouts.notification')
         <div class="card">
             <div class="card-body">
-                <a href="/anggota/create" class="btn btn-primary"><i class="feather icon-user-plus mr-2"></i>Tambah Anggota</a>
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <a href="/anggota/create" class="btn btn-primary"><i
+                                class="feather icon-user-plus mr-2"></i>Tambah
+                            Anggota</a>
+                    </div>
+                    <div>
+                        <form action="/anggota">
+                            <div class=" form-label-group position-relative has-icon-left">
+                                <input type="text" value="{{Request('cari')}}" id="cari" name="cari"
+                                    class="form-control" name="fname-floating-icon" placeholder="Search">
+                                <div class="form-control-position">
+                                    <i class="feather icon-search"></i>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
             <div class="card-content">
                 <div class="table-responsive">
@@ -30,8 +48,8 @@
                         <thead>
                             <tr>
                                 <th>NO</th>
-                                <th>NO ANGGOTA</th>
-                                <th>NIK</th>
+                                <th>KODE SIMPANAN</th>
+                                <th>NAMA SIMPANAN</th>
                                 <th>NAMA LENGKAP</th>
                                 <th>TTL</th>
                                 <th>No. HP</th>
@@ -53,22 +71,27 @@
                                 </td>
                                 <td class="table-report__action w-56">
                                     <div class="btn-group" role="group" aria-label="Basic example">
-                                    <a class="ml-1" href="/anggota/{{\Crypt::encrypt($d->no_anggota)}}/edit"><i class="feather icon-edit"></i></a>
-                                    <a class="ml-1" href="/anggota/{{\Crypt::encrypt($d->no_anggota)}}/show"><i class="feather icon-user info"></i></a>
-                                    <form method="POST" id="deleteform" action="/anggota/{{Crypt::encrypt($d->no_anggota)}}/delete">
-                                        @csrf
-                                        @method('DELETE')
-                                        <a class="delete-confirm ml-1">
-                                            <i class="feather icon-trash danger"></i>
-                                        </a>
-                                    </form>
+                                        <a class="ml-1" href="/anggota/{{\Crypt::encrypt($d->no_anggota)}}/edit"><i
+                                                class="feather icon-edit"></i></a>
+                                        <a class="ml-1" href="/anggota/{{\Crypt::encrypt($d->no_anggota)}}/show"><i
+                                                class="feather icon-user info"></i></a>
+                                        <form method="POST" id="deleteform"
+                                            action="/anggota/{{Crypt::encrypt($d->no_anggota)}}/delete">
+                                            @csrf
+                                            @method('DELETE')
+                                            <a class="delete-confirm ml-1">
+                                                <i class="feather icon-trash danger"></i>
+                                            </a>
+                                        </form>
                                     </div>
                                 </td>
                             </tr>
                             @endforeach
                         </tbody>
                     </table>
+
                 </div>
+                {{ $anggota->links('vendor.pagination.vuexy') }}
                 <!-- DataTable ends -->
             </div>
         </div>
@@ -78,7 +101,7 @@
 @endsection
 @push('myscript')
 <script>
-  $(function(){
+    $(function(){
         $('.delete-confirm').on('click', function (event) {
             event.preventDefault();
             const url = $(this).attr('href');

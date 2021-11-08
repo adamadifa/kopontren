@@ -1,26 +1,47 @@
 @extends('layouts.midone')
-@section('titlepage',$title)
-@section('titlemain',$title)
+@section('titlepage','Data Anggota')
 @section('content')
-<div class="intro-y col-span-12 lg:col-span-6">
-    <div class="intro-y box p-5 mt-3">
-        <form method="post" action="/jenissimpanan/{{$jenissimpanan->kode_simpanan}}/update"  class="validate-form">
-            @csrf
-            <div class="mb-3">
-                <x-inputtext label="Kode Simpanan" value="{{$jenissimpanan->kode_simpanan}}" field="kode_simpanan" icon="code" lebar="full" inline="false" datepicker="false" />
+<div class="content-wrapper">
+    <div class="content-header row">
+        <div class="content-header-left col-md-9 col-12 mb-2">
+            <div class="row breadcrumbs-top">
+                <div class="col-12">
+                    <h2 class="content-header-title float-left mb-0">Edit Jenis Simpanan</h2>
+                    <div class="breadcrumb-wrapper col-12">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/anggota">Jenis Simpanan</a></li>
+                            <li class="breadcrumb-item"><a href="#">Edit</a></li>
+                        </ol>
+                    </div>
+                </div>
             </div>
-            <div class="mb-3">
-                <x-inputtext label="Nama Simpanan" value="{{$jenissimpanan->nama_simpanan}}" field="nama_simpanan" icon="file-text" lebar="full" inline="false" datepicker="false" />
+        </div>
+    </div>
+</div>
+<div class="content-body">
+    <div class="col-md-6 col-12">
+        <div class="card">
+            <div class="card-content">
+                <div class="card-body">
+                    <form class="form" action="/jenissimpanan/{{\Crypt::encrypt($jenissimpanan->kode_simpanan)}}/update"
+                        method="POST">
+                        @csrf
+                        <div class="form-body">
+                            <div class="row">
+                                <div class="col-12">
+                                    <x-inputtext label="Nama Simpanan" field="nama_simpanan" icon="feather icon-book"
+                                        value="{{$jenissimpanan->nama_simpanan}}" />
+                                </div>
+                                <div class="col-12">
+                                    <button type="submit" class="btn btn-primary mr-1 mb-1">Submit</button>
+                                    <button type="reset" class="btn btn-outline-warning mr-1 mb-1">Reset</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
             </div>
-            <button type="submit" class="button bg-theme-1 w-full text-white">Simpan</button>
-        </form>
-        <div id="show"></div>
+        </div>
     </div>
 </div>
 @endsection
-@push('myscript')
-<script>
-
-</script>
-@endpush
-
