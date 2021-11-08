@@ -1,218 +1,247 @@
 @extends('layouts.midone')
-@section('titlepage',$title)
-@section('titlemain',$title)
+@section('titlepage','Data Anggota')
 @section('content')
-<div class="intro-y col-span-12 lg:col-span-12">
-    <div class="intro-y box px-5 pt-5 mt-5">
-        <div class="flex flex-col lg:flex-row border-b border-gray-200 pb-5 -mx-5">
-            <div class="flex flex-1 px-5 items-center justify-center lg:justify-start">
-                <div class="w-20 h-20 sm:w-24 sm:h-24 flex-none lg:w-32 lg:h-32 image-fit relative">
-                    <img alt="Midone Tailwind HTML Admin Template" class="rounded-full"
-                        src="{{asset('dist/images/profile-14.jpg')}}">
-                    <div class="absolute mb-1 mr-1 flex items-center justify-center bottom-0 right-0  rounded-full p-2"
-                        style="background-color:#054c2e"> <i class="w-4 h-4 text-white" data-feather="camera"></i>
+<div class="content-wrapper">
+    <div class="content-header row">
+        <div class="content-header-left col-md-9 col-12 mb-2">
+            <div class="row breadcrumbs-top">
+                <div class="col-12">
+                    <h2 class="content-header-title float-left mb-0">Detail Simpanan</h2>
+                    <div class="breadcrumb-wrapper col-12">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/simpanan">Simpanan</a></li>
+                            <li class="breadcrumb-item"><a href="#">Detail Simpanan</a></li>
+                        </ol>
                     </div>
                 </div>
-                <div class="ml-5">
-                    <div class="w-24 sm:w-40 truncate sm:whitespace-normal font-medium text-lg">
-                        {{$anggota->nama_lengkap}}</div>
-                    <div class="text-gray-600">{{$anggota->no_anggota}}</div>
-                </div>
             </div>
-            <div
-                class="flex mt-6 lg:mt-0 items-center lg:items-start flex-1 flex-col justify-center text-gray-600 px-5 border-l border-r border-gray-200 border-t lg:border-t-0 pt-5 lg:pt-0">
-                <div class="truncate sm:whitespace-normal flex items-center mt-3"> <i data-feather="credit-card"
-                        class="w-4 h-4 mr-2"></i> {{$anggota->nik}} </div>
-                <div class="truncate sm:whitespace-normal flex items-center"> <i data-feather="mail"
-                        class="w-4 h-4 mr-2"></i> russellcrowe@left4code.com </div>
-                <div class="truncate sm:whitespace-normal flex items-center"> <i data-feather="calendar"
-                        class="w-4 h-4 mr-2"></i> {{$anggota->tempat_lahir}}, {{$anggota->tanggal_lahir}} </div>
-                <div class="truncate sm:whitespace-normal flex items-center"> <i data-feather="map"
-                        class="w-4 h-4 mr-2"></i> {{$anggota->alamat}} </div>
-                <div class="truncate sm:whitespace-normal flex items-center"> <i data-feather="phone"
-                        class="w-4 h-4 mr-2"></i> {{$anggota->no_hp}} </div>
-            </div>
+        </div>
+    </div>
+    <div class="content-body">
+        <!-- page users view start -->
+        <section class="page-users-view">
+            <div class="row">
+                <!-- account start -->
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Anggota</div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
 
-            <div
-            class="flex mt-6 lg:mt-0 items-center lg:items-start  flex-1 flex-col justify-center text-gray-600 px-5 border-l border-r border-gray-200 border-t lg:border-t-0 pt-5 lg:pt-0">
-                <span style="font-weight: bold">Saldo :</span>
-                @php
-                    $total = 0;
-                @endphp
-                @foreach ($saldosimpanan as $d)
-                    @php
-                        $total += $d->jumlah;
-                    @endphp
-                    @if ($d->kode_simpanan=="001")
-                        @php
-                            $bg = "text-theme-1";
-                        @endphp
-                    @elseif($d->kode_simpanan=="002")
-                        @php
-                            $bg = "text-theme-29";
-                        @endphp
-                    @elseif($d->kode_simpanan=="003")
-                        @php
-                            $bg = "text-orange-400";
-                        @endphp
-                    @endif
-                    <div class="truncate sm:whitespace-normal {{$bg}} flex items-center mt-3 " style="font-weight: bold">
-                        <i data-feather="credit-card"class="w-4 h-4 mr-2"></i>
-                        {{$d->kode_simpanan}} - {{$d->nama_simpanan}} :
-                        {{number_format($d->jumlah,'0','','.')}}
+                                <div class="users-view-image">
+                                    <img src="{{asset('app-assets/images/no photo.png')}}"
+                                        class="users-avatar-shadow w-100 rounded mb-2 pr-2 ml-1" alt="avatar">
+                                </div>
+
+                                <div class="col-md-3">
+                                    <table class="table">
+                                        <tr>
+                                            <td class="font-weight-bold"><i class="fa fa-barcode mr-1"></i>No Anggota</td>
+                                            <td>{{$anggota->no_anggota}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="font-weight-bold"><i class="feather icon-credit-card mr-1"></i> NIK</td>
+                                            <td>{{$anggota->nik}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="font-weight-bold"><i class="feather icon-user mr-1"></i>Nama Lengkap</td>
+                                            <td>{{$anggota->nama_lengkap}}</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div class="col-md-3">
+                                    <table class="table">
+                                        <tr>
+                                            <td class="font-weight-bold"><i class="feather icon-calendar mr-1"></i>TTL</td>
+                                            <td>{{$anggota->tempat_lahir}}, {{date("d M
+                                                Y",strtotime($anggota->tanggal_lahir))}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="font-weight-bold"><i class="feather icon-phone mr-1"></i>No HP</td>
+                                            <td>{{$anggota->no_hp}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="font-weight-bold"><i class="feather icon-map mr-1"></i>Alamat</td>
+                                            <td>{{$anggota->alamat}}</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div class="col-md-3">
+
+                                    <table class="table ">
+                                        @php
+                                            $total = 0;
+                                        @endphp
+                                        @foreach ($saldosimpanan as $d)
+                                            @php
+                                                $total += $d->jumlah;
+                                            @endphp
+                                            <tr>
+                                                <td class="font-weight-bold"> {{$d->kode_simpanan}} - {{$d->nama_simpanan}}</td>
+                                                <td class="text-right">{{number_format($d->jumlah,'0','','.')}}</td>
+                                            </tr>
+                                        @endforeach
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-
-                @endforeach
-
-                <div class="truncate sm:whitespace-normal border-t border-gray-200 flex items-center mt-3 " style="font-weight: bold">
-                    <span style="font-weight: bold" class="text-xl">Total : {{number_format($total,'0','','.')}}</span>
                 </div>
+                <!-- account end -->
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <a href="#" id="inputsetoran" class="btn btn-relief-primary waves-effect waves-light btn-block"><i class="feather icon-corner-down-right mr-1"></i> Setoran</a>
+                        </div>
+                        <div class="col-md-6">
+                            <a href="#" id="inputpenarikan" class="btn btn-relief-danger waves-effect waves-light btn-block"><i class="feather icon-corner-down-left mr-1"></i>   Penarikan</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- information start -->
+                <div class="col-md-12 col-12 mt-2">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title mb-2"><i class="feather icon-folder mr-1"></i>Data Mutasi</div>
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-bordered table-striped table-hover">
+                                <thead>
+                                    <tr>
+                                        <th >NO TRANSAKSI</th>
+                                        <th >TANGGAL</th>
+                                        <th >JENIS SIMPANAN</th>
+                                        <th >SETOR</th>
+                                        <th >TARIK</th>
+                                        <th >SALDO</th>
+                                        <th >BERITA</th>
+                                        <th >PETUGAS</th>
+                                        <th></th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @php
+
+                                        $i = 1;
+                                    @endphp
+                                    @foreach ($datasimpanan as $d)
+                                    @if ($d->jenis_transaksi == "S")
+                                        @php
+                                            $setor = $d->jumlah;
+                                            $tarik = 0;
+
+                                        @endphp
+                                    @else
+                                        @php
+                                            $setor = 0;
+                                            $tarik = $d->jumlah;
+
+                                        @endphp
+                                    @endif
+
+                                    @if ($d->kode_simpanan=="001")
+                                        @php
+                                            $bg = "bg-theme-1";
+                                        @endphp
+                                    @elseif($d->kode_simpanan=="002")
+                                        @php
+                                            $bg = "bg-theme-29";
+                                        @endphp
+                                    @elseif($d->kode_simpanan=="003")
+                                        @php
+                                            $bg = "bg-orange-400";
+                                        @endphp
+                                    @endif
+
+
+                                        <tr>
+                                            <td class="text-center">{{$d->no_transaksi}}</td>
+                                            <td class="text-center">{{date('d-m-Y', strtotime($d->tgl_transaksi));}}</td>
+                                            <td> {{$d->kode_simpanan}} -  {{$d->nama_simpanan}}</td>
+                                            <td class="text-right success">{{ number_format($setor,'0','','.')}}</td>
+                                            <td class="text-right danger">{{ number_format($tarik,'0','','.')}}</td>
+                                            <td class="text-right" style="font-weight: bold">{{ number_format($d->saldo,'0','','.')}}</td>
+                                            <td class="text-center">
+                                                @if (!empty($d->berita))
+                                                {{$d->berita}}
+                                                @endif
+                                            </td>
+                                            <td class="text-center">{{$d->name}}</td>
+                                            <td>
+                                                @if ($i==$totalrow)
+                                                <div class="flex justify-center items-center">
+                                                <form  method="POST" class="deleteform" action="/simpanan/{{Crypt::encrypt($d->no_transaksi)}}/delete">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <a class="delete-confirm"><i class="feather icon-trash danger"></i></a>
+                                                </form>
+                                                </div>
+                                                @endif
+                                            </td>
+                                        </tr>
+                                        @php
+                                            $i = $i+1;
+                                        @endphp
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <!-- information start -->
             </div>
-        </div>
-        <div class="nav-tabs flex flex-col sm:flex-row justify-center lg:justify-start">
-            <a data-toggle="tab" data-target="#historitransaksi" href="javascript:;" class="py-4 sm:mr-8 flex items-center justify-center  active">
-                <i data-feather="folder" class="mr-3"></i> Histori Transaksi
-            </a>
-        </div>
-    </div>
-    <div class="intro-y py-4">
-        @include('layouts.notification')
-    </div>
-    <div class="tab-content mt-5">
-        <div class="tab-content__pane active" id="historitransaksi">
-            <div class="intro-y  col-span-12 lg:col-span-12">
-                <div class="flex items-center px-5">
-                    <a href="#" id="inputsetoran"
-                        class="button text-white bg-theme-3 w-full md:w-50  shadow-md mr-2 flex items-center justify-center">
-                        <i data-feather="corner-down-right" class="mr-2"></i>
-                        Setoran
-                    </a>
-                    <a href="#"  id="inputpenarikan" class="button text-white bg-theme-12 w-full md:w-50  shadow-md mr-2 flex items-center justify-center">
-                        <i data-feather="corner-down-left" class="mr-2"></i>
-                        Penarikan
-                    </a>
-                </div>
-                <div class="col-span-12 overflow-auto lg:overflow-visible">
-                    <table class="table table-report -mt-2">
-                        <thead>
-                            <tr>
-                                <th class="text-center whitespace-no-wrap">NO TRANSAKSI</th>
-                                <th class="text-center whitespace-no-wrap">TANGGAL</th>
-                                <th class="whitespace-no-wrap">JENIS SIMPANAN</th>
-                                <th class="text-center whitespace-no-wrap">SETOR</th>
-                                <th class="text-center whitespace-no-wrap">TARIK</th>
-                                <th class="text-center whitespace-no-wrap">SALDO</th>
-                                <th class="text-center whitespace-no-wrap">BERITA</th>
-                                <th class="text-center whitespace-no-wrap">PETUGAS</th>
-                                <th></th>
 
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @php
-
-                                $i = 1;
-                            @endphp
-                            @foreach ($datasimpanan as $d)
-                            @if ($d->jenis_transaksi == "S")
-                                @php
-                                    $setor = $d->jumlah;
-                                    $tarik = 0;
-                                @endphp
-                            @else
-                                @php
-                                    $setor = 0;
-                                    $tarik = $d->jumlah;
-                                @endphp
-                            @endif
-
-                            @if ($d->kode_simpanan=="001")
-                                @php
-                                    $bg = "bg-theme-1";
-                                @endphp
-                            @elseif($d->kode_simpanan=="002")
-                                @php
-                                    $bg = "bg-theme-29";
-                                @endphp
-                            @elseif($d->kode_simpanan=="003")
-                                @php
-                                    $bg = "bg-orange-400";
-                                @endphp
-                            @endif
-
-
-                                <tr>
-                                    <td class="text-center">{{$d->no_transaksi}}</td>
-                                    <td class="text-center">{{date('d-m-Y', strtotime($d->tgl_transaksi));}}</td>
-                                    <td> {{$d->kode_simpanan}} -  {{$d->nama_simpanan}}</td>
-                                    <td class="text-right">{{ number_format($setor,'0','','.')}}</td>
-                                    <td class="text-right">{{ number_format($tarik,'0','','.')}}</td>
-                                    <td class="text-right">{{ number_format($d->saldo,'0','','.')}}</td>
-                                    <td class="text-center">
-                                        @if (!empty($d->berita))
-                                        <span class="text-white bg-theme-1 py-1 px-2 rounded-full">{{$d->berita}}</span>
-                                        @endif
-                                    </td>
-                                    <td class="text-center">{{$d->name}}</td>
-                                    <td>
-                                        @if ($i==$totalrow)
-                                        <div class="flex justify-center items-center">
-                                        <form class="flex items-center text-theme-6" method="POST" id="deleteform" action="/simpanan/{{Crypt::encrypt($d->no_transaksi)}}/delete">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button class="delete-confirm"><i data-feather="trash-2" class="w-4 h-4 mr-1"></i></button>
-                                        </form>
-                                        </div>
-                                        @endif
-                                    </td>
-                                </tr>
-                                @php
-                                    $i = $i+1;
-                                @endphp
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
+        </section>
+        <!-- page users view end -->
     </div>
 </div>
+<div class="modal fade" id="modalsetoran" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-centered modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">Vertically Centered</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="post" id="frmSimpanan" action="/simpanan/store"  class="validate-form">
+                    @csrf
+                    <input type="hidden" name="no_anggota" id="no_anggota" value="{{ \Crypt::encrypt($anggota->no_anggota)}}">
+                    <input type="hidden" name="jenis_transaksi" id="jenis_transaksi">
+                    <div class="col-12">
+                        <x-inputtext label="No. Transaksi (Auto)"  field="no_transaksi" icon="feather icon-maximize"  />
+                    </div>
+                    <div class="col-12">
+                        <x-inputtext label="Tanggal Transaksi" field="tgl_transaksi" icon="feather icon-calendar"  datepicker="true" />
+                    </div>
+                    <div class="col-12 mb-2">
+                        <select class="form-control" name="kode_simpanan" id="kode_simpanan">
+                            <option value="">Jenis Simpanan</option>
+                            @foreach ($simpanan as $d)
+                                <option value="{{$d->kode_simpanan}}">{{$d->kode_simpanan}} - {{$d->nama_simpanan}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-12">
+                        <x-inputtext label="Jumlah" field="jumlah" icon="feather icon-inbox" />
+                    </div>
+                    <div class="col-12 mb-2">
+                        <textarea  name="berita" placeholder="Berita" class="form-control" id="berita" cols="30" rows="5" ></textarea>
+                    </div>
+                    <div class="col-12">
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary">Simpan</button>
+                            <button type="button" data-dismiss="modal" class="btn btn-danger">Batalkan</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
 
-<div class="modal" id="modalsetoran">
-    <div class="modal__content">
-        <div class="flex items-center px-5 py-5 sm:py-3 border-b border-gray-200">
-            <h2 class="font-medium text-base mr-auto">Input Setoran</h2>
-        </div>
-        <div class="grid grid-cols-1 p-5">
-            <form method="post" id="frmSimpanan" action="/simpanan/store"  class="validate-form">
-                @csrf
-                <input type="hidden" name="no_anggota" id="no_anggota" value="{{ \Crypt::encrypt($anggota->no_anggota)}}">
-                <input type="hidden" name="jenis_transaksi" id="jenis_transaksi">
-                <div class="mb-3">
-                    <x-inputtext label="No. Transaksi (Auto)"  field="no_transaksi" icon="maximize" lebar="full" inline="false" datepicker="false" readonly="true" />
-                </div>
-                <div class="mb-3">
-                    <x-inputtext label="Tanggal Transaksi" field="tgl_transaksi" icon="calendar" lebar="full" inline="false" datepicker="true" />
-                </div>
-                <div class="mb-3">
-                    <select class="input border mr-2 w-full" name="kode_simpanan" id="kode_simpanan">
-                        <option value="">Jenis Simpanan</option>
-                        @foreach ($simpanan as $d)
-                            <option value="{{$d->kode_simpanan}}">{{$d->kode_simpanan}} - {{$d->nama_simpanan}}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="mb-3">
-                    <x-inputtext label="Jumlah" field="jumlah" icon="inbox" lebar="full"  inline="false" datepicker="false" alignright="true" />
-                </div>
-                <div class="mb-3">
-                    <textarea  name="berita" placeholder="Berita" class="input w-full border" id="" cols="30" rows="5" ></textarea>
-                </div>
-                <div class="px-5 py-3 text-right border-t border-gray-200">
-                    <button type="button" data-dismiss="modal" class="button w-20 border text-gray-700 mr-1">Batalkan</button>
-                    <button type="submit" class="button w-20 bg-theme-1 text-white">Simpan</button>
-                </div>
-            </form>
+
         </div>
     </div>
 </div>
@@ -262,13 +291,16 @@
         $("#frmSimpanan").submit(function(){
             var kode_simpanan = $("#kode_simpanan").val();
             var jumlah = $("#jumlah").val();
-
+            var tgl_transaksi = $("#tgl_transaksi").val();
             //alert('test');
             if(kode_simpanan == ""){
                 swal("Oops","Kode Simpanan Harus Diisi !","warning");
                 return false;
             }else if(jumlah == ""){
                 swal("Oops","Jumlah Harus Diisi !","warning");
+                return false;
+            }else if(tgl_transaksi == ""){
+                swal("Oops","Tanggal Harus Diisi !","warning");
                 return false;
             }
         });
@@ -283,7 +315,7 @@
                 buttons: ["Cancel", "Yes!"],
             }).then(function(value) {
                 if (value) {
-                   $("#deleteform").submit();
+                   $(".deleteform").submit();
                 }
             });
         });

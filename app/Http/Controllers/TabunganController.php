@@ -50,14 +50,12 @@ class TabunganController extends Controller
     public function update(Request $request, $kode_tabungan)
     {
         $request->validate([
-            'kode_tabungan' => 'required',
             'nama_tabungan' => 'required'
         ]);
 
         $update = DB::table('koperasi_jenistabungan')
             ->where('kode_tabungan', $kode_tabungan)
             ->update([
-                'kode_tabungan' => $request->kode_tabungan,
                 'nama_tabungan' => $request->nama_tabungan
             ]);
 

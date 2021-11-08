@@ -50,8 +50,8 @@
                                                 <a class="ml-1"
                                                     href="/jenissimpanan/{{\Crypt::encrypt($d->kode_simpanan)}}/edit"><i
                                                         class="feather icon-edit"></i></a>
-                                                <form method="POST" id="deleteform"
-                                                    action="/jenissimpanan/{{$d->kode_simpanan}}/delete">
+                                                <form method="POST" class="deleteform"
+                                                    action="/jenissimpanan/{{\Crypt::encrypt($d->kode_simpanan)}}/delete">
                                                     @csrf
                                                     @method('DELETE')
                                                     <a class="delete-confirm ml-1">
@@ -89,7 +89,7 @@
                 buttons: ["Cancel", "Yes!"],
             }).then(function(value) {
                 if (value) {
-                   $("#deleteform").submit();
+                   $(".deleteform").submit();
                 }
             });
         });

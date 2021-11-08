@@ -41,7 +41,7 @@ class SimpananController extends Controller
         $totalrow = DB::table('koperasi_simpanan')->where('no_anggota', $no_anggota)->count();
         $saldosimpanan = DB::table('koperasi_saldo_simpanan')
             ->select('koperasi_saldo_simpanan.*', 'nama_simpanan')
-            ->join('koperasi_jenissimpanan', 'koperasi_saldo_simpanan.kode_simpanan', '=', 'koperasi_jenissimpanan.kode_simpanan')
+            ->leftjoin('koperasi_jenissimpanan', 'koperasi_saldo_simpanan.kode_simpanan', '=', 'koperasi_jenissimpanan.kode_simpanan')
             ->where('no_anggota', $no_anggota)->get();
         $anggota = DB::table('koperasi_anggota')->where('no_anggota', $no_anggota)->first();
         return view('simpanan.show', compact('title', 'anggota', 'simpanan', 'datasimpanan', 'totalrow', 'saldosimpanan'));
@@ -112,18 +112,19 @@ class SimpananController extends Controller
                     ->update([
                         'jumlah' => DB::raw('jumlah' . $operator . $jumlah)
                     ]);
-                $ceksaldoterakhir = DB::table('koperasi_saldo_simpanan')
-                    ->select(DB::raw('SUM(jumlah) as jumlah'))
-                    ->where('no_anggota', $no_anggota)
-                    ->groupBy('no_anggota')
-                    ->first();
-
-                DB::table('koperasi_simpanan')
-                    ->where('no_transaksi', $no_transaksi)
-                    ->update([
-                        'saldo' => $ceksaldoterakhir->jumlah
-                    ]);
             }
+
+            $ceksaldoterakhir = DB::table('koperasi_saldo_simpanan')
+                ->select(DB::raw('SUM(jumlah) as jumlah'))
+                ->where('no_anggota', $no_anggota)
+                ->groupBy('no_anggota')
+                ->first();
+
+            DB::table('koperasi_simpanan')
+                ->where('no_transaksi', $no_transaksi)
+                ->update([
+                    'saldo' => $ceksaldoterakhir->jumlah
+                ]);
 
             DB::commit();
             return redirect('/simpanan/' . Crypt::encrypt($no_anggota) . '/show')->with(['success' => 'Data Berhasil Disimpan']);

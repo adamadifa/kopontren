@@ -50,7 +50,7 @@
                                                 <a class="ml-1"
                                                     href="/tabungan/{{\Crypt::encrypt($d->kode_tabungan)}}/edit"><i
                                                         class="feather icon-edit"></i></a>
-                                                <form method="POST" id="deleteform"
+                                                <form method="POST" class="deleteform"
                                                     action="/tabungan/{{Crypt::encrypt($d->kode_tabungan)}}/delete">
                                                     @csrf
                                                     @method('DELETE')
@@ -89,7 +89,7 @@
                 buttons: ["Cancel", "Yes!"],
             }).then(function(value) {
                 if (value) {
-                   $("#deleteform").submit();
+                   $(".deleteform").submit();
                 }
             });
         });

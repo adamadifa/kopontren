@@ -41,8 +41,7 @@
                         </form>
                     </div>
                 </div>
-            </div>
-            <div class="card-content">
+
                 <div class="table-responsive">
                     <table class="table table-bordered table-striped">
                         <thead>
@@ -75,7 +74,7 @@
                                                 class="feather icon-edit"></i></a>
                                         <a class="ml-1" href="/anggota/{{\Crypt::encrypt($d->no_anggota)}}/show"><i
                                                 class="feather icon-user info"></i></a>
-                                        <form method="POST" id="deleteform"
+                                        <form method="POST" class="deleteform"
                                             action="/anggota/{{Crypt::encrypt($d->no_anggota)}}/delete">
                                             @csrf
                                             @method('DELETE')
@@ -112,7 +111,7 @@
                 buttons: ["Cancel", "Yes!"],
             }).then(function(value) {
                 if (value) {
-                   $("#deleteform").submit();
+                   $(".deleteform").submit();
                 }
             });
         });
