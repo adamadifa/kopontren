@@ -1,5 +1,5 @@
 @extends('layouts.midone')
-@section('titlepage','Data Anggota')
+@section('titlepage','Detail Simpanan')
 @section('content')
 <div class="content-wrapper">
     <div class="content-header row">
@@ -38,15 +38,18 @@
                                 <div class="col-md-3">
                                     <table class="table">
                                         <tr>
-                                            <td class="font-weight-bold"><i class="fa fa-barcode mr-1"></i>No Anggota</td>
+                                            <td class="font-weight-bold"><i class="fa fa-barcode mr-1"></i>No Anggota
+                                            </td>
                                             <td>{{$anggota->no_anggota}}</td>
                                         </tr>
                                         <tr>
-                                            <td class="font-weight-bold"><i class="feather icon-credit-card mr-1"></i> NIK</td>
+                                            <td class="font-weight-bold"><i class="feather icon-credit-card mr-1"></i>
+                                                NIK</td>
                                             <td>{{$anggota->nik}}</td>
                                         </tr>
                                         <tr>
-                                            <td class="font-weight-bold"><i class="feather icon-user mr-1"></i>Nama Lengkap</td>
+                                            <td class="font-weight-bold"><i class="feather icon-user mr-1"></i>Nama
+                                                Lengkap</td>
                                             <td>{{$anggota->nama_lengkap}}</td>
                                         </tr>
                                     </table>
@@ -54,16 +57,19 @@
                                 <div class="col-md-3">
                                     <table class="table">
                                         <tr>
-                                            <td class="font-weight-bold"><i class="feather icon-calendar mr-1"></i>TTL</td>
+                                            <td class="font-weight-bold"><i class="feather icon-calendar mr-1"></i>TTL
+                                            </td>
                                             <td>{{$anggota->tempat_lahir}}, {{date("d M
                                                 Y",strtotime($anggota->tanggal_lahir))}}</td>
                                         </tr>
                                         <tr>
-                                            <td class="font-weight-bold"><i class="feather icon-phone mr-1"></i>No HP</td>
+                                            <td class="font-weight-bold"><i class="feather icon-phone mr-1"></i>No HP
+                                            </td>
                                             <td>{{$anggota->no_hp}}</td>
                                         </tr>
                                         <tr>
-                                            <td class="font-weight-bold"><i class="feather icon-map mr-1"></i>Alamat</td>
+                                            <td class="font-weight-bold"><i class="feather icon-map mr-1"></i>Alamat
+                                            </td>
                                             <td>{{$anggota->alamat}}</td>
                                         </tr>
                                     </table>
@@ -72,16 +78,17 @@
 
                                     <table class="table ">
                                         @php
-                                            $total = 0;
+                                        $total = 0;
                                         @endphp
                                         @foreach ($saldosimpanan as $d)
-                                            @php
-                                                $total += $d->jumlah;
-                                            @endphp
-                                            <tr>
-                                                <td class="font-weight-bold"> {{$d->kode_simpanan}} - {{$d->nama_simpanan}}</td>
-                                                <td class="text-right">{{number_format($d->jumlah,'0','','.')}}</td>
-                                            </tr>
+                                        @php
+                                        $total += $d->jumlah;
+                                        @endphp
+                                        <tr>
+                                            <td class="font-weight-bold"> {{$d->kode_simpanan}} - {{$d->nama_simpanan}}
+                                            </td>
+                                            <td class="text-right">{{number_format($d->jumlah,'0','','.')}}</td>
+                                        </tr>
                                         @endforeach
                                     </table>
                                 </div>
@@ -93,10 +100,14 @@
                 <div class="col-md-12">
                     <div class="row">
                         <div class="col-md-6">
-                            <a href="#" id="inputsetoran" class="btn btn-relief-primary waves-effect waves-light btn-block"><i class="feather icon-corner-down-right mr-1"></i> Setoran</a>
+                            <a href="#" id="inputsetoran"
+                                class="btn btn-relief-primary waves-effect waves-light btn-block"><i
+                                    class="feather icon-corner-down-right mr-1"></i> Setoran</a>
                         </div>
                         <div class="col-md-6">
-                            <a href="#" id="inputpenarikan" class="btn btn-relief-danger waves-effect waves-light btn-block"><i class="feather icon-corner-down-left mr-1"></i>   Penarikan</a>
+                            <a href="#" id="inputpenarikan"
+                                class="btn btn-relief-danger waves-effect waves-light btn-block"><i
+                                    class="feather icon-corner-down-left mr-1"></i> Penarikan</a>
                         </div>
                     </div>
                 </div>
@@ -110,81 +121,103 @@
                             <table class="table table-bordered table-striped table-hover">
                                 <thead>
                                     <tr>
-                                        <th >NO TRANSAKSI</th>
-                                        <th >TANGGAL</th>
-                                        <th >JENIS SIMPANAN</th>
-                                        <th >SETOR</th>
-                                        <th >TARIK</th>
-                                        <th >SALDO</th>
-                                        <th >BERITA</th>
-                                        <th >PETUGAS</th>
+                                        <th>NO TRANSAKSI</th>
+                                        <th>TANGGAL</th>
+                                        <th>JENIS SIMPANAN</th>
+                                        <th>SETOR</th>
+                                        <th>TARIK</th>
+                                        <th>SALDO</th>
+                                        <th>BERITA</th>
+                                        <th>PETUGAS</th>
                                         <th></th>
 
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    <tr>
+                                        <td colspan="5" style="text-align: center">Saldo Awal</td>
+                                        <td style="text-align: right" id="saldoawal"></td>
+                                        <td colspan="3"></td>
+                                    </tr>
                                     @php
 
-                                        $i = 1;
+                                    $i = 1;
                                     @endphp
                                     @foreach ($datasimpanan as $d)
                                     @if ($d->jenis_transaksi == "S")
-                                        @php
-                                            $setor = $d->jumlah;
-                                            $tarik = 0;
+                                    @php
+                                    $setor = $d->jumlah;
+                                    $tarik = 0;
 
-                                        @endphp
+                                    @endphp
                                     @else
-                                        @php
-                                            $setor = 0;
-                                            $tarik = $d->jumlah;
+                                    @php
+                                    $setor = 0;
+                                    $tarik = $d->jumlah;
 
-                                        @endphp
+                                    @endphp
                                     @endif
 
                                     @if ($d->kode_simpanan=="001")
-                                        @php
-                                            $bg = "bg-theme-1";
-                                        @endphp
+                                    @php
+                                    $bg = "bg-theme-1";
+                                    @endphp
                                     @elseif($d->kode_simpanan=="002")
-                                        @php
-                                            $bg = "bg-theme-29";
-                                        @endphp
+                                    @php
+                                    $bg = "bg-theme-29";
+                                    @endphp
                                     @elseif($d->kode_simpanan=="003")
-                                        @php
-                                            $bg = "bg-orange-400";
-                                        @endphp
+                                    @php
+                                    $bg = "bg-orange-400";
+                                    @endphp
                                     @endif
 
-
-                                        <tr>
-                                            <td class="text-center">{{$d->no_transaksi}}</td>
-                                            <td class="text-center">{{date('d-m-Y', strtotime($d->tgl_transaksi));}}</td>
-                                            <td> {{$d->kode_simpanan}} -  {{$d->nama_simpanan}}</td>
-                                            <td class="text-right success">{{ number_format($setor,'0','','.')}}</td>
-                                            <td class="text-right danger">{{ number_format($tarik,'0','','.')}}</td>
-                                            <td class="text-right" style="font-weight: bold">{{ number_format($d->saldo,'0','','.')}}</td>
-                                            <td class="text-center">
-                                                @if (!empty($d->berita))
-                                                {{$d->berita}}
-                                                @endif
-                                            </td>
-                                            <td class="text-center">{{$d->name}}</td>
-                                            <td>
-                                                @if ($i==$totalrow)
-                                                <div class="flex justify-center items-center">
-                                                <form  method="POST" class="deleteform" action="/simpanan/{{Crypt::encrypt($d->no_transaksi)}}/delete">
+                                    @if ($i==1)
+                                    @php
+                                    $id1 = "saldo";
+                                    $id2 = "setor";
+                                    $id3 = "tarik";
+                                    @endphp
+                                    @else
+                                    @php
+                                    $id1 = "";
+                                    $id2 = "";
+                                    $id3 = "";
+                                    @endphp
+                                    @endif
+                                    <tr>
+                                        <td class="text-center">{{$d->no_transaksi}}</td>
+                                        <td class="text-center">{{date('d-m-Y', strtotime($d->tgl_transaksi));}}</td>
+                                        <td> {{$d->kode_simpanan}} - {{$d->nama_simpanan}}</td>
+                                        <td class="text-right success" id="{{$id2}}">{{
+                                            number_format($setor,'0','','.')}}</td>
+                                        <td class="text-right danger" id="{{$id3}}">{{
+                                            number_format($tarik,'0','','.')}}</td>
+                                        <td class="text-right" id="{{$id1}}" style="font-weight: bold">{{
+                                            number_format($d->saldo,'0','','.')}}</td>
+                                        <td class="text-center">
+                                            @if (!empty($d->berita))
+                                            {{$d->berita}}
+                                            @endif
+                                        </td>
+                                        <td class="text-center">{{$d->name}}</td>
+                                        <td>
+                                            @if ($i==$totalrow)
+                                            <div class="flex justify-center items-center">
+                                                <form method="POST" class="deleteform"
+                                                    action="/simpanan/{{Crypt::encrypt($d->no_transaksi)}}/delete">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <a class="delete-confirm"><i class="feather icon-trash danger"></i></a>
+                                                    <a class="delete-confirm"><i
+                                                            class="feather icon-trash danger"></i></a>
                                                 </form>
-                                                </div>
-                                                @endif
-                                            </td>
-                                        </tr>
-                                        @php
-                                            $i = $i+1;
-                                        @endphp
+                                            </div>
+                                            @endif
+                                        </td>
+                                    </tr>
+                                    @php
+                                    $i = $i+1;
+                                    @endphp
                                     @endforeach
                                 </tbody>
                             </table>
@@ -198,31 +231,34 @@
         <!-- page users view end -->
     </div>
 </div>
-<div class="modal fade" id="modalsetoran" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+<div class="modal fade" id="modalsetoran" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-centered modal-dialog-scrollable" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalCenterTitle">Vertically Centered</h5>
+                <h5 class="modal-title" id="exampleModalCenterTitle"></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <form method="post" id="frmSimpanan" action="/simpanan/store"  class="validate-form">
+                <form method="post" id="frmSimpanan" action="/simpanan/store" class="validate-form">
                     @csrf
-                    <input type="hidden" name="no_anggota" id="no_anggota" value="{{ \Crypt::encrypt($anggota->no_anggota)}}">
+                    <input type="hidden" name="no_anggota" id="no_anggota"
+                        value="{{ \Crypt::encrypt($anggota->no_anggota)}}">
                     <input type="hidden" name="jenis_transaksi" id="jenis_transaksi">
                     <div class="col-12">
-                        <x-inputtext label="No. Transaksi (Auto)"  field="no_transaksi" icon="feather icon-maximize"  />
+                        <x-inputtext label="No. Transaksi (Auto)" field="no_transaksi" icon="feather icon-maximize" />
                     </div>
                     <div class="col-12">
-                        <x-inputtext label="Tanggal Transaksi" field="tgl_transaksi" icon="feather icon-calendar"  datepicker="true" />
+                        <x-inputtext label="Tanggal Transaksi" field="tgl_transaksi" icon="feather icon-calendar"
+                            datepicker="true" />
                     </div>
                     <div class="col-12 mb-2">
                         <select class="form-control" name="kode_simpanan" id="kode_simpanan">
                             <option value="">Jenis Simpanan</option>
                             @foreach ($simpanan as $d)
-                                <option value="{{$d->kode_simpanan}}">{{$d->kode_simpanan}} - {{$d->nama_simpanan}}</option>
+                            <option value="{{$d->kode_simpanan}}">{{$d->kode_simpanan}} - {{$d->nama_simpanan}}</option>
                             @endforeach
                         </select>
                     </div>
@@ -230,7 +266,8 @@
                         <x-inputtext label="Jumlah" field="jumlah" icon="feather icon-inbox" />
                     </div>
                     <div class="col-12 mb-2">
-                        <textarea  name="berita" placeholder="Berita" class="form-control" id="berita" cols="30" rows="5" ></textarea>
+                        <textarea name="berita" placeholder="Berita" class="form-control" id="berita" cols="30"
+                            rows="5"></textarea>
                     </div>
                     <div class="col-12">
                         <div class="form-group">
@@ -248,7 +285,6 @@
 @endsection
 @push('myscript')
 <script type="text/javascript">
-
     var jumlah = document.getElementById('jumlah');
     jumlah.addEventListener('keyup', function(e){
         // tambahkan 'Rp.' pada saat form di ketik
@@ -276,16 +312,32 @@
 </script>
 <script>
     $(function(){
+
+        function loadsaldo(){
+            var saldo = $("#saldo").text();
+            var setor = $("#setor").text();
+            var tarik = $("#tarik").text();
+
+            var saldonumber = saldo.replace(/\./g,"");
+            var setornumber = setor.replace(/\./g,"");
+            var tariknumber = tarik.replace(/\./g,"");
+            var saldoawal = parseInt(saldonumber)+parseInt(tariknumber)-parseInt(setornumber);
+            $("#saldoawal").text(saldoawal);
+        }
+        loadsaldo();
         $("#inputsetoran").click(function(e){
             e.preventDefault();
             $("#modalsetoran").modal("show");
             $("#jenis_transaksi").val("S");
+            $("#exampleModalCenterTitle").text("Input Setoran");
+
         });
 
         $("#inputpenarikan").click(function(e){
             e.preventDefault();
             $("#modalsetoran").modal("show");
             $("#jenis_transaksi").val("T");
+            $("#exampleModalCenterTitle").text("Input Penarikan");
         });
 
         $("#frmSimpanan").submit(function(){
