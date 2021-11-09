@@ -18,7 +18,7 @@ class AnggotaController extends Controller
         if (isset($request->cari)) {
             $query->where('nama_lengkap', 'like', "%" . $request->cari . "%");
         }
-        $anggota = $query->paginate(2);
+        $anggota = $query->paginate(10);
         $anggota->appends($request->all());
 
         return view('anggota.index', compact('title', 'anggota'));

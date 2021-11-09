@@ -96,57 +96,47 @@
                         </div>
                     </div>
                 </div>
+            </div>
                 <!-- account end -->
-                <div class="col-md-12">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <a href="#" id="inputsetoran"
-                                class="btn btn-relief-primary waves-effect waves-light btn-block"><i
-                                    class="feather icon-corner-down-right mr-1"></i> Setoran</a>
-                        </div>
-                        <div class="col-md-6">
-                            <a href="#" id="inputpenarikan"
-                                class="btn btn-relief-danger waves-effect waves-light btn-block"><i
-                                    class="feather icon-corner-down-left mr-1"></i> Penarikan</a>
-                        </div>
+            <div class="row">
+                    <div class="col-md-6">
+                        <a href="#" id="inputsetoran"
+                            class="btn btn-relief-primary waves-effect waves-light btn-block"><i
+                                class="feather icon-corner-down-right mr-1"></i> Setoran</a>
+                    </div>
+                    <div class="col-md-6">
+                        <a href="#" id="inputpenarikan"
+                            class="btn btn-relief-danger waves-effect waves-light btn-block"><i
+                                class="feather icon-corner-down-left mr-1"></i> Penarikan</a>
                     </div>
                 </div>
+            </div>
                 <!-- information start -->
-                <div class="col-md-12 col-12 mt-2">
-                    <div class="card">
-                        <div class="card-header">
-                            <div class="card-title mb-2"><i class="feather icon-folder mr-1"></i>Data Mutasi</div>
-                        </div>
-                        <div class="card-body">
-                            <table class="table table-bordered table-striped table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>NO TRANSAKSI</th>
-                                        <th>TANGGAL</th>
-                                        <th>JENIS SIMPANAN</th>
-                                        <th>SETOR</th>
-                                        <th>TARIK</th>
-                                        <th>SALDO</th>
-                                        <th>BERITA</th>
-                                        <th>PETUGAS</th>
-                                        <th></th>
-
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td colspan="5" style="text-align: center">Saldo Awal</td>
-                                        <td style="text-align: right" id="saldoawal"></td>
-                                        <td colspan="3"></td>
-                                    </tr>
+                <div class="row">
+                    <div class="col-md-12 col-12 mt-2">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title mb-2"><i class="feather icon-folder mr-1"></i>Data Mutasi</div>
+                            </div>
+                            <div class="card-body">
+                                <form action="">
+                                    <div class="row">
+                                        <div class="col-md-5">
+                                            <x-inputtext label="Dari" field="dari" icon="feather icon-calendar" datepicker="true" value="{{Request('dari')}}" />
+                                        </div>
+                                        <div class="col-md-5">
+                                            <x-inputtext label="Sampai" field="sampai" icon="feather icon-calendar" datepicker="true" value="{{Request('sampai')}}"/>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <button class="btn btn-primary"><i class="feather icon-search mr2"></i> Tampilkan</button>
+                                        </div>
+                                    </div>
+                                </form>
+                                @include('layouts.notification')
+                                @if ($lastdata !=null)
+                                    @if ($lastdata->jenis_transaksi == "S")
                                     @php
-
-                                    $i = 1;
-                                    @endphp
-                                    @foreach ($datasimpanan as $d)
-                                    @if ($d->jenis_transaksi == "S")
-                                    @php
-                                    $setor = $d->jumlah;
+                                    $setor = $lastdata->jumlah;
                                     $tarik = 0;
 
                                     @endphp
@@ -154,73 +144,125 @@
                                     @php
                                     $setor = 0;
                                     $tarik = $d->jumlah;
-
                                     @endphp
                                     @endif
+                                    @php
+                                        $saldoawal = $lastdata->saldo + $tarik - $setor;
+                                    @endphp
+                                @else
+                                @php
+                                $saldoawal = 0;
+                                @endphp
+                                @endif
+                                <input type="hidden" id="ceksaldo" value="{{$saldoawal}}">
+                                <table class="table table-bordered table-striped table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>NO TRANSAKSI</th>
+                                            <th>TANGGAL</th>
+                                            <th>JENIS SIMPANAN</th>
+                                            <th>SETOR</th>
+                                            <th>TARIK</th>
+                                            <th>SALDO</th>
+                                            <th>BERITA</th>
+                                            <th>PETUGAS</th>
+                                            <th></th>
 
-                                    @if ($d->kode_simpanan=="001")
-                                    @php
-                                    $bg = "bg-theme-1";
-                                    @endphp
-                                    @elseif($d->kode_simpanan=="002")
-                                    @php
-                                    $bg = "bg-theme-29";
-                                    @endphp
-                                    @elseif($d->kode_simpanan=="003")
-                                    @php
-                                    $bg = "bg-orange-400";
-                                    @endphp
-                                    @endif
+                                        </tr>
+                                        <tr>
+                                            <th colspan="5" style="text-align: center">SALDO AWAL</th>
+                                            <th style="text-align: right" id="saldoawal">
+                                                {{number_format($saldoawal,'0','','.')}}
+                                            </th>
+                                            <th colspan="3"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
 
-                                    @if ($i==1)
-                                    @php
-                                    $id1 = "saldo";
-                                    $id2 = "setor";
-                                    $id3 = "tarik";
-                                    @endphp
-                                    @else
-                                    @php
-                                    $id1 = "";
-                                    $id2 = "";
-                                    $id3 = "";
-                                    @endphp
-                                    @endif
-                                    <tr>
-                                        <td class="text-center">{{$d->no_transaksi}}</td>
-                                        <td class="text-center">{{date('d-m-Y', strtotime($d->tgl_transaksi));}}</td>
-                                        <td> {{$d->kode_simpanan}} - {{$d->nama_simpanan}}</td>
-                                        <td class="text-right success" id="{{$id2}}">{{
-                                            number_format($setor,'0','','.')}}</td>
-                                        <td class="text-right danger" id="{{$id3}}">{{
-                                            number_format($tarik,'0','','.')}}</td>
-                                        <td class="text-right" id="{{$id1}}" style="font-weight: bold">{{
-                                            number_format($d->saldo,'0','','.')}}</td>
-                                        <td class="text-center">
-                                            @if (!empty($d->berita))
-                                            {{$d->berita}}
-                                            @endif
-                                        </td>
-                                        <td class="text-center">{{$d->name}}</td>
-                                        <td>
-                                            @if ($i==$totalrow)
-                                            <div class="flex justify-center items-center">
-                                                <form method="POST" class="deleteform"
-                                                    action="/simpanan/{{Crypt::encrypt($d->no_transaksi)}}/delete">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <a class="delete-confirm"><i
-                                                            class="feather icon-trash danger"></i></a>
-                                                </form>
-                                            </div>
-                                            @endif
-                                        </td>
-                                    </tr>
-                                    @php
-                                    $i = $i+1;
-                                    @endphp
-                                    @endforeach
-                                </tbody>
-                            </table>
+                                        @php
+
+                                        $i = 1;
+                                        @endphp
+                                        @foreach ($datasimpanan as $d)
+                                        @if ($d->jenis_transaksi == "S")
+                                        @php
+                                        $setor = $d->jumlah;
+                                        $tarik = 0;
+
+                                        @endphp
+                                        @else
+                                        @php
+                                        $setor = 0;
+                                        $tarik = $d->jumlah;
+
+                                        @endphp
+                                        @endif
+
+                                        @if ($d->kode_simpanan=="001")
+                                        @php
+                                        $bg = "bg-theme-1";
+                                        @endphp
+                                        @elseif($d->kode_simpanan=="002")
+                                        @php
+                                        $bg = "bg-theme-29";
+                                        @endphp
+                                        @elseif($d->kode_simpanan=="003")
+                                        @php
+                                        $bg = "bg-orange-400";
+                                        @endphp
+                                        @endif
+
+                                        @if ($i==1)
+                                        @php
+                                        $id1 = "saldo";
+                                        $id2 = "setor";
+                                        $id3 = "tarik";
+                                        @endphp
+                                        @else
+                                        @php
+                                        $id1 = "";
+                                        $id2 = "";
+                                        $id3 = "";
+                                        @endphp
+                                        @endif
+                                        <tr>
+                                            <td class="text-center">{{$d->no_transaksi}}</td>
+                                            <td class="text-center">{{date('d-m-Y', strtotime($d->tgl_transaksi));}}</td>
+                                            <td> {{$d->kode_simpanan}} - {{$d->nama_simpanan}}</td>
+                                            <td class="text-right success" id="{{$id2}}">{{
+                                                number_format($setor,'0','','.')}}</td>
+                                            <td class="text-right danger" id="{{$id3}}">{{
+                                                number_format($tarik,'0','','.')}}</td>
+                                            <td class="text-right" id="{{$id1}}" style="font-weight: bold">{{
+                                                number_format($d->saldo,'0','','.')}}</td>
+                                            <td class="text-center">
+                                                @if (!empty($d->berita))
+                                                {{$d->berita}}
+                                                @endif
+                                            </td>
+                                            <td class="text-center">{{$d->name}}</td>
+                                            <td>
+                                                @if ($i==$totalrow)
+                                                <div class="flex justify-center items-center">
+                                                    <form method="POST" class="deleteform"
+                                                        action="/simpanan/{{Crypt::encrypt($d->no_transaksi)}}/delete">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <a class="delete-confirm"><i
+                                                                class="feather icon-trash danger"></i></a>
+                                                    </form>
+                                                </div>
+                                                @endif
+                                            </td>
+                                        </tr>
+                                        @php
+                                        $i = $i+1;
+                                        @endphp
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                                {{ $datasimpanan->links('vendor.pagination.vuexy') }}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -312,17 +354,32 @@
 </script>
 <script>
     $(function(){
-
+        function addCommas(nStr)
+        {
+            nStr += '';
+            x = nStr.split('.');
+            x1 = x[0];
+            x2 = x.length > 1 ? '.' + x[1] : '';
+            var rgx = /(\d+)(\d{3})/;
+            while (rgx.test(x1)) {
+                x1 = x1.replace(rgx, '$1' + '.' + '$2');
+            }
+            return x1 + x2;
+        }
         function loadsaldo(){
             var saldo = $("#saldo").text();
             var setor = $("#setor").text();
             var tarik = $("#tarik").text();
-
+            var sa    = $("#ceksaldo").val();
             var saldonumber = saldo.replace(/\./g,"");
             var setornumber = setor.replace(/\./g,"");
             var tariknumber = tarik.replace(/\./g,"");
             var saldoawal = parseInt(saldonumber)+parseInt(tariknumber)-parseInt(setornumber);
-            $("#saldoawal").text(saldoawal);
+            console.log(sa);
+            if(sa==0){
+                $("#saldoawal").text(addCommas(saldoawal));
+            }
+
         }
         loadsaldo();
         $("#inputsetoran").click(function(e){

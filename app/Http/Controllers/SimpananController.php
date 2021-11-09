@@ -26,25 +26,40 @@ class SimpananController extends Controller
         return view('simpanan.index', compact('title', 'anggota'));
     }
 
-    public function show($no_anggota)
+    public function show($no_anggota, Request $request)
     {
         $title = "Detail Transaksi Simpanan Anggota";
         $no_anggota = Crypt::decrypt($no_anggota);
         $simpanan = DB::table('koperasi_jenissimpanan')->get();
 
-        $datasimpanan = DB::table('koperasi_simpanan')
-            ->select('koperasi_simpanan.*', 'nama_simpanan', 'name')
-            ->join('koperasi_jenissimpanan', 'koperasi_simpanan.kode_simpanan', '=', 'koperasi_jenissimpanan.kode_simpanan')
-            ->join('users', 'koperasi_simpanan.id_petugas', '=', 'users.id')
-            ->where('no_anggota', $no_anggota)
-            ->orderBy('created_at', 'asc')->get();
+        $query = Simpanan::query();
+
+        $query->select('koperasi_simpanan.*', 'nama_simpanan', 'name');
+        $query->join('koperasi_jenissimpanan', 'koperasi_simpanan.kode_simpanan', '=', 'koperasi_jenissimpanan.kode_simpanan');
+        $query->join('users', 'koperasi_simpanan.id_petugas', '=', 'users.id');
+        $query->where('no_anggota', $no_anggota);
+        $query->orderBy('created_at', 'asc')->get();
+        if (isset($request->dari) and isset($request->sampai)) {
+            $query->whereBetween('tgl_transaksi', [$request->dari, $request->sampai]);
+        }
+        $datasimpanan = $query->paginate(30);
+        $datasimpanan->appends($request->all());
+
+        if (isset($request->dari) and isset($request->sampai)) {
+            $lastdata = DB::table('koperasi_simpanan')
+                ->where('tgl_transaksi', '<', $request->dari)
+                ->orderBy('no_transaksi', 'desc')
+                ->first();
+        } else {
+            $lastdata = null;
+        }
         $totalrow = DB::table('koperasi_simpanan')->where('no_anggota', $no_anggota)->count();
         $saldosimpanan = DB::table('koperasi_saldo_simpanan')
             ->select('koperasi_saldo_simpanan.*', 'nama_simpanan')
             ->leftjoin('koperasi_jenissimpanan', 'koperasi_saldo_simpanan.kode_simpanan', '=', 'koperasi_jenissimpanan.kode_simpanan')
             ->where('no_anggota', $no_anggota)->get();
         $anggota = DB::table('koperasi_anggota')->where('no_anggota', $no_anggota)->first();
-        return view('simpanan.show', compact('title', 'anggota', 'simpanan', 'datasimpanan', 'totalrow', 'saldosimpanan'));
+        return view('simpanan.show', compact('title', 'anggota', 'simpanan', 'datasimpanan', 'totalrow', 'saldosimpanan', 'lastdata'));
     }
 
     public function store(Request $request)
