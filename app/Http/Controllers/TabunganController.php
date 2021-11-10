@@ -79,14 +79,7 @@ class TabunganController extends Controller
 
     public function listrekening()
     {
-        $title = "Data Rekening Tabungan";
-        return view('tabungan.listrekening', compact('title'));
-    }
-
-    public function autocompleteAnggota(Request $request)
-    {
-        $query = $request->get('query');
-        $filterResult = Anggota::where('nama_lengkap', 'LIKE', '%' . $query . '%')->get();
-        return response()->json($filterResult);
+        $tabungan = DB::table('koperasi_jenistabungan')->orderBy('kode_tabungan', 'asc')->get();
+        return view('tabungan.listrekening', compact('tabungan'));
     }
 }

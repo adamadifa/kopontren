@@ -35,6 +35,7 @@
 
 
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <!-- BEGIN: Page JS-->
 <script src="{{asset('app-assets/js/scripts/forms/validation/form-validation.js')}}"></script>
 <!-- END: Page JS-->

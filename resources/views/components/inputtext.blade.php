@@ -3,7 +3,7 @@
     <div class="controls">
         <input type="text" autocomplete="off" id="{{$field}}" @isset($value)
             value="{{old($field) ? old($field) : $value}}" @else value="{{old($field)}}" @endisset
-            class="form-control @isset($datepicker) pickadate-months-year picker__input @endisset" name="{{$field}}"
+            class="form-control @isset($datepicker) pickadate-months-year picker__input @endisset" name="{{$field}}" @isset($readonly) readonly @endisset"
             placeholder="{{$label}}">
         <div class="form-control-position">
             <i class="{{$icon}}"></i>

@@ -41,7 +41,7 @@ Route::middleware(['auth', 'ceklevel:admin'])->group(function () {
     Route::post('/anggota/{no_anggota}/update', [AnggotaController::class, 'update']);
     Route::delete('/anggota/{no_anggota}/delete', [AnggotaController::class, 'destroy']);
     Route::post('/anggota/store', [AnggotaController::class, 'store']);
-
+    Route::post('/anggota/getautocomplete', [AnggotaController::class, 'autocompleteAnggota']);
     //Jenis Simpanan
     Route::get('/jenissimpanan', [JenissimpananController::class, 'index']);
     Route::get('/jenissimpanan/create', [JenissimpananController::class, 'create']);
@@ -58,7 +58,7 @@ Route::middleware(['auth', 'ceklevel:admin'])->group(function () {
     Route::post('/tabungan/{kode_tabungan}/update', [TabunganController::class, 'update']);
     Route::delete('/tabungan/{kode_tabungan}/delete', [TabunganController::class, 'destroy']);
     Route::get('/rekening', [TabunganController::class, 'listrekening']);
-    Route::get('/autocompleteanggota', [TypeaheadController::class, 'autocompleteAnggota']);
+
 
     //Simpanan
 

@@ -143,4 +143,28 @@ class AnggotaController extends Controller
             return redirect('/anggota')->with(['warning' => 'Data Gagal Dihapus']);
         }
     }
+
+
+
+    public function autocompleteAnggota(Request $request)
+    {
+
+        $search = $request->search;
+
+        if ($search == '') {
+            $autocomplate = Anggota::orderby('nama_lengkap', 'asc')->select('no_anggota', 'nama_lengkap')->limit(5)->get();
+        } else {
+            $autocomplate = Anggota::orderby('nama_lengkap', 'asc')->select('no_anggota', 'nama_lengkap')->where('nama_lengkap', 'like', '%' . $search . '%')->limit(5)->get();
+        }
+
+
+        //dd($autocomplate);
+        $response = array();
+        foreach ($autocomplate as $autocomplate) {
+            $response[] = array("value" => $autocomplate->nama_lengkap, "label" => $autocomplate->nama_lengkap, 'val' => $autocomplate->no_anggota);
+        }
+
+        echo json_encode($response);
+        exit;
+    }
 }

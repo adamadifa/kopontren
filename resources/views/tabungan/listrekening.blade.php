@@ -1,104 +1,155 @@
 @extends('layouts.midone')
-@section('titlepage',$title)
-@section('titlemain',$title)
+@section('titlepage','Data Tabungan Anggota')
 @section('content')
-<div class="intro-y col-span-12 flex justify-between flex-wrap sm:flex-no-wrap items-center mt-2">
-    <div class="flex flex-wrap">
-        <a href="#" class="button text-white bg-theme-3 shadow-md mr-2" id="buatrekening">Buat Rekening</a>
-        <div class="dropdown relative">
-            <button class="dropdown-toggle button px-2 box text-gray-700">
-                <span class="w-5 h-5 flex items-center justify-center"> <i class="w-4 h-4" data-feather="plus"></i> </span>
-            </button>
-            <div class="dropdown-box mt-10 absolute w-40 top-0 left-0 z-20">
-                <div class="dropdown-box__content box p-2">
-                    <a href="" class="flex items-center block p-2 transition duration-300 ease-in-out bg-white hover:bg-gray-200 rounded-md"> <i data-feather="printer" class="w-4 h-4 mr-2"></i> Print </a>
-                    <a href="" class="flex items-center block p-2 transition duration-300 ease-in-out bg-white hover:bg-gray-200 rounded-md"> <i data-feather="file-text" class="w-4 h-4 mr-2"></i> Export to Excel </a>
-                    <a href="" class="flex items-center block p-2 transition duration-300 ease-in-out bg-white hover:bg-gray-200 rounded-md"> <i data-feather="file-text" class="w-4 h-4 mr-2"></i> Export to PDF </a>
+<div class="content-wrapper">
+    <div class="content-header row">
+        <div class="content-header-left col-md-9 col-12 mb-2">
+            <div class="row breadcrumbs-top">
+                <div class="col-12">
+                    <h2 class="content-header-title float-left mb-0">Data Tabungan</h2>
+                    <div class="breadcrumb-wrapper col-12">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/rekening">Tabungan</a>
+                            </li>
+                        </ol>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="mt-3 sm:mt-0">
-        <div class="w-full sm:w-56 relative text-gray-700">
-            <form action="/rekening" method="GET">
-                <input type="text" value="{{Request::get('cari')}}" name="cari" class="input w-full sm:w-56 box pr-20 sm:pr-10 placeholder-theme-13" placeholder="Search...">
-                <i class="w-4 h-4 absolute my-auto inset-y-0 mr-3 right-0" data-feather="search"></i>
-            </form>
+    <div class="content-body">
+        <!-- Data list view starts -->
+        <!-- DataTable starts -->
+        @include('layouts.notification')
+        <div class="card">
+            <div class="card-body">
+                <div class="row mb-2">
+                    <div class="col-md-12">
+                        <a href="#" id="buatrekening" class="btn btn-primary"><i
+                            class="feather icon-file-text mr-2"></i>Buat Rekening</a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <form action="/simpanan">
+                            <div class=" form-label-group position-relative has-icon-left">
+                                <input type="text" value="{{Request('cari')}}" id="cari" name="cari"
+                                    class="form-control" name="fname-floating-icon" placeholder="Search">
+                                <div class="form-control-position">
+                                    <i class="feather icon-search"></i>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>NO</th>
+                                <th>NO REKENING</th>
+                                <th>KODE ANGGOTA</th>
+                                <th>NAMA LENGKAP</th>
+                                <th>KODE TABUNGAN</th>
+                                <th>JENIS TABUNGAN</th>
+                                <th>SALDO</th>
+                                <th>ACTIONS</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                    </table>
+
+                </div>
+
+                <!-- DataTable ends -->
+            </div>
         </div>
+        <!-- Data list view end -->
     </div>
 </div>
+<div class="modal fade" id="modalbuatrekening" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-centered modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">Buat Rekening</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="post" id="frmSimpanan" action="/simpanan/store" class="frmRekening">
+                    @csrf
+                    <div class="col-12">
+                        <x-inputtext label="No. Rekening (Auto)" field="no_rekening" icon="feather icon-maximize" readonly="true" />
+                    </div>
+                    <div class="col-12">
+                        <x-inputtext label="Anggota" field="no_anggota" icon="feather icon-user" />
+                    </div>
 
-<div class="intro-y col-span-12">
-    @include('layouts.notification')
-</div>
-<div class="intro-y col-span-12 overflow-auto lg:overflow-visible">
+                    <div class="col-12 mb-2">
+                        <select class="form-control" name="kode_tabungan" id="kode_tabungan">
+                            <option value="">Jenis Tabungan</option>
+                            @foreach ($tabungan as $d)
+                            <option value="{{$d->kode_tabungan}}">{{$d->kode_tabungan}} - {{$d->nama_tabungan}}</option>
+                            @endforeach
+                        </select>
+                    </div>
 
-    <table class="table table-report -mt-2">
-        <thead>
-            <tr>
-                <th class="text-center whitespace-no-wrap">NO REKENING</th>
-                <th class="text-center whitespace-no-wrap">NO ANGGOTA</th>
-                <th class="whitespace-no-wrap">NAMA ANGGOTA </th>
-                <th class="whitespace-no-wrap">JENIS TABUNGAN</th>
-                <th class="whitespace-no-wrap">SALDO</th>
-                <th class="text-center whitespace-no-wrap">ACTIONS</th>
-            </tr>
-        </thead>
-        <tbody>
+                    <div class="col-12">
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary">Simpan</button>
+                            <button type="button" data-dismiss="modal" class="btn btn-danger">Batalkan</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
 
-        </tbody>
-    </table>
 
-</div>
-<!-- END: Data List -->
-
-<div class="modal" id="modalrekening">
-    <div class="modal__content">
-        <div class="flex items-center px-5 py-5 sm:py-3 border-b border-gray-200">
-            <h2 class="font-medium text-base mr-auto">Buat Rekening</h2>
-        </div>
-        <div class="grid grid-cols-1 p-5">
-            <form method="post" id="frmRekening" action="/rekening/store"  class="validate-form">
-                @csrf
-
-                <div class="mb-3">
-                    <x-inputtext label="No. Rekening (Auto)"  field="no_rekening" icon="credit-card" lebar="full" inline="false" datepicker="false" readonly="true" />
-                </div>
-                <div class="mb-3">
-                    <x-inputtext label="Kode Anggota"  field="kode_anggota" icon="credit-card" lebar="full" inline="false" datepicker="false" readonly="true" />
-                </div>
-
-                <div class="px-5 py-3 text-right border-t border-gray-200">
-                    <button type="button" data-dismiss="modal" class="button w-20 border text-gray-700 mr-1">Batalkan</button>
-                    <button type="submit" class="button w-20 bg-theme-1 text-white">Simpan</button>
-                </div>
-            </form>
         </div>
     </div>
 </div>
 @endsection
 
 @push('myscript')
-<script>
-  $(function(){
-        $("#buatrekening").click(function(e){
-            e.preventDefault();
-            $("#modalrekening").modal("show");
-        });
-        $('.delete-confirm').on('click', function (event) {
-            event.preventDefault();
-            const url = $(this).attr('href');
-            swal({
-                title: 'Anda Yakin?',
-                text: 'Data ini akan didelete secara permanen!',
-                icon: 'warning',
-                buttons: ["Cancel", "Yes!"],
-            }).then(function(value) {
-                if (value) {
-                   $("#deleteform").submit();
+
+    <script>
+        $(function(){
+
+            $( "#no_anggota" ).autocomplete({
+                source: function( request, response ) {
+                // Fetch data
+                $.ajax({
+                    url:"/anggota/getautocomplete",
+                    type: 'post',
+                    dataType: "json",
+                    data: {
+                    _token: "{{ csrf_token() }}",
+                    search: request.term
+                    },
+                    success: function( data ) {
+                    response( data );
+                    }
+                });
+                },
+                select: function (event, ui) {
+                $('#no_anggota').val(ui.item.label);
+                var no_anggota = ui.item.val;
+                alert(no_anggota);
+                return false;
                 }
             });
+
+            $("#buatrekening").click(function(e){
+                e.preventDefault();
+                $("#modalbuatrekening").modal("show");
+            });
+
+            $( "#no_anggota" ).autocomplete( "option", "appendTo", ".frmRekening" );
         });
-      });
-</script>
+    </script>
 @endpush
+

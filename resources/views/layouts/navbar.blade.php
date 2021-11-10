@@ -27,8 +27,8 @@
             <li class=" nav-item {{ request()->is(['simpanan','simpanan/*']) ? 'active' : '' }}">
                 <a href="/simpanan"><i class="fa fa-book"></i><span class="menu-title">Simpanan</span></a>
             </li>
-            <li class=" nav-item">
-                <a href="#"><i class="fa fa-book"></i><span class="menu-title">Tabungan</span></a>
+            <li class=" nav-item {{ request()->is(['rekening','rekening/*']) ? 'active' : '' }}">
+                <a href="/rekening"><i class="fa fa-book"></i><span class="menu-title">Tabungan</span></a>
             </li>
         </ul>
     </div>
