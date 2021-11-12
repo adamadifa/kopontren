@@ -9,6 +9,7 @@
 <link rel="stylesheet" type="text/css"
     href="{{asset('app-assets/vendors/css/tables/datatable/extensions/dataTables.checkboxes.css')}}">
 <link rel="stylesheet" type="text/css" href="{{asset('app-assets/vendors/css/pickers/pickadate/pickadate.css')}}">
+<link rel="stylesheet" type="text/css" href="{{asset('app-assets/vendors/css/tables/datatable/datatables.min.css')}}">
 <!-- END: Vendor CSS-->
 
 <!-- BEGIN: Theme CSS-->

@@ -8,6 +8,9 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\JenissimpananController;
 use App\Http\Controllers\SimpananController;
 use App\Http\Controllers\TabunganController;
+use App\Models\Anggota;
+use Illuminate\Http\Request;
+use Yajra\Datatables\Datatables;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -42,6 +45,21 @@ Route::middleware(['auth', 'ceklevel:admin'])->group(function () {
     Route::delete('/anggota/{no_anggota}/delete', [AnggotaController::class, 'destroy']);
     Route::post('/anggota/store', [AnggotaController::class, 'store']);
     Route::post('/anggota/getautocomplete', [AnggotaController::class, 'autocompleteAnggota']);
+    Route::get('getAnggota', function (Request $request) {
+        if ($request->ajax()) {
+            $data = Anggota::get();
+            return DataTables::of($data)
+                ->addIndexColumn()
+                ->addColumn('action', function ($row) {
+                    $actionBtn = '<a href="#" no-anggota="' . $row->no_anggota . '" nama="' . $row->nama_lengkap . '" class="pilih btn btn-success btn-sm">Pilih</a>';
+                    return $actionBtn;
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
+    })->name('dataanggota');
+
+
     //Jenis Simpanan
     Route::get('/jenissimpanan', [JenissimpananController::class, 'index']);
     Route::get('/jenissimpanan/create', [JenissimpananController::class, 'create']);
@@ -58,7 +76,10 @@ Route::middleware(['auth', 'ceklevel:admin'])->group(function () {
     Route::post('/tabungan/{kode_tabungan}/update', [TabunganController::class, 'update']);
     Route::delete('/tabungan/{kode_tabungan}/delete', [TabunganController::class, 'destroy']);
     Route::get('/rekening', [TabunganController::class, 'listrekening']);
-
+    Route::post('/rekening/store', [TabunganController::class, 'storerekening']);
+    Route::delete('/rekening/{no_rekening}/delete', [TabunganController::class, 'destroyrekening']);
+    Route::get('/rekening/{no_rekening}/show', [TabunganController::class, 'showrekening']);
+    Route::post('/rekening/storemutasi', [TabunganController::class, 'storemutasi']);
 
     //Simpanan
 
