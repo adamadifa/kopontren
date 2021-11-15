@@ -32,11 +32,29 @@
                     <div class="col-md-12">
                         <form action="/pembiayaan">
                             <div class="row">
+                                <div class="col-md-6">
+                                    <div class=" form-label-group position-relative has-icon-left">
+                                        <input type="text" value="{{ Request('dari') }}" id="dari" name="dari" class="form-control pickadate-months-year picker__input" placeholder="Dari">
+                                        <div class="form-control-position">
+                                            <i class="feather icon-calendar"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class=" form-label-group position-relative has-icon-left">
+                                        <input type="text" value="{{ Request('sampai') }}" id="sampai" name="sampai" class="form-control pickadate-months-year picker__input" placeholder="Sampai" datepicker="true">
+                                        <div class="form-control-position">
+                                            <i class="feather icon-calendar"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
                                 <div class="col-md-12">
                                     <div class=" form-label-group position-relative has-icon-left">
-                                        <input type="text" value="{{ Request('nama') }}" id="search" name="nama" class="form-control" name="fname-floating-icon" placeholder="Nama Anggota">
+                                        <input type="text" value="{{ Request('nama') }}" id="nama" name="nama" class="form-control" placeholder="Nama Anggota">
                                         <div class="form-control-position">
-                                            <i class="feather icon-search"></i>
+                                            <i class="feather icon-user"></i>
                                         </div>
                                     </div>
                                 </div>
@@ -51,6 +69,7 @@
                             <tr>
                                 <th>NO</th>
                                 <th>NO AKAD</th>
+                                <th>TANGGAL</th>
                                 <th class="text-center">NO ANGGOTA</th>
                                 <th>NAMA LENGKAP</th>
                                 <th>JENIS PEMBIAYAAN</th>

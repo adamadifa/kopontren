@@ -54,7 +54,29 @@ Route::middleware(['auth', 'ceklevel:admin'])->group(function () {
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) {
-                    $actionBtn = '<a href="#" no-anggota="' . $row->no_anggota . '" nama="' . $row->nama_lengkap . '" class="pilih btn btn-success btn-sm">Pilih</a>';
+                    $actionBtn = '<a href="#"
+                    no-anggota="' . $row->no_anggota .
+                        '" nama="' . $row->nama_lengkap .
+                        '" nik="' . $row->nik .
+                        '" tempat_lahir="' . $row->tempat_lahir .
+                        '" tanggal_lahir="' . $row->tanggal_lahir .
+                        '" jenis_kelamin="' . $row->jenis_kelamin .
+                        '" pendidikan_terakhir="' . $row->pendidikan_terakhir .
+                        '" status_pernikahan="' . $row->status_pernikahan .
+                        '" jml_tanggungan="' . $row->jml_tanggungan .
+                        '" nama_pasangan="' . $row->nama_pasangan .
+                        '" pekerjaan_pasangan="' . $row->pekerjaan_pasangan .
+                        '" nama_ibu="' . $row->nama_ibu .
+                        '" nama_saudara="' . $row->nama_saudara .
+                        '" no_hp="' . $row->no_hp .
+                        '" alamat="' . $row->alamat .
+                        '" id_propinsi="' . $row->id_propinsi .
+                        '" id_kota="' . $row->id_kota .
+                        '" id_kecamatan="' . $row->id_kecamatan .
+                        '" id_kelurahan="' . $row->id_kelurahan .
+                        '" kode_pos="' . $row->kode_pos .
+                        '" status_tinggal="' . $row->status_tinggal .
+                        '" class="pilih btn btn-success btn-sm">Pilih</a>';
                     return $actionBtn;
                 })
                 ->rawColumns(['action'])

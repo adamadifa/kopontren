@@ -19,7 +19,8 @@ class PembiayaanController extends Controller
 
     public function create()
     {
+        $jenispembiayaan = DB::table('koperasi_jenispembiayaan')->get();
         $propinsi = DB::table('provinces')->orderBy('prov_name', 'asc')->get();
-        return view('pembiayaan.create', compact('propinsi'));
+        return view('pembiayaan.create', compact('propinsi', 'jenispembiayaan'));
     }
 }
