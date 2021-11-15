@@ -5,7 +5,10 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DaftarController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\JenispembiayaanController;
 use App\Http\Controllers\JenissimpananController;
+use App\Http\Controllers\LoaddataController;
+use App\Http\Controllers\PembiayaanController;
 use App\Http\Controllers\SimpananController;
 use App\Http\Controllers\TabunganController;
 use App\Models\Anggota;
@@ -81,10 +84,28 @@ Route::middleware(['auth', 'ceklevel:admin'])->group(function () {
     Route::get('/rekening/{no_rekening}/show', [TabunganController::class, 'showrekening']);
     Route::post('/rekening/storemutasi', [TabunganController::class, 'storemutasi']);
 
-    //Simpanan
+    //Jenis Simpanan
+    Route::get('/jenispembiayaan', [JenispembiayaanController::class, 'index']);
+    Route::get('/jenispembiayaan/create', [JenispembiayaanController::class, 'create']);
+    Route::post('/jenispembiayaan/store', [JenispembiayaanController::class, 'store']);
+    Route::get('/jenispembiayaan/{kode_pembiayaan}/edit', [JenispembiayaanController::class, 'edit']);
+    Route::post('/jenispembiayaan/{kode_pembiayaan}/update', [JenispembiayaanController::class, 'update']);
+    Route::delete('/jenispembiayaan/{kode_pembiayaan}/delete', [JenispembiayaanController::class, 'destroy']);
 
+
+    //Simpanan
     Route::get('/simpanan', [SimpananController::class, 'index']);
     Route::get('/simpanan/{no_anggota}/show', [SimpananController::class, 'show']);
     Route::post('/simpanan/store', [SimpananController::class, 'store']);
     Route::delete('/simpanan/{no_transaksi}/delete', [SimpananController::class, 'destroy']);
+
+    //Pembiayaan
+    Route::get('/pembiayaan', [PembiayaanController::class, 'index']);
+    Route::get('/pembiayaan/create', [PembiayaanController::class, 'create']);
+
+
+    //Loaddata
+    Route::post('/loaddata/getkota', [LoaddataController::class, 'getkota']);
+    Route::post('/loaddata/getkecamatan', [LoaddataController::class, 'getkecamatan']);
+    Route::post('/loaddata/getkelurahan', [LoaddataController::class, 'getkelurahan']);
 });

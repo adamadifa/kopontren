@@ -11,7 +11,6 @@ class AnggotaController extends Controller
 {
     public function index(Request $request)
     {
-        $title = "Data Anggota";
 
         $query = Anggota::query();
         $query->select('*');
@@ -20,14 +19,13 @@ class AnggotaController extends Controller
         }
         $anggota = $query->paginate(10);
         $anggota->appends($request->all());
-
-        return view('anggota.index', compact('title', 'anggota'));
+        return view('anggota.index', compact('anggota'));
     }
 
     public function create()
     {
-        $title = "Input Data Anggota";
-        return view('anggota.create', compact('title'));
+        $propinsi = DB::table('provinces')->orderBy('prov_name', 'asc')->get();
+        return view('anggota.create', compact('propinsi'));
     }
 
 
@@ -35,8 +33,9 @@ class AnggotaController extends Controller
     {
         $title = "Edit Data Anggota";
         $no_anggota = Crypt::decrypt($no_anggota);
+        $propinsi = DB::table('provinces')->orderBy('prov_name', 'asc')->get();
         $anggota = DB::table('koperasi_anggota')->where('no_anggota', $no_anggota)->first();
-        return view('anggota.edit', compact('title', 'anggota'));
+        return view('anggota.edit', compact('propinsi', 'anggota'));
     }
 
     public function show($no_anggota)
@@ -56,6 +55,14 @@ class AnggotaController extends Controller
             'tempat_lahir' => 'required',
             'tanggal_lahir' => 'required',
             'alamat' => 'required',
+            'jenis_kelamin' => 'required',
+            'pendidikan_terakhir' => 'required',
+            'status_pernikahan' => 'required',
+            'id_propinsi' => 'required',
+            'id_kota' => 'required',
+            'id_kecamatan' => 'required',
+            'id_kelurahan' => 'required',
+            'status_tinggal' => 'required',
             'no_hp' => 'required'
         ]);
 
@@ -67,7 +74,21 @@ class AnggotaController extends Controller
                 'nama_lengkap' => $request->nama_lengkap,
                 'tempat_lahir' => $request->tempat_lahir,
                 'tanggal_lahir' => $request->tanggal_lahir,
+                'jenis_kelamin' => $request->jenis_kelamin,
+                'pendidikan_terakhir' => $request->pendidikan_terakhir,
+                'status_pernikahan' => $request->status_pernikahan,
+                'jml_tanggungan' => $request->jml_tanggungan,
+                'nama_pasangan' => $request->nama_pasangan,
+                'pekerjaan_pasangan' => $request->pekerjaan_pasangan,
+                'nama_ibu' => $request->nama_ibu,
+                'nama_saudara' => $request->nama_saudara,
                 'alamat' => $request->alamat,
+                'id_propinsi' => $request->id_propinsi,
+                'id_kota' => $request->id_kota,
+                'id_kecamatan' => $request->id_kecamatan,
+                'id_kelurahan' => $request->id_kelurahan,
+                'kode_pos' => $request->kode_pos,
+                'status_tinggal' => $request->status_tinggal,
                 'no_hp' => $request->no_hp
             ]);
 
@@ -85,6 +106,14 @@ class AnggotaController extends Controller
             'tempat_lahir' => 'required',
             'tanggal_lahir' => 'required',
             'alamat' => 'required',
+            'jenis_kelamin' => 'required',
+            'pendidikan_terakhir' => 'required',
+            'status_pernikahan' => 'required',
+            'id_propinsi' => 'required',
+            'id_kota' => 'required',
+            'id_kecamatan' => 'required',
+            'id_kelurahan' => 'required',
+            'status_tinggal' => 'required',
             'no_hp' => 'required|unique:koperasi_anggota,no_hp'
         ]);
 
@@ -120,7 +149,21 @@ class AnggotaController extends Controller
             'nama_lengkap' => $request->nama_lengkap,
             'tempat_lahir' => $request->tempat_lahir,
             'tanggal_lahir' => $request->tanggal_lahir,
+            'jenis_kelamin' => $request->jenis_kelamin,
+            'pendidikan_terakhir' => $request->pendidikan_terakhir,
+            'status_pernikahan' => $request->status_pernikahan,
+            'jml_tanggungan' => $request->jml_tanggungan,
+            'nama_pasangan' => $request->nama_pasangan,
+            'pekerjaan_pasangan' => $request->pekerjaan_pasangan,
+            'nama_ibu' => $request->nama_ibu,
+            'nama_saudara' => $request->nama_saudara,
             'alamat' => $request->alamat,
+            'id_propinsi' => $request->id_propinsi,
+            'id_kota' => $request->id_kota,
+            'id_kecamatan' => $request->id_kecamatan,
+            'id_kelurahan' => $request->id_kelurahan,
+            'kode_pos' => $request->kode_pos,
+            'status_tinggal' => $request->status_tinggal,
             'no_hp' => $request->no_hp
         ]);
 

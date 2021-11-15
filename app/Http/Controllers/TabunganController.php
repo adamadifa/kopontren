@@ -142,7 +142,7 @@ class TabunganController extends Controller
 
         $query = HistoriTabungan::query();
 
-        $query->select('koperasi_tabungan_histori.*', 'nama_tabungan','name');
+        $query->select('koperasi_tabungan_histori.*', 'nama_tabungan', 'name');
         $query->join('koperasi_tabungan', 'koperasi_tabungan_histori.no_rekening', '=', 'koperasi_tabungan.no_rekening');
         $query->join('koperasi_jenistabungan', 'koperasi_tabungan.kode_tabungan', '=', 'koperasi_jenistabungan.kode_tabungan');
         $query->join('users', 'koperasi_tabungan.id_petugas', '=', 'users.id');
@@ -169,10 +169,10 @@ class TabunganController extends Controller
 
 
         $anggota = DB::table('koperasi_tabungan')
-        ->join('koperasi_anggota','koperasi_tabungan.no_anggota','=','koperasi_anggota.no_anggota')
-        ->join('koperasi_jenistabungan','koperasi_tabungan.kode_tabungan','=','koperasi_jenistabungan.kode_tabungan')
-        ->where('no_rekening', $no_rekening)->first();
-        return view('tabungan.show', compact( 'anggota', 'datatabungan', 'totalrow', 'saldotabungan', 'lastdata'));
+            ->join('koperasi_anggota', 'koperasi_tabungan.no_anggota', '=', 'koperasi_anggota.no_anggota')
+            ->join('koperasi_jenistabungan', 'koperasi_tabungan.kode_tabungan', '=', 'koperasi_jenistabungan.kode_tabungan')
+            ->where('no_rekening', $no_rekening)->first();
+        return view('tabungan.show', compact('anggota', 'datatabungan', 'totalrow', 'saldotabungan', 'lastdata'));
     }
 
 
@@ -226,10 +226,10 @@ class TabunganController extends Controller
             ]);
 
             DB::table('koperasi_tabungan')
-            ->where('no_rekening', $no_rekening)
-            ->update([
-                'saldo' => DB::raw('saldo' . $operator . $jumlah)
-            ]);
+                ->where('no_rekening', $no_rekening)
+                ->update([
+                    'saldo' => DB::raw('saldo' . $operator . $jumlah)
+                ]);
 
             $ceksaldoterakhir = DB::table('koperasi_tabungan')
                 ->select('saldo')
