@@ -34,44 +34,54 @@
                                 <div class="form-body">
                                     <div class="row">
                                         <div class="col-12">
-                                            <x-inputtext label="No. Akad (Auto)" field="no_akad" icon="fa fa-barcode" readonly="true" />
+                                            <x-inputtext label="No. Akad (Auto)" field="no_akad" icon="fa fa-barcode"
+                                                readonly="true" />
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-12">
-                                            <x-inputtext label="Tanggal Permohonan" field="tgl_permohonan" icon="fa fa-calendar" datepicker="true" />
+                                            <x-inputtext label="Tanggal Permohonan" field="tgl_permohonan"
+                                                icon="fa fa-calendar" datepicker="true" />
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-12">
-                                            <x-inputgroup label="No. Anggota" field="no_anggota" icon="fa fa-barcode" readonly="true" />
+                                            <x-inputgroup label="No. Anggota" field="no_anggota" icon="fa fa-barcode"
+                                                readonly="true" />
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-12">
-                                            <x-inputtext label="Nomor Identitas" field="nik" icon="feather icon-credit-card" />
+                                            <x-inputtext label="Nomor Identitas" field="nik"
+                                                icon="feather icon-credit-card" />
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-12">
-                                            <x-inputtext label="Nama Lengkap" field="nama_lengkap" icon="feather icon-user" />
+                                            <x-inputtext label="Nama Lengkap" field="nama_lengkap"
+                                                icon="feather icon-user" />
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-6">
-                                            <x-inputtext label="Tempat Lahir" field="tempat_lahir" icon="feather icon-map" />
+                                            <x-inputtext label="Tempat Lahir" field="tempat_lahir"
+                                                icon="feather icon-map" />
                                         </div>
                                         <div class="col-6">
-                                            <x-inputtext label="Tanggal Lahir" field="tanggal_lahir" icon="feather icon-calendar" datepicker="true" />
+                                            <x-inputtext label="Tanggal Lahir" field="tanggal_lahir"
+                                                icon="feather icon-calendar" datepicker="true" />
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-6">
-                                            <div class="form-group jenis_kelamin @error('jenis_kelamin') error @enderror">
+                                            <div
+                                                class="form-group jenis_kelamin @error('jenis_kelamin') error @enderror">
                                                 <select name="jenis_kelamin" id="jenis_kelamin" class="form-control">
                                                     <option value="">Jenis Kelamin</option>
-                                                    <option @if (old('jenis_kelamin')=='L' ) selected @endif value="L">Laki - Laki</option>
-                                                    <option @if (old('jenis_kelamin')=='P' ) selected @endif value="P">Perempuan</option>
+                                                    <option @if (old('jenis_kelamin')=='L' ) selected @endif value="L">
+                                                        Laki - Laki</option>
+                                                    <option @if (old('jenis_kelamin')=='P' ) selected @endif value="P">
+                                                        Perempuan</option>
                                                 </select>
                                                 @error('jenis_kelamin')
                                                 <div class="help-block">
@@ -86,24 +96,31 @@
                                     <div class="row">
                                         <div class="col-6">
                                             <div class="form-group  @error('pendidikan_terakhir') error @enderror">
-                                                <select name="pendidikan_terakhir" id="pendidikan_terakhir" class="form-control">
+                                                <select name="pendidikan_terakhir" id="pendidikan_terakhir"
+                                                    class="form-control">
                                                     <option value="">Pendidikan Terakhir</option>
-                                                    <option {{ old('pendidikan_terakhir') == 'SD' ? 'selected' : '' }} value="SD">
+                                                    <option {{ old('pendidikan_terakhir')=='SD' ? 'selected' : '' }}
+                                                        value="SD">
                                                         SD
                                                     </option>
-                                                    <option {{ old('pendidikan_terakhir') == 'SMP' ? 'selected' : '' }} value="SMP">
+                                                    <option {{ old('pendidikan_terakhir')=='SMP' ? 'selected' : '' }}
+                                                        value="SMP">
                                                         SMP
                                                     </option>
-                                                    <option {{ old('pendidikan_terakhir') == 'SMA' ? 'selected' : '' }} value="SMA">
+                                                    <option {{ old('pendidikan_terakhir')=='SMA' ? 'selected' : '' }}
+                                                        value="SMA">
                                                         SMA
                                                     </option>
-                                                    <option {{ old('pendidikan_terakhir') == 'D3' ? 'selected' : '' }} value="D3">
+                                                    <option {{ old('pendidikan_terakhir')=='D3' ? 'selected' : '' }}
+                                                        value="D3">
                                                         D3
                                                     </option>
-                                                    <option {{ old('pendidikan_terakhir') == 'S1' ? 'selected' : '' }} value="S1">
+                                                    <option {{ old('pendidikan_terakhir')=='S1' ? 'selected' : '' }}
+                                                        value="S1">
                                                         S1
                                                     </option>
-                                                    <option {{ old('pendidikan_terakhir') == 'S2' ? 'selected' : '' }} value="S2">
+                                                    <option {{ old('pendidikan_terakhir')=='S2' ? 'selected' : '' }}
+                                                        value="S2">
                                                         S2
                                                     </option>
                                                 </select>
@@ -120,16 +137,20 @@
                                     <div class="row">
                                         <div class="col-6">
                                             <div class="form-group @error('status_pernikahan') error @enderror">
-                                                <select name="status_pernikahan" id="status_pernikahan" class="form-control">
+                                                <select name="status_pernikahan" id="status_pernikahan"
+                                                    class="form-control">
                                                     <option value="">Status Perkawinan</option>
-                                                    <option {{ old('status_pernikahan') == 'M' ? 'selected' : '' }} value="M">
+                                                    <option {{ old('status_pernikahan')=='M' ? 'selected' : '' }}
+                                                        value="M">
                                                         Menikah
                                                     </option>
-                                                    <option {{ old('status_pernikahan') == 'BM' ? 'selected' : '' }} value="BM">
+                                                    <option {{ old('status_pernikahan')=='BM' ? 'selected' : '' }}
+                                                        value="BM">
                                                         Belum
                                                         Menikah
                                                     </option>
-                                                    <option {{ old('status_pernikahan') == 'JD' ? 'selected' : '' }} value="JD">
+                                                    <option {{ old('status_pernikahan')=='JD' ? 'selected' : '' }}
+                                                        value="JD">
                                                         Janda/Duda
                                                     </option>
                                                 </select>
@@ -143,25 +164,30 @@
                                             </div>
                                         </div>
                                         <div class="col-4">
-                                            <x-inputtext label="Jumlah Tanggungan" field="jml_tanggungan" icon="feather icon-users" />
+                                            <x-inputtext label="Jumlah Tanggungan" field="jml_tanggungan"
+                                                icon="feather icon-users" />
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-6">
-                                            <x-inputtext label="Nama Pasangan" field="nama_pasangan" icon="feather icon-user" />
+                                            <x-inputtext label="Nama Pasangan" field="nama_pasangan"
+                                                icon="feather icon-user" />
                                         </div>
                                         <div class="col-6">
-                                            <x-inputtext label="Pekerjaan Pasangan" field="pekerjaan_pasangan" icon="feather icon-anchor" />
+                                            <x-inputtext label="Pekerjaan Pasangan" field="pekerjaan_pasangan"
+                                                icon="feather icon-anchor" />
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-12">
-                                            <x-inputtext label="Nama Ibu Kandung" field="nama_ibu" icon="feather icon-user" />
+                                            <x-inputtext label="Nama Ibu Kandung" field="nama_ibu"
+                                                icon="feather icon-user" />
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-12">
-                                            <x-inputtext label="Nama Saudara Tidak Serumah" field="nama_saudara" icon="feather icon-user" />
+                                            <x-inputtext label="Nama Saudara Tidak Serumah" field="nama_saudara"
+                                                icon="feather icon-user" />
                                         </div>
                                     </div>
                                     <div class="row">
@@ -188,9 +214,13 @@
                                             <div class="col-12">
                                                 <div class="form-group  @error('alamat') error @enderror">
                                                     <fieldset class="form-label-group mb-0">
-                                                        <textarea autocomplete="off" data-length=100 class="form-control char-textarea" name="alamat" id="alamat" rows="3" placeholder="Alamat Sesuai KTP">{{ old('alamat') }}</textarea>
+                                                        <textarea autocomplete="off" data-length=100
+                                                            class="form-control char-textarea" name="alamat" id="alamat"
+                                                            rows="3"
+                                                            placeholder="Alamat Sesuai KTP">{{ old('alamat') }}</textarea>
                                                     </fieldset>
-                                                    <small class="counter-value float-right"><span class="char-count">0</span> /
+                                                    <small class="counter-value float-right"><span
+                                                            class="char-count">0</span> /
                                                         100
                                                     </small>
                                                     @error('alamat')
@@ -209,7 +239,8 @@
                                                     <select name="id_propinsi" id="id_propinsi" class="form-control">
                                                         <option value="">Propinsi</option>
                                                         @foreach ($propinsi as $p)
-                                                        <option {{ old('id_propinsi') == $p->id ? 'selected' : '' }} value="{{ $p->id }}">
+                                                        <option {{ old('id_propinsi')==$p->id ? 'selected' : '' }}
+                                                            value="{{ $p->id }}">
                                                             {{ $p->prov_name }}
                                                         </option>
                                                         @endforeach
@@ -241,7 +272,8 @@
                                         <div class="row">
                                             <div class="col-6">
                                                 <div class="form-group @error('id_kecamatan') error @enderror"">
-                                                                                <select name=" id_kecamatan" id="id_kecamatan" class="form-control">
+                                                                                <select name=" id_kecamatan"
+                                                    id="id_kecamatan" class="form-control">
                                                     <option value="">Kecamatan</option>
                                                     </select>
                                                     @error('id_kecamatan')
@@ -270,21 +302,26 @@
                                         </div>
                                         <div class="row">
                                             <div class="col-4">
-                                                <x-inputtext label="Kode Pos" field="kode_pos" icon="feather icon-codepen" />
+                                                <x-inputtext label="Kode Pos" field="kode_pos"
+                                                    icon="feather icon-codepen" />
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-6">
                                                 <div class="form-group @error('status_tinggal') error @enderror">
-                                                    <select name="status_tinggal" id="status_tinggal" class="form-control">
+                                                    <select name="status_tinggal" id="status_tinggal"
+                                                        class="form-control">
                                                         <option value="">Status Tinggal</option>
-                                                        <option {{ old('status_tinggal') == 'MS' ? 'selected' : '' }} value="MS">
+                                                        <option {{ old('status_tinggal')=='MS' ? 'selected' : '' }}
+                                                            value="MS">
                                                             Milik Sendiri
                                                         </option>
-                                                        <option {{ old('status_tinggal') == 'MK' ? 'selected' : '' }} value="MK">
+                                                        <option {{ old('status_tinggal')=='MK' ? 'selected' : '' }}
+                                                            value="MK">
                                                             Milik Keluarga
                                                         </option>
-                                                        <option {{ old('status_tinggal') == 'S' ? 'selected' : '' }} value="S">
+                                                        <option {{ old('status_tinggal')=='S' ? 'selected' : '' }}
+                                                            value="S">
                                                             Sewa / Kontrak
                                                         </option>
                                                     </select>
@@ -315,10 +352,13 @@
                                         <div class="row">
                                             <div class="col-4">
                                                 <div class="form-group @error('kode_pembiayaan') error @enderror">
-                                                    <select name="kode_pembiayaan" id="kode_pembiayaan" class="form-control">
+                                                    <select name="kode_pembiayaan" id="kode_pembiayaan"
+                                                        class="form-control">
                                                         <option value="">Jenis Pembiayaan</option>
                                                         @foreach ($jenispembiayaan as $d)
-                                                        <option value="{{$d->kode_pembiayaan}}" persentase="{{ $d->persentase }}">{{ $d->nama_pembiayaan }}</option>
+                                                        <option value="{{$d->kode_pembiayaan}}"
+                                                            persentase="{{ $d->persentase }}">{{ $d->nama_pembiayaan }}
+                                                        </option>
                                                         @endforeach
                                                     </select>
                                                     @error('jenis_kelamin')
@@ -331,7 +371,8 @@
                                                 </div>
                                             </div>
                                             <div class="col-4">
-                                                <x-inputtext label="Persentase (%)" field="persentase" icon="feather icon-tag" />
+                                                <x-inputtext label="Persentase (%)" field="persentase"
+                                                    icon="feather icon-tag" />
                                             </div>
                                             <div class="col-4">
                                                 <div class="form-group @error('jangka_waktu') error @enderror">
@@ -351,13 +392,19 @@
                                             </div>
                                         </div>
                                         <div class="row">
-                                            <div class="col-12">
-                                                <x-inputtext label="Jumlah Pembiayaan" field="jumlah" icon="feather icon-book" />
+                                            <div class="col-6">
+                                                <x-inputtext label="Jumlah Pembiayaan" field="jumlah"
+                                                    icon="feather icon-book" />
+                                            </div>
+                                            <div class="col-6">
+                                                <x-inputtext label="Jumlah Pengembelian" field="jumlah_pengembalian"
+                                                    icon="feather icon-book" readonly="true" />
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-12">
-                                                <x-inputtext label="Keperluan" field="keperluan" icon="feather icon-file" />
+                                                <x-inputtext label="Keperluan" field="keperluan"
+                                                    icon="feather icon-file" />
                                             </div>
                                         </div>
                                         <div class="row">
@@ -368,7 +415,8 @@
                                         <div class="row">
                                             <div class="col-12">
                                                 <button type="submit" class="btn btn-primary mr-1 mb-1">Submit</button>
-                                                <button type="reset" class="btn btn-outline-warning mr-1 mb-1">Reset</button>
+                                                <button type="reset"
+                                                    class="btn btn-outline-warning mr-1 mb-1">Reset</button>
                                             </div>
                                         </div>
                                     </div>
@@ -383,7 +431,8 @@
     </form>
 </div>
 <!-- Modal Data Anggota -->
-<div class="modal fade text-left" id="modalanggota" tabindex="-1" role="dialog" aria-labelledby="myModalLabel17" aria-hidden="true">
+<div class="modal fade text-left" id="modalanggota" tabindex="-1" role="dialog" aria-labelledby="myModalLabel17"
+    aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -411,6 +460,32 @@
 </div>
 @endsection
 @push('myscript')
+<script type="text/javascript">
+    var jumlah = document.getElementById('jumlah');
+    jumlah.addEventListener('keyup', function(e) {
+        // tambahkan 'Rp.' pada saat form di ketik
+        // gunakan fungsi formatRupiah() untuk mengubah angka yang di ketik menjadi format angka
+        jumlah.value = formatRupiah(this.value, '');
+    });
+
+    /* Fungsi formatRupiah */
+    function formatRupiah(angka, prefix) {
+        var number_string = angka.replace(/[^,\d]/g, '').toString(),
+            split = number_string.split(','),
+            sisa = split[0].length % 3,
+            rupiah = split[0].substr(0, sisa),
+            ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+        // tambahkan titik jika yang di input sudah menjadi angka ribuan
+        if (ribuan) {
+            separator = sisa ? '.' : '';
+            rupiah += separator + ribuan.join('.');
+        }
+
+        rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+        return prefix == undefined ? rupiah : (rupiah ? rupiah : '');
+    }
+</script>
 <script>
     $(function() {
         $("#search").click(function(e) {
@@ -420,9 +495,34 @@
                 , keyboard: false
             });
         });
+
+
         $("#kode_pembiayaan").change(function() {
             var persentase = $('option:selected', this).attr('persentase');
             $("#persentase").val(persentase);
+            var p = $("#persentase").val();
+            var jml = $("#jumlah").val();
+            var jumlah = jml.replace(/\./g,'');
+            var jumlah_pengembalian = parseInt(jumlah) + (parseInt(jumlah) * (parseInt(p)/100));
+            if(jumlah=="" || jumlah===0){
+                jumlah_pengembalian = 0;
+            }else{
+                jumlah_pengembalian = jumlah_pengembalian;
+            }
+            $("#jumlah_pengembalian").val(jumlah_pengembalian);
+        });
+
+        $("#jumlah").keyup(function(){
+            var p = $("#persentase").val();
+            var jml = $("#jumlah").val();
+            var jumlah = jml.replace(/\./g,'');
+            var jumlah_pengembalian = parseInt(jumlah) + (parseInt(jumlah) * (parseInt(p)/100));
+            if(p=="" || p===0){
+                jumlah_pengembalian = 0;
+            }else{
+                jumlah_pengembalian = jumlah_pengembalian;
+            }
+            $("#jumlah_pengembalian").val(jumlah_pengembalian);
         });
         var table = $('.dataanggota').DataTable({
             processing: true
