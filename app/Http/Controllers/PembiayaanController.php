@@ -234,4 +234,31 @@ class PembiayaanController extends Controller
             return redirect('/pembiayaan/' . Crypt::encrypt($no_akad) . '/show')->with(['warning' => 'Data SPP Gagal di Simpan']);
         }
     }
+
+    function deletebayar($no_transaksi)
+    {
+        $no_transaksi = Crypt::decrypt($no_transaksi);
+        DB::beginTransaction();
+        try {
+            $trans = DB::table('koperasi_bayarpembiayaan')->where('no_transaksi', $no_transaksi)->first();
+            //dd($trans);
+            DB::table('koperasi_rencanapembiayaan')
+                ->where('no_akad', $trans->no_akad)
+                ->where('cicilan_ke', $trans->cicilan_ke)
+                ->update([
+                    'bayar' => 0
+                ]);
+            DB::table('koperasi_bayarpembiayaan')
+                ->where('no_transaksi', $no_transaksi)
+                ->delete();
+
+
+            DB::commit();
+
+            return redirect('/pembiayaan/' . Crypt::encrypt($trans->no_akad) . '/show')->with(['success' => 'Data SPP Berhasil di Hapus']);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return redirect('/pembiayaan/' . Crypt::encrypt($trans->no_akad) . '/show')->with(['success' => 'Data SPP Gagal di Hapus']);
+        }
+    }
 }

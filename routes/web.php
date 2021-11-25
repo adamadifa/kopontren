@@ -128,6 +128,7 @@ Route::middleware(['auth', 'ceklevel:admin'])->group(function () {
     Route::delete('/pembiayaan/{no_akad}/delete', [PembiayaanController::class, 'delete']);
     Route::get('/pembiayaan/{no_akad}/show', [PembiayaanController::class, 'show']);
     Route::post('/pembiayaan/bayar', [PembiayaanController::class, 'bayar']);
+    Route::delete('/pembiayaan/{no_transaksi}/deletebayar', [PembiayaanController::class, 'deletebayar']);
 
 
     //Loaddata
