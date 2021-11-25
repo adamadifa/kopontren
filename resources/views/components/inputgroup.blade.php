@@ -11,5 +11,13 @@
             </div>
         </div>
     </div>
+    @error($field)
+    <div class="help-block">
+        <ul role="alert">
+            <li>{{$message}}</li>
+        </ul>
+    </div>
+    @enderror
 </div>
+
 </div>

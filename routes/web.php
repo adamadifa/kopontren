@@ -124,6 +124,10 @@ Route::middleware(['auth', 'ceklevel:admin'])->group(function () {
     //Pembiayaan
     Route::get('/pembiayaan', [PembiayaanController::class, 'index']);
     Route::get('/pembiayaan/create', [PembiayaanController::class, 'create']);
+    Route::post('/pembiayaan/store', [PembiayaanController::class, 'store']);
+    Route::delete('/pembiayaan/{no_akad}/delete', [PembiayaanController::class, 'delete']);
+    Route::get('/pembiayaan/{no_akad}/show', [PembiayaanController::class, 'show']);
+    Route::post('/pembiayaan/bayar', [PembiayaanController::class, 'bayar']);
 
 
     //Loaddata

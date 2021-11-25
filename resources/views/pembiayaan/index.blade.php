@@ -1,5 +1,5 @@
 @extends('layouts.midone')
-@section('titlepage', 'Data Tabungan Anggota')
+@section('titlepage', 'Data Pembiayaan Anggota')
 @section('content')
 <div class="content-wrapper">
     <div class="content-header row">
@@ -79,7 +79,38 @@
                             </tr>
                         </thead>
                         <tbody>
-
+                            @foreach ($pembiayaan as $d)
+                            <tr>
+                                <td>{{$loop->iteration + $pembiayaan->firstItem() - 1 }}</td>
+                                <td>{{ $d->no_akad }}</td>
+                                <td>{{ date('d-m-Y',strtotime($d->tgl_permohonan)) }}</td>
+                                <td class="text-center">{{ $d->no_anggota }}</td>
+                                <td>{{ $d->nama_lengkap }}</td>
+                                <td>{{ $d->kode_pembiayaan }} - {{ $d->nama_pembiayaan }}</td>
+                                <td align="right">{{ number_format($d->jumlah,'0','','.') }}</td>
+                                <td>
+                                    @if ($d->status==0)
+                                    <span class="badge bg-danger">Belum Lunas</span>
+                                    @else
+                                    <span class="badge bg-success">Lunas</span>
+                                    @endif
+                                </td>
+                                <td>
+                                    <div class="btn-group" role="group" aria-label="Basic example">
+                                        <div class="btn-group" role="group" aria-label="Basic example">
+                                            <a href="/pembiayaan/{{ Crypt::encrypt($d->no_akad) }}/show" class="primary"><i class="feather icon-book"></i></a>
+                                            <form method="POST" class="deleteform" action="/pembiayaan/{{ Crypt::encrypt($d->no_akad) }}/delete">
+                                                @csrf
+                                                @method('DELETE')
+                                                <a class="delete-confirm ml-1">
+                                                    <i class="feather icon-trash danger"></i>
+                                                </a>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            @endforeach
                         </tbody>
                     </table>
 
@@ -92,3 +123,26 @@
     </div>
 </div>
 @endsection
+@push('myscript')
+
+<script>
+    $(function() {
+        $('.delete-confirm').on('click', function(event) {
+            event.preventDefault();
+            const url = $(this).attr('href');
+            swal({
+                title: 'Anda Yakin?'
+                , text: 'Data ini akan didelete secara permanen!'
+                , icon: 'warning'
+                , buttons: ["Cancel", "Yes!"]
+            , }).then(function(value) {
+                if (value) {
+                    $(".deleteform").submit();
+                }
+            });
+        });
+    });
+
+</script>
+
+@endpush
