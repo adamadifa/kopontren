@@ -104,7 +104,9 @@ Route::middleware(['auth', 'ceklevel:admin'])->group(function () {
     Route::post('/rekening/store', [TabunganController::class, 'storerekening']);
     Route::delete('/rekening/{no_rekening}/delete', [TabunganController::class, 'destroyrekening']);
     Route::get('/rekening/{no_rekening}/show', [TabunganController::class, 'showrekening']);
+    Route::get('/tabungan/{no_transaksi}/cetakkwitansi', [TabunganController::class, 'cetakkwitansi']);
     Route::post('/rekening/storemutasi', [TabunganController::class, 'storemutasi']);
+    Route::get('/laporantabungan', [TabunganController::class, 'laporantabungan']);
 
     //Jenis Simpanan
     Route::get('/jenispembiayaan', [JenispembiayaanController::class, 'index']);
@@ -120,6 +122,7 @@ Route::middleware(['auth', 'ceklevel:admin'])->group(function () {
     Route::get('/simpanan/{no_anggota}/show', [SimpananController::class, 'show']);
     Route::post('/simpanan/store', [SimpananController::class, 'store']);
     Route::delete('/simpanan/{no_transaksi}/delete', [SimpananController::class, 'destroy']);
+    Route::get('/simpanan/{no_transaksi}/cetakkwitansi', [SimpananController::class, 'cetakkwitansi']);
 
     //Pembiayaan
     Route::get('/pembiayaan', [PembiayaanController::class, 'index']);
@@ -129,6 +132,7 @@ Route::middleware(['auth', 'ceklevel:admin'])->group(function () {
     Route::get('/pembiayaan/{no_akad}/show', [PembiayaanController::class, 'show']);
     Route::post('/pembiayaan/bayar', [PembiayaanController::class, 'bayar']);
     Route::delete('/pembiayaan/{no_transaksi}/deletebayar', [PembiayaanController::class, 'deletebayar']);
+    Route::get('/pembiayaan/{no_transaksi}/cetakkwitansi', [PembiayaanController::class, 'cetakkwitansi']);
 
 
     //Loaddata

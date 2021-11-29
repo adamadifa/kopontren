@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
+use PDF;
 
 class SimpananController extends Controller
 {
@@ -180,5 +181,19 @@ class SimpananController extends Controller
             DB::rollback();
             return redirect('/simpanan/' . Crypt::encrypt($no_anggota) . '/show')->with(['warning' => 'Data Gagal Dihapus']);
         }
+    }
+
+    function cetakkwitansi($no_transaksi)
+    {
+        $no_transaksi = Crypt::decrypt($no_transaksi);
+        $transaksi = DB::table('koperasi_simpanan')
+            ->select('koperasi_simpanan.*', 'nama_lengkap', 'nama_simpanan')
+            ->join('koperasi_anggota', 'koperasi_simpanan.no_anggota', '=', 'koperasi_anggota.no_anggota')
+            ->join('koperasi_jenissimpanan', 'koperasi_simpanan.kode_simpanan', '=', 'koperasi_jenissimpanan.kode_simpanan')
+            ->where('no_transaksi', $no_transaksi)->first();
+
+        $pdf = PDF::loadview('simpanan.cetak_kwitansi', compact('transaksi'))->setPaper('a5', 'landscape');;
+        return $pdf->stream();
+        //return view('pendaftar.cetak', compact('pendaftar', 'qrcode'));
     }
 }

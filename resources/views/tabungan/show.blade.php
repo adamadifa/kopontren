@@ -252,15 +252,16 @@
                                 </td>
                                 <td class="text-center">{{ $d->name }}</td>
                                 <td>
-                                    @if ($i == $totalrow)
-                                    <div class="flex justify-center items-center">
+                                    <div class="btn-group" role="group" aria-label="Basic example">
+                                        <a href="/tabungan/{{ Crypt::encrypt($d->no_transaksi) }}/cetakkwitansi" class="primary mr-1" target="_blank"><i class="feather icon-printer"></i></a>
+                                        @if ($i == $totalrow)
                                         <form method="POST" class="deleteform" action="/simpanan/{{ Crypt::encrypt($d->no_transaksi) }}/delete">
                                             @csrf
                                             @method('DELETE')
                                             <a class="delete-confirm"><i class="feather icon-trash danger"></i></a>
                                         </form>
+                                        @endif
                                     </div>
-                                    @endif
                                 </td>
                             </tr>
                             @php

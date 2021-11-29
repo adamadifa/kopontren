@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
+use PDF;
 
 class PembiayaanController extends Controller
 {
@@ -174,7 +175,8 @@ class PembiayaanController extends Controller
             ->orderBy('cicilan_ke', 'asc')
             ->first();
         $histori = DB::table('koperasi_bayarpembiayaan')->where('no_akad', $no_akad)->get();
-        return view('pembiayaan.show', compact('anggota', 'rencanabayar', 'cicilanke', 'histori'));
+        $totalrow = DB::table('koperasi_bayarpembiayaan')->where('no_akad', $no_akad)->count();
+        return view('pembiayaan.show', compact('anggota', 'rencanabayar', 'cicilanke', 'histori', 'totalrow'));
     }
 
     public function bayar(Request $request)
@@ -260,5 +262,20 @@ class PembiayaanController extends Controller
             DB::rollback();
             return redirect('/pembiayaan/' . Crypt::encrypt($trans->no_akad) . '/show')->with(['success' => 'Data SPP Gagal di Hapus']);
         }
+    }
+
+    function cetakkwitansi($no_transaksi)
+    {
+        $no_transaksi = Crypt::decrypt($no_transaksi);
+        $transaksi = DB::table('koperasi_bayarpembiayaan')
+            ->select('koperasi_bayarpembiayaan.*', 'koperasi_pembiayaan.no_akad', 'keperluan', 'koperasi_pembiayaan.no_anggota', 'nama_lengkap')
+            ->join('koperasi_pembiayaan', 'koperasi_bayarpembiayaan.no_akad', '=', 'koperasi_pembiayaan.no_akad')
+            ->join('koperasi_anggota', 'koperasi_pembiayaan.no_anggota', '=', 'koperasi_anggota.no_anggota')
+            ->where('no_transaksi', $no_transaksi)->first();
+
+
+        $pdf = PDF::loadview('pembiayaan.cetak_kwitansi', compact('transaksi'))->setPaper('a5', 'landscape');;
+        return $pdf->stream();
+        //return view('pendaftar.cetak', compact('pendaftar', 'qrcode'));
     }
 }

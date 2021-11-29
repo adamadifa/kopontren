@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
+use PDF;
 
 class TabunganController extends Controller
 {
@@ -249,5 +250,26 @@ class TabunganController extends Controller
             DB::rollback();
             return redirect('/rekening/' . Crypt::encrypt($no_rekening) . '/show')->with(['warning' => 'Data Gagal Disimpan']);
         }
+    }
+
+    function cetakkwitansi($no_transaksi)
+    {
+        $no_transaksi = Crypt::decrypt($no_transaksi);
+        $transaksi = DB::table('koperasi_tabungan_histori')
+            ->select('koperasi_tabungan_histori.*', 'koperasi_tabungan.no_anggota', 'nama_lengkap', 'nama_tabungan')
+            ->join('koperasi_tabungan', 'koperasi_tabungan_histori.no_rekening', '=', 'koperasi_tabungan.no_rekening')
+            ->join('koperasi_anggota', 'koperasi_tabungan.no_anggota', '=', 'koperasi_anggota.no_anggota')
+            ->join('koperasi_jenistabungan', 'koperasi_tabungan.kode_tabungan', '=', 'koperasi_jenistabungan.kode_tabungan')
+            ->where('no_transaksi', $no_transaksi)->first();
+
+        $pdf = PDF::loadview('tabungan.cetak_kwitansi', compact('transaksi'))->setPaper('a5', 'landscape');;
+        return $pdf->stream();
+        //return view('pendaftar.cetak', compact('pendaftar', 'qrcode'));
+    }
+
+    public function laporantabungan()
+    {
+        $jenistabungan = DB::table('koperasi_jenistabungan')->get();
+        return view('tabungan.laporan', compact('jenistabungan'));
     }
 }
