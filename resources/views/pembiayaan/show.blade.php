@@ -146,6 +146,10 @@
                                         <td align="right">{{ number_format($tagihan,'0','','.') }}</td>
                                     </tr>
                                     <tr>
+                                        <td>Bagi Hasil</td>
+                                        <td align="right">{{ number_format(($anggota->persentase/100)*$anggota->jumlah,'0','','.') }}</td>
+                                    </tr>
+                                    <tr>
                                         <td>Jangka Waktu</td>
                                         <td>{{ $anggota->jangka_waktu }} Bulan</td>
                                     </tr>

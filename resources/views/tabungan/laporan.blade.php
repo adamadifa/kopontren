@@ -27,7 +27,8 @@
                 <div class="card">
                     <div class="card-body">
 
-                        <form action="/cetaklaptabungan" method="POST">
+                        <form action="/cetakbayartabungan" method="POST" target="_blank">
+                            @csrf
                             <div class="row">
                                 <div class="col-12">
                                     <div class="form-group  @error('jenis_tabungan') error @enderror">
@@ -46,17 +47,11 @@
                                         @enderror
                                     </div>
                                     <div class="row">
-                                        <div class="col-12">
-                                            <div class="form-group @error('tahun') error @enderror">
-                                                <select name="tahun" id="tahun" class="form-control">
-                                                    <?php
-                                                    $tahun = 2021;
-                                                    for($t=$tahun; $t<=date('Y'); $t++ ){
-                                                    ?>
-                                                    <option {{ (old('tahun')==$t ? 'selected' : '')  }} value="{{ $t }}">{{ $t }}</option>
-                                                    <?php } ?>
-                                                </select>
-                                            </div>
+                                        <div class="col-6">
+                                            <x-inputtext label="Dari" icon="feather icon-calendar" field="dari" datepicker="true" />
+                                        </div>
+                                        <div class="col-6">
+                                            <x-inputtext label="Sampai" icon="feather icon-calendar" field="sampai" datepicker="true" />
                                         </div>
                                     </div>
                                     <div class="row">

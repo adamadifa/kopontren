@@ -62,7 +62,7 @@
                         </form>
                     </div>
                 </div>
-
+                <a href="/cetakrekappembiayaan" class="btn btn-info mb-2" target="_blank"><i class="feather icon-printer mr-1"></i> Cetak</a>
                 <div class="table-responsive">
                     <table class="table table-bordered table-striped">
                         <thead>
@@ -73,6 +73,7 @@
                                 <th class="text-center">NO ANGGOTA</th>
                                 <th>NAMA LENGKAP</th>
                                 <th>JENIS PEMBIAYAAN</th>
+                                <th>POKOK</th>
                                 <th>JUMLAH PEMBIAYAAN</th>
                                 <th>STATUS</th>
                                 <th>ACTIONS</th>
@@ -88,6 +89,7 @@
                                 <td>{{ $d->nama_lengkap }}</td>
                                 <td>{{ $d->kode_pembiayaan }} - {{ $d->nama_pembiayaan }}</td>
                                 <td align="right">{{ number_format($d->jumlah,'0','','.') }}</td>
+                                <td align="right">{{ number_format($d->jumlah + ($d->jumlah * ($d->persentase /100)),'0','','.') }}</td>
                                 <td>
                                     @if ($d->status==0)
                                     <span class="badge bg-danger">Belum Lunas</span>

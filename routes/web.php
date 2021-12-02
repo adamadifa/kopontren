@@ -107,6 +107,9 @@ Route::middleware(['auth', 'ceklevel:admin'])->group(function () {
     Route::get('/tabungan/{no_transaksi}/cetakkwitansi', [TabunganController::class, 'cetakkwitansi']);
     Route::post('/rekening/storemutasi', [TabunganController::class, 'storemutasi']);
     Route::get('/laporantabungan', [TabunganController::class, 'laporantabungan']);
+    Route::get('/rekaptabungan', [TabunganController::class, 'rekaptabungan']);
+    Route::post('/cetakbayartabungan', [TabunganController::class, 'cetakbayartabungan']);
+    Route::post('/cetakrekaptabungan', [TabunganController::class, 'cetakrekaptabungan']);
 
     //Jenis Simpanan
     Route::get('/jenispembiayaan', [JenispembiayaanController::class, 'index']);
@@ -123,7 +126,10 @@ Route::middleware(['auth', 'ceklevel:admin'])->group(function () {
     Route::post('/simpanan/store', [SimpananController::class, 'store']);
     Route::delete('/simpanan/{no_transaksi}/delete', [SimpananController::class, 'destroy']);
     Route::get('/simpanan/{no_transaksi}/cetakkwitansi', [SimpananController::class, 'cetakkwitansi']);
-
+    Route::get('/laporansimpanan', [SimpananController::class, 'laporansimpanan']);
+    Route::post('/cetakbayarsimpanan', [SimpananController::class, 'cetakbayarsimpanan']);
+    Route::get('/rekapsimpanan', [SimpananController::class, 'rekapsimpanan']);
+    Route::post('/cetakrekapsimpanan', [SimpananController::class, 'cetakrekapsimpanan']);
     //Pembiayaan
     Route::get('/pembiayaan', [PembiayaanController::class, 'index']);
     Route::get('/pembiayaan/create', [PembiayaanController::class, 'create']);
@@ -133,8 +139,9 @@ Route::middleware(['auth', 'ceklevel:admin'])->group(function () {
     Route::post('/pembiayaan/bayar', [PembiayaanController::class, 'bayar']);
     Route::delete('/pembiayaan/{no_transaksi}/deletebayar', [PembiayaanController::class, 'deletebayar']);
     Route::get('/pembiayaan/{no_transaksi}/cetakkwitansi', [PembiayaanController::class, 'cetakkwitansi']);
-
-
+    Route::get('/laporanpembiayaan', [PembiayaanController::class, 'laporanpembiayaan']);
+    Route::post('/cetakbayarpembiayaan', [PembiayaanController::class, 'cetakbayarpembiayaan']);
+    Route::get('/cetakrekappembiayaan', [PembiayaanController::class, 'cetakrekappembiayaan']);
     //Loaddata
     Route::post('/loaddata/getkota', [LoaddataController::class, 'getkota']);
     Route::post('/loaddata/getkecamatan', [LoaddataController::class, 'getkecamatan']);

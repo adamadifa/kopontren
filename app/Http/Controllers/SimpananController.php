@@ -196,4 +196,99 @@ class SimpananController extends Controller
         return $pdf->stream();
         //return view('pendaftar.cetak', compact('pendaftar', 'qrcode'));
     }
+
+    public function laporansimpanan()
+    {
+        $jenissimpanan = DB::table('koperasi_jenissimpanan')->get();
+        return view('simpanan.laporan', compact('jenissimpanan'));
+    }
+
+    function cetakbayarsimpanan(Request $request)
+    {
+        $dari = $request->dari;
+        $sampai = $request->sampai;
+        $simpanan = DB::table('koperasi_jenissimpanan')->where('kode_simpanan', $request->kode_simpanan)->first();
+        $transaksi = DB::table('koperasi_simpanan')
+            ->select('koperasi_simpanan.*', 'nama_lengkap', 'nama_simpanan')
+            ->join('koperasi_anggota', 'koperasi_simpanan.no_anggota', '=', 'koperasi_anggota.no_anggota')
+            ->join('koperasi_jenissimpanan', 'koperasi_simpanan.kode_simpanan', '=', 'koperasi_jenissimpanan.kode_simpanan')
+            ->where('koperasi_simpanan.kode_simpanan', $request->kode_simpanan)
+            ->whereBetween('tgl_transaksi', [$request->dari, $request->sampai])->get();
+
+        $pdf = PDF::loadview('simpanan.cetak_lapbayar', compact('transaksi', 'dari', 'sampai', 'simpanan'))->setPaper('a4');
+        return $pdf->stream();
+        //return view('pendaftar.cetak', compact('pendaftar', 'qrcode'));
+    }
+
+    public function rekapsimpanan()
+    {
+        return view('simpanan.rekap');
+    }
+
+    function cetakrekapsimpanan(Request $request)
+    {
+        $lasttahun = $request->tahun - 1;
+        $dari = $request->tahun . "-01-01";
+        $lastdari = $request->tahun - 1 . "-01-01";
+        $cekakhirbulan = $request->tahun . "-12-01";
+        $lastcekakhirbulan = $request->tahun - 1 . "-12-01";
+        $sampai = date("Y-m-t", strtotime($cekakhirbulan));
+        $lastsampai = date("Y-m-t", strtotime($lastcekakhirbulan));
+        $transaksi = DB::table('koperasi_anggota as ka')
+            ->select(
+                'ka.no_anggota',
+                'nama_lengkap',
+                DB::raw('ifnull(saldoawal,0) as saldoawal'),
+                DB::raw('ifnull(jan,0) as jan'),
+                DB::raw('ifnull(feb,0) as feb'),
+                DB::raw('ifnull(mar,0) as mar'),
+                DB::raw('ifnull(apr,0) as apr'),
+                DB::raw('ifnull(mei,0) as mei'),
+                DB::raw('ifnull(jun,0) as jun'),
+                DB::raw('ifnull(jul,0) as jul'),
+                DB::raw('ifnull(agu,0) as agu'),
+                DB::raw('ifnull(sep,0) as sep'),
+                DB::raw('ifnull(okt,0) as okt'),
+                DB::raw('ifnull(nov,0) as nov'),
+                DB::raw('ifnull(des,0) as des')
+            )
+            ->leftJoin(
+                DB::raw("(
+                    SELECT ks.no_anggota,
+                    SUM(IF(MONTH(tgl_transaksi)=1 AND jenis_transaksi='S',jumlah,0)) - SUM(IF(MONTH(tgl_transaksi)=1 AND jenis_transaksi='T',jumlah,0)) as 'jan',
+                    SUM(IF(MONTH(tgl_transaksi)=2 AND jenis_transaksi='S',jumlah,0)) -SUM(IF(MONTH(tgl_transaksi)=2 AND jenis_transaksi='T',jumlah,0)) as 'feb',
+                    SUM(IF(MONTH(tgl_transaksi)=3 AND jenis_transaksi='S',jumlah,0)) -SUM(IF(MONTH(tgl_transaksi)=3 AND jenis_transaksi='T',jumlah,0)) as 'mar',
+                    SUM(IF(MONTH(tgl_transaksi)=4 AND jenis_transaksi='S',jumlah,0)) -SUM(IF(MONTH(tgl_transaksi)=4 AND jenis_transaksi='T',jumlah,0)) as 'apr',
+                    SUM(IF(MONTH(tgl_transaksi)=5 AND jenis_transaksi='S',jumlah,0)) - SUM(IF(MONTH(tgl_transaksi)=5 AND jenis_transaksi='T',jumlah,0))  as 'mei',
+                    SUM(IF(MONTH(tgl_transaksi)=6 AND jenis_transaksi='S',jumlah,0)) - SUM(IF(MONTH(tgl_transaksi)=6 AND jenis_transaksi='T',jumlah,0))  as 'jun',
+                    SUM(IF(MONTH(tgl_transaksi)=7 AND jenis_transaksi='S',jumlah,0)) - SUM(IF(MONTH(tgl_transaksi)=7 AND jenis_transaksi='T',jumlah,0))  as 'jul',
+                    SUM(IF(MONTH(tgl_transaksi)=8 AND jenis_transaksi='S',jumlah,0)) - SUM(IF(MONTH(tgl_transaksi)=8 AND jenis_transaksi='T',jumlah,0))  as 'agu',
+                    SUM(IF(MONTH(tgl_transaksi)=9 AND jenis_transaksi='S',jumlah,0)) - SUM(IF(MONTH(tgl_transaksi)=9 AND jenis_transaksi='T',jumlah,0)) as 'sep',
+                    SUM(IF(MONTH(tgl_transaksi)=10 AND jenis_transaksi='S',jumlah,0)) - SUM(IF(MONTH(tgl_transaksi)=10 AND jenis_transaksi='T',jumlah,0)) as 'okt',
+                    SUM(IF(MONTH(tgl_transaksi)=11 AND jenis_transaksi='S',jumlah,0)) - SUM(IF(MONTH(tgl_transaksi)=11 AND jenis_transaksi='T',jumlah,0)) as 'nov',
+                    SUM(IF(MONTH(tgl_transaksi)=12 AND jenis_transaksi='S',jumlah,0)) - SUM(IF(MONTH(tgl_transaksi)=12 AND jenis_transaksi='T',jumlah,0)) as 'des'
+                    FROM koperasi_simpanan ks
+                    WHERE tgl_transaksi BETWEEN '$dari' AND '$sampai'
+                    GROUP BY ks.no_anggota
+                ) histori"),
+                function ($join) {
+                    $join->on('ka.no_anggota', '=', 'histori.no_anggota');
+                }
+            )
+            ->leftJoin(
+                DB::raw("(
+                    SELECT no_anggota,saldo as saldoawal
+                        FROM koperasi_simpanan
+                        WHERE no_transaksi IN (SELECT max(no_transaksi) as no_transaksi FROM koperasi_simpanan)
+                        AND tgl_transaksi BETWEEN '$lastdari' AND '$lastsampai'
+                ) sa"),
+                function ($join) {
+                    $join->on('ka.no_anggota', '=', 'sa.no_anggota');
+                }
+            )
+            ->groupBy('ka.no_anggota', 'nama_lengkap', 'jan', 'feb', 'mar', 'apr', 'mei', 'jun', 'jul', 'agu', 'sep', 'okt', 'nov', 'des', 'saldoawal')->get();
+        $pdf = PDF::loadview('simpanan.cetak_rekap', compact('transaksi', 'dari', 'sampai', 'lasttahun'))->setPaper('legal', 'landscape');
+        return $pdf->stream();
+        //return view('pendaftar.cetak', compact('pendaftar', 'qrcode'));
+    }
 }

@@ -42,11 +42,23 @@
             </li>
             <li class=" navigation-header"><span>Laporan</span>
             <li class=" nav-item">
-                <a href="#"><i class="feather icon-file"></i><span class="menu-title">Laporan</span></a>
+                <a href="#"><i class="feather icon-file"></i><span class="menu-title">Tabungan</span></a>
                 <ul class="menu-content">
-                    <li class="{{ request()->is(['laporansimpanan', 'laporansimpanan/*']) ? 'active' : '' }}"><a href="/laporansimpanan"><i class="feather icon-file"></i><span class="menu-item"> Simpanan</span></a></li>
-                    <li class="{{ request()->is(['laporantabungan', 'laporantabungan/*']) ? 'active' : '' }}"><a href="/laporantabungan"><i class="feather icon-file"></i><span class="menu-item"> Tabungan</span></a></li>
-                    <li class="{{ request()->is(['laporanpembiayaan', 'laporanpembiayaan/*']) ? 'active' : '' }}"><a href="/laporanpembiayaan"><i class="feather icon-file"></i><span class="menu-item"> Pembiayaan</span></a></li>
+                    <li class="{{ request()->is(['laporantabungan', 'laporantabungan/*']) ? 'active' : '' }}"><a href="/laporantabungan"><i class="feather icon-file"></i><span class="menu-item"> Lap. Transaksi</span></a></li>
+                    <li class="{{ request()->is(['rekaptabungan', 'rekaptabungan/*']) ? 'active' : '' }}"><a href="/rekaptabungan"><i class="feather icon-file"></i><span class="menu-item"> Rekap. Tabungan</span></a></li>
+                </ul>
+            </li>
+            <li class=" nav-item">
+                <a href="#"><i class="feather icon-file"></i><span class="menu-title">Simpanan</span></a>
+                <ul class="menu-content">
+                    <li class="{{ request()->is(['laporansimpanan', 'laporansimpanan/*']) ? 'active' : '' }}"><a href="/laporansimpanan"><i class="feather icon-file"></i><span class="menu-item"> Lap. Transaksi</span></a></li>
+                    <li class="{{ request()->is(['rekapsimpanan', 'rekapsimpanan/*']) ? 'active' : '' }}"><a href="/rekapsimpanan"><i class="feather icon-file"></i><span class="menu-item"> Rekap. Simpanan</span></a></li>
+                </ul>
+            </li>
+            <li class=" nav-item">
+                <a href="#"><i class="feather icon-file"></i><span class="menu-title">Pembiayaan</span></a>
+                <ul class="menu-content">
+                    <li class="{{ request()->is(['laporanpembiayaan', 'laporanpembiayaan/*']) ? 'active' : '' }}"><a href="/laporanpembiayaan"><i class="feather icon-file"></i><span class="menu-item"> Lap. Transaksi</span></a></li>
 
                 </ul>
             </li>

@@ -272,4 +272,98 @@ class TabunganController extends Controller
         $jenistabungan = DB::table('koperasi_jenistabungan')->get();
         return view('tabungan.laporan', compact('jenistabungan'));
     }
+
+    function cetakbayartabungan(Request $request)
+    {
+        $dari = $request->dari;
+        $sampai = $request->sampai;
+        $tabungan = DB::table('koperasi_jenistabungan')->where('kode_tabungan', $request->jenis_tabungan)->first();
+        $transaksi = DB::table('koperasi_tabungan_histori')
+            ->select('koperasi_tabungan_histori.*', 'koperasi_tabungan.no_anggota', 'nama_lengkap', 'nama_tabungan')
+            ->join('koperasi_tabungan', 'koperasi_tabungan_histori.no_rekening', '=', 'koperasi_tabungan.no_rekening')
+            ->join('koperasi_anggota', 'koperasi_tabungan.no_anggota', '=', 'koperasi_anggota.no_anggota')
+            ->join('koperasi_jenistabungan', 'koperasi_tabungan.kode_tabungan', '=', 'koperasi_jenistabungan.kode_tabungan')
+            ->where('koperasi_tabungan.kode_tabungan', $request->jenis_tabungan)
+            ->whereBetween('tgl_transaksi', [$request->dari, $request->sampai])->get();
+
+        $pdf = PDF::loadview('tabungan.cetak_lapbayar', compact('transaksi', 'dari', 'sampai', 'tabungan'))->setPaper('a4');
+        return $pdf->stream();
+        //return view('pendaftar.cetak', compact('pendaftar', 'qrcode'));
+    }
+
+    public function rekaptabungan()
+    {
+        $jenistabungan = DB::table('koperasi_jenistabungan')->get();
+        return view('tabungan.rekap', compact('jenistabungan'));
+    }
+
+    function cetakrekaptabungan(Request $request)
+    {
+        $lasttahun = $request->tahun - 1;
+        $dari = $request->tahun . "-01-01";
+        $lastdari = $request->tahun - 1 . "-01-01";
+        $cekakhirbulan = $request->tahun . "-12-01";
+        $lastcekakhirbulan = $request->tahun - 1 . "-12-01";
+        $sampai = date("Y-m-t", strtotime($cekakhirbulan));
+        $lastsampai = date("Y-m-t", strtotime($lastcekakhirbulan));
+        $tabungan = DB::table('koperasi_jenistabungan')->where('kode_tabungan', $request->jenis_tabungan)->first();
+        $transaksi = DB::table('koperasi_tabungan as kt')
+            ->select(
+                'kt.no_rekening',
+                'nama_lengkap',
+                DB::raw('ifnull(saldoawal,0) as saldoawal'),
+                DB::raw('ifnull(jan,0) as jan'),
+                DB::raw('ifnull(feb,0) as feb'),
+                DB::raw('ifnull(mar,0) as mar'),
+                DB::raw('ifnull(apr,0) as apr'),
+                DB::raw('ifnull(mei,0) as mei'),
+                DB::raw('ifnull(jun,0) as jun'),
+                DB::raw('ifnull(jul,0) as jul'),
+                DB::raw('ifnull(agu,0) as agu'),
+                DB::raw('ifnull(sep,0) as sep'),
+                DB::raw('ifnull(okt,0) as okt'),
+                DB::raw('ifnull(nov,0) as nov'),
+                DB::raw('ifnull(des,0) as des')
+            )
+            ->join('koperasi_anggota as ka', 'kt.no_anggota', '=', 'ka.no_anggota')
+            ->leftJoin(
+                DB::raw("(
+                    SELECT kth.no_rekening,
+                    SUM(IF(MONTH(tgl_transaksi)=1 AND jenis_transaksi='S',jumlah,0)) - SUM(IF(MONTH(tgl_transaksi)=1 AND jenis_transaksi='T',jumlah,0)) as 'jan',
+                    SUM(IF(MONTH(tgl_transaksi)=2 AND jenis_transaksi='S',jumlah,0)) -SUM(IF(MONTH(tgl_transaksi)=2 AND jenis_transaksi='T',jumlah,0)) as 'feb',
+                    SUM(IF(MONTH(tgl_transaksi)=3 AND jenis_transaksi='S',jumlah,0)) -SUM(IF(MONTH(tgl_transaksi)=3 AND jenis_transaksi='T',jumlah,0)) as 'mar',
+                    SUM(IF(MONTH(tgl_transaksi)=4 AND jenis_transaksi='S',jumlah,0)) -SUM(IF(MONTH(tgl_transaksi)=4 AND jenis_transaksi='T',jumlah,0)) as 'apr',
+                    SUM(IF(MONTH(tgl_transaksi)=5 AND jenis_transaksi='S',jumlah,0)) - SUM(IF(MONTH(tgl_transaksi)=5 AND jenis_transaksi='T',jumlah,0))  as 'mei',
+                    SUM(IF(MONTH(tgl_transaksi)=6 AND jenis_transaksi='S',jumlah,0)) - SUM(IF(MONTH(tgl_transaksi)=6 AND jenis_transaksi='T',jumlah,0))  as 'jun',
+                    SUM(IF(MONTH(tgl_transaksi)=7 AND jenis_transaksi='S',jumlah,0)) - SUM(IF(MONTH(tgl_transaksi)=7 AND jenis_transaksi='T',jumlah,0))  as 'jul',
+                    SUM(IF(MONTH(tgl_transaksi)=8 AND jenis_transaksi='S',jumlah,0)) - SUM(IF(MONTH(tgl_transaksi)=8 AND jenis_transaksi='T',jumlah,0))  as 'agu',
+                    SUM(IF(MONTH(tgl_transaksi)=9 AND jenis_transaksi='S',jumlah,0)) - SUM(IF(MONTH(tgl_transaksi)=9 AND jenis_transaksi='T',jumlah,0)) as 'sep',
+                    SUM(IF(MONTH(tgl_transaksi)=10 AND jenis_transaksi='S',jumlah,0)) - SUM(IF(MONTH(tgl_transaksi)=10 AND jenis_transaksi='T',jumlah,0)) as 'okt',
+                    SUM(IF(MONTH(tgl_transaksi)=11 AND jenis_transaksi='S',jumlah,0)) - SUM(IF(MONTH(tgl_transaksi)=11 AND jenis_transaksi='T',jumlah,0)) as 'nov',
+                    SUM(IF(MONTH(tgl_transaksi)=12 AND jenis_transaksi='S',jumlah,0)) - SUM(IF(MONTH(tgl_transaksi)=12 AND jenis_transaksi='T',jumlah,0)) as 'des'
+                    FROM koperasi_tabungan_histori kth
+                    WHERE tgl_transaksi BETWEEN '$dari' AND '$sampai'
+                    GROUP BY no_rekening
+                ) histori"),
+                function ($join) {
+                    $join->on('kt.no_rekening', '=', 'histori.no_rekening');
+                }
+            )
+            ->leftJoin(
+                DB::raw("(
+                    SELECT no_rekening,saldo as saldoawal
+                        FROM koperasi_tabungan_histori
+                        WHERE no_transaksi IN (SELECT max(no_transaksi) as no_transaksi FROM koperasi_tabungan_histori)
+                        AND tgl_transaksi BETWEEN '$lastdari' AND '$lastsampai'
+                ) sa"),
+                function ($join) {
+                    $join->on('kt.no_rekening', '=', 'sa.no_rekening');
+                }
+            )
+            ->where('kt.kode_tabungan', $request->jenis_tabungan)
+            ->groupBy('kt.no_rekening', 'nama_lengkap', 'jan', 'feb', 'mar', 'apr', 'mei', 'jun', 'jul', 'agu', 'sep', 'okt', 'nov', 'des', 'saldoawal')->get();
+        $pdf = PDF::loadview('tabungan.cetak_rekap', compact('transaksi', 'dari', 'sampai', 'tabungan', 'lasttahun'))->setPaper('legal', 'landscape');
+        return $pdf->stream();
+        //return view('pendaftar.cetak', compact('pendaftar', 'qrcode'));
+    }
 }

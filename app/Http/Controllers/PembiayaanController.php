@@ -228,6 +228,12 @@ class PembiayaanController extends Controller
                     'bayar' => str_replace(".", "", $request->jumlah)
                 ]);
 
+            DB::table('koperasi_pembiayaan')
+                ->where('no_akad', $no_akad)
+                ->update([
+                    'jmlbayar' => DB::raw('jmlbayar +' . str_replace(".", "", $request->jumlah))
+                ]);
+
             DB::commit();
 
             return redirect('/pembiayaan/' . Crypt::encrypt($no_akad) . '/show')->with(['success' => 'Data SPP Berhasil di Simpan']);
@@ -254,7 +260,11 @@ class PembiayaanController extends Controller
                 ->where('no_transaksi', $no_transaksi)
                 ->delete();
 
-
+            DB::table('koperasi_pembiayaan')
+                ->where('no_akad', $trans->no_akad)
+                ->update([
+                    'jmlbayar' => DB::raw('jmlbayar -' . $trans->jumlah)
+                ]);
             DB::commit();
 
             return redirect('/pembiayaan/' . Crypt::encrypt($trans->no_akad) . '/show')->with(['success' => 'Data SPP Berhasil di Hapus']);
@@ -275,6 +285,49 @@ class PembiayaanController extends Controller
 
 
         $pdf = PDF::loadview('pembiayaan.cetak_kwitansi', compact('transaksi'))->setPaper('a5', 'landscape');;
+        return $pdf->stream();
+        //return view('pendaftar.cetak', compact('pendaftar', 'qrcode'));
+    }
+
+    public function laporanpembiayaan()
+    {
+
+        return view('pembiayaan.laporan');
+    }
+
+    function cetakbayarpembiayaan(Request $request)
+    {
+        $dari = $request->dari;
+        $sampai = $request->sampai;
+        $transaksi = DB::table('koperasi_bayarpembiayaan')
+            ->select('koperasi_bayarpembiayaan.*', 'koperasi_pembiayaan.no_akad', 'keperluan', 'koperasi_pembiayaan.no_anggota', 'nama_lengkap')
+            ->join('koperasi_pembiayaan', 'koperasi_bayarpembiayaan.no_akad', '=', 'koperasi_pembiayaan.no_akad')
+            ->join('koperasi_anggota', 'koperasi_pembiayaan.no_anggota', '=', 'koperasi_anggota.no_anggota')
+            ->whereBetween('tgl_transaksi', [$request->dari, $request->sampai])->get();
+        $pdf = PDF::loadview('pembiayaan.cetak_lapbayar', compact('transaksi', 'dari', 'sampai'))->setPaper('a4', 'landscape');
+        return $pdf->stream();
+        //return view('pendaftar.cetak', compact('pendaftar', 'qrcode'));
+    }
+    function cetakrekappembiayaan()
+    {
+
+        $pembiayaan = DB::table('koperasi_pembiayaan as kp')
+            ->select('kp.no_akad', 'tgl_permohonan', 'kp.no_anggota', 'nama_lengkap', 'jumlah', 'kp.persentase', 'jmlbayar', 'jangka_waktu', 'kp.kode_pembiayaan', 'nama_pembiayaan', 'sisacicilan')
+            ->join('koperasi_jenispembiayaan as kj', 'kp.kode_pembiayaan', '=', 'kj.kode_pembiayaan')
+            ->join('koperasi_anggota as ka', 'kp.no_anggota', '=', 'ka.no_anggota')
+            ->leftJoin(
+                DB::raw("(
+                    SELECT no_akad,COUNT(bayar) as sisacicilan
+                    FROM koperasi_rencanapembiayaan kr
+                    WHERE bayar = 0
+                    GROUP BY no_akad
+                ) rencana"),
+                function ($join) {
+                    $join->on('kp.no_akad', '=', 'rencana.no_akad');
+                }
+            )
+            ->get();
+        $pdf = PDF::loadview('pembiayaan.cetak_rekap', compact('pembiayaan'))->setPaper('a4', 'landscape');
         return $pdf->stream();
         //return view('pendaftar.cetak', compact('pendaftar', 'qrcode'));
     }
