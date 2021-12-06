@@ -97,6 +97,11 @@
                                             <td class="font-weight-bold"><i class="feather icon-book mr-1"></i>Sisa Tagihan
                                             </td>
                                             <td style="text-align: right; font-weight:bold">
+                                                @php
+                                                $jmltagihan =$anggota->jumlah + ($anggota->jumlah * ($anggota->persentase/100));
+                                                $sisatagihan = $jmltagihan - $anggota->jmlbayar;
+                                                @endphp
+                                                {{ number_format($sisatagihan,'0','','.') }}
                                             </td>
                                         </tr>
                                     </table>
@@ -267,7 +272,6 @@
                                     <thead>
                                         <th>NO. TRANSAKSI</th>
                                         <th>TANGGAL</th>
-                                        <th>#</th>
                                         <th>JUMLAH</th>
                                         <th>AKSI</th>
                                     </thead>
@@ -279,7 +283,6 @@
                                         <tr>
                                             <td>{{ $d->no_transaksi }}</td>
                                             <td>{{ date("d/m/y",strtotime($d->tgl_transaksi)) }}</td>
-                                            <td class="text-center">{{ $d->cicilan_ke }}</td>
                                             <td align="right">{{ number_format($d->jumlah,'0','','.') }}</td>
                                             <td>
                                                 <div class="btn-group" role="group" aria-label="Basic example">
@@ -335,11 +338,8 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-3">
-                            <x-inputtext label="Cicilan Ke" field="cicilan_ke" icon="feather icon-inbox" value="{{ $cicilanke->cicilan_ke }}" readonly="true" />
-                        </div>
-                        <div class="col-9">
-                            <x-inputtext label="Jumlah" field="jumlah" value="{{ number_format($cicilanke->jumlah,'0','','.') }}" readonly="true" icon="feather icon-inbox" />
+                        <div class="col-12">
+                            <x-inputtext label="Jumlah" field="jumlah" value="" icon="feather icon-inbox" />
                         </div>
 
                     </div>
