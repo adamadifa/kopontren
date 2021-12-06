@@ -138,7 +138,7 @@ class PembiayaanController extends Controller
 
             return redirect('/pembiayaan')->with(['success' => 'Data SPP Berhasil di Simpan']);
         } catch (\Exception $e) {
-            dd($e);
+            //dd($e);
             DB::rollback();
             return redirect('/pembiayaan')->with(['warning' => 'Data SPP Gagal di Simpan']);
         }
