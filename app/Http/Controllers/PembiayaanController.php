@@ -136,11 +136,11 @@ class PembiayaanController extends Controller
 
             DB::commit();
 
-            return redirect('/pembiayaan')->with(['success' => 'Data SPP Berhasil di Simpan']);
+            return redirect('/pembiayaan')->with(['success' => 'Data Pembiayaan Berhasil di Simpan']);
         } catch (\Exception $e) {
             //dd($e);
             DB::rollback();
-            return redirect('/pembiayaan')->with(['warning' => 'Data SPP Gagal di Simpan']);
+            return redirect('/pembiayaan')->with(['warning' => 'Data Pembiayaan Gagal di Simpan']);
         }
     }
 
@@ -155,10 +155,10 @@ class PembiayaanController extends Controller
 
             DB::commit();
 
-            return redirect('/pembiayaan')->with(['success' => 'Data SPP Berhasil di Hapus']);
+            return redirect('/pembiayaan')->with(['success' => 'Data Pembiayaan Berhasil di Hapus']);
         } catch (\Exception $e) {
             DB::rollback();
-            return redirect('/pembiayaan')->with(['warning' => 'Data SPP Gagal di Hapus']);
+            return redirect('/pembiayaan')->with(['warning' => 'Data Pembiayaan Gagal di Hapus']);
         }
     }
 
@@ -238,22 +238,46 @@ class PembiayaanController extends Controller
                         ->update([
                             'bayar' => $d->jumlah
                         ]);
-                    $cicilan .=  $d->cicilan_ke . ",";
+                    //$cicilan .=  $d->cicilan_ke . ",";
                     $sisapercicilan = $d->jumlah - $d->bayar;
                     $sisa = $sisa - $sisapercicilan;
+                     
+                    if($sisa==0){
+                        $cicilan .=  $d->cicilan_ke;
+                    }else{
+                        $cicilan .=  $d->cicilan_ke . ",";
+                    }
+                    
+                    $coba = $cicilan;
+                   
                 } else {
                     if ($sisa != 0) {
                         $sisapercicilan = $d->jumlah - $d->bayar;
                         if ($d->bayar != 0) {
-
-                            DB::table('koperasi_rencanapembiayaan')
-                                ->where('no_akad', $no_akad)
-                                ->where('cicilan_ke', $i)
-                                ->update([
-                                    'bayar' =>  DB::raw('bayar +' . $sisapercicilan)
-                                ]);
-                            $cicilan .= $d->cicilan_ke . ",";
-                            $sisa = $sisa - $sisapercicilan;
+                            if ($sisa >= $sisapercicilan) {
+                                DB::table('koperasi_rencanapembiayaan')
+                                    ->where('no_akad', $no_akad)
+                                    ->where('cicilan_ke', $i)
+                                    ->update([
+                                        'bayar' =>  DB::raw('bayar +' . $sisapercicilan)
+                                    ]);
+                                $cicilan .= $d->cicilan_ke . ",";
+                                $sisa = $sisa - $sisapercicilan;
+                            } else {
+                                DB::table('koperasi_rencanapembiayaan')
+                                    ->where('no_akad', $no_akad)
+                                    ->where('cicilan_ke', $i)
+                                    ->update([
+                                        'bayar' =>  DB::raw('bayar +' . $sisa)
+                                    ]);
+                                //$cicilan .= $d->cicilan_ke . ",";
+                                $sisa = $sisa - $sisa;
+                                if($sisa==0){
+                                    $cicilan .=  $d->cicilan_ke;
+                                }else{
+                                    $cicilan .=  $d->cicilan_ke . ",";
+                                }
+                            }
                         } else {
                             DB::table('koperasi_rencanapembiayaan')
                                 ->where('no_akad', $no_akad)
@@ -261,8 +285,13 @@ class PembiayaanController extends Controller
                                 ->update([
                                     'bayar' =>  DB::raw('bayar +' . $sisa)
                                 ]);
-                            $cicilan .= $d->cicilan_ke;
+                            //$cicilan .= $d->cicilan_ke;
                             $sisa = $sisa - $sisa;
+                            if($sisa==0){
+                                $cicilan .=  $d->cicilan_ke;
+                            }else{
+                                $cicilan .=  $d->cicilan_ke . ",";
+                            }
                         }
                     }
                 }
@@ -271,8 +300,8 @@ class PembiayaanController extends Controller
 
                 $i++;
             }
-
-
+    
+            //$c = '$cicilan';
             DB::table('koperasi_bayarpembiayaan')
                 ->insert([
                     'no_transaksi' => $no_transaksi,
@@ -290,11 +319,11 @@ class PembiayaanController extends Controller
 
             DB::commit();
 
-            return redirect('/pembiayaan/' . Crypt::encrypt($no_akad) . '/show')->with(['success' => 'Data SPP Berhasil di Simpan']);
+            return redirect('/pembiayaan/' . Crypt::encrypt($no_akad) . '/show')->with(['success' => 'Data Pembiayaan Berhasil di Simpan']);
         } catch (\Exception $e) {
             DB::rollback();
             dd($e);
-            return redirect('/pembiayaan/' . Crypt::encrypt($no_akad) . '/show')->with(['warning' => 'Data SPP Gagal di Simpan']);
+            return redirect('/pembiayaan/' . Crypt::encrypt($no_akad) . '/show')->with(['warning' => 'Data Pembiayaan Gagal di Simpan']);
         }
     }
 
@@ -353,11 +382,11 @@ class PembiayaanController extends Controller
                 ]);
             DB::commit();
 
-            return redirect('/pembiayaan/' . Crypt::encrypt($trans->no_akad) . '/show')->with(['success' => 'Data SPP Berhasil di Hapus']);
+            return redirect('/pembiayaan/' . Crypt::encrypt($trans->no_akad) . '/show')->with(['success' => 'Data Pembiayaan Berhasil di Hapus']);
         } catch (\Exception $e) {
             DB::rollback();
             //dd($e);
-            return redirect('/pembiayaan/' . Crypt::encrypt($trans->no_akad) . '/show')->with(['success' => 'Data SPP Gagal di Hapus']);
+            return redirect('/pembiayaan/' . Crypt::encrypt($trans->no_akad) . '/show')->with(['success' => 'Data Pembiayaan Gagal di Hapus']);
         }
     }
 

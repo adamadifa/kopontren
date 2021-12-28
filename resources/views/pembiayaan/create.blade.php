@@ -321,7 +321,7 @@
                                                     <select name="kode_pembiayaan" id="kode_pembiayaan" class="form-control">
                                                         <option value="">Jenis Pembiayaan</option>
                                                         @foreach ($jenispembiayaan as $d)
-                                                        <option value="{{$d->kode_pembiayaan}}" persentase="{{ $d->persentase }}">{{ $d->nama_pembiayaan }}
+                                                        <option {{ old('kode_pembiayaan')==$d->kode_pembiayaan ? 'selected' : '' }} value="{{$d->kode_pembiayaan}}" persentase="{{ $d->persentase }}">{{ $d->nama_pembiayaan }}
                                                         </option>
                                                         @endforeach
                                                     </select>
@@ -341,8 +341,18 @@
                                                 <div class="form-group @error('jangka_waktu') error @enderror">
                                                     <select name="jangka_waktu" id="jangka_waktu" class="form-control">
                                                         <option value="">Jangka Waktu</option>
-                                                        <option value="10">10 Bulan</option>
-                                                        <option value="12">12 Bulan</option>
+                                                        <option {{ old('jangka_waktu')=='1' ? 'selected' : '' }} value="1">1 Bulan</option>
+                                                        <option {{ old('jangka_waktu')=='2' ? 'selected' : '' }} value="2">2 Bulan</option>
+                                                        <option {{ old('jangka_waktu')=='3' ? 'selected' : '' }} value="3">3 Bulan</option>
+                                                        <option {{ old('jangka_waktu')=='4' ? 'selected' : '' }} value="4">4 Bulan</option>
+                                                        <option {{ old('jangka_waktu')=='5' ? 'selected' : '' }} value="5">5 Bulan</option>
+                                                        <option {{ old('jangka_waktu')=='6' ? 'selected' : '' }} value="6">6 Bulan</option>
+                                                        <option {{ old('jangka_waktu')=='7' ? 'selected' : '' }} value="7">7 Bulan</option>
+                                                        <option {{ old('jangka_waktu')=='8' ? 'selected' : '' }} value="8">8 Bulan</option>
+                                                        <option {{ old('jangka_waktu')=='9' ? 'selected' : '' }} value="9">9 Bulan</option>
+                                                        <option {{ old('jangka_waktu')=='10' ? 'selected' : '' }} value="10">10 Bulan</option>
+                                                        <option {{ old('jangka_waktu')=='11' ? 'selected' : '' }} value="11">11 Bulan</option>
+                                                        <option {{ old('jangka_waktu')=='12' ? 'selected' : '' }} value="12">12 Bulan</option>
                                                     </select>
                                                     @error('jangka_waktu')
                                                     <div class="help-block">

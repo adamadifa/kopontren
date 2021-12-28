@@ -109,8 +109,10 @@
     $tarik = 0;
     @endphp
     @else
+    @php
     $setor = 0;
-    $tarik = d->jumlah;
+    $tarik = $d->jumlah;
+    @endphp
     @endif
     @php
     $totalsetor += $setor;
