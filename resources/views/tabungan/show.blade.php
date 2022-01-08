@@ -255,7 +255,7 @@
                                     <div class="btn-group" role="group" aria-label="Basic example">
                                         <a href="/tabungan/{{ Crypt::encrypt($d->no_transaksi) }}/cetakkwitansi" class="primary mr-1" target="_blank"><i class="feather icon-printer"></i></a>
                                         @if ($i == $totalrow)
-                                        <form method="POST" class="deleteform" action="/simpanan/{{ Crypt::encrypt($d->no_transaksi) }}/delete">
+                                        <form method="POST" class="deleteform" action="/rekening/{{ Crypt::encrypt($d->no_transaksi) }}/deletehistori">
                                             @csrf
                                             @method('DELETE')
                                             <a class="delete-confirm"><i class="feather icon-trash danger"></i></a>
@@ -413,19 +413,22 @@
             }
         });
 
-        $('.delete-confirm').on('click', function(event) {
+        $('.delete-confirm').click(function(event) {
+            var form = $(this).closest("form");
+            var name = $(this).data("name");
             event.preventDefault();
-            const url = $(this).attr('href');
             swal({
-                title: 'Anda Yakin?'
-                , text: 'Data ini akan didelete secara permanen!'
-                , icon: 'warning'
-                , buttons: ["Cancel", "Yes!"]
-            , }).then(function(value) {
-                if (value) {
-                    $(".deleteform").submit();
-                }
-            });
+                    title: `Are you sure you want to delete this record?`
+                    , text: "If you delete this, it will be gone forever."
+                    , icon: "warning"
+                    , buttons: true
+                    , dangerMode: true
+                , })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        form.submit();
+                    }
+                });
         });
     });
 

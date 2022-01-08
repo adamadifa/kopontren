@@ -25,15 +25,13 @@
             <div class="card-body">
                 <div class="d-flex justify-content-between">
                     <div>
-                        <a href="/anggota/create" class="btn btn-primary"><i
-                                class="feather icon-user-plus mr-2"></i>Tambah
+                        <a href="/anggota/create" class="btn btn-primary"><i class="feather icon-user-plus mr-2"></i>Tambah
                             Anggota</a>
                     </div>
                     <div>
                         <form action="/anggota">
                             <div class=" form-label-group position-relative has-icon-left">
-                                <input type="text" value="{{Request('cari')}}" id="cari" name="cari"
-                                    class="form-control" name="fname-floating-icon" placeholder="Search">
+                                <input type="text" value="{{Request('cari')}}" id="cari" name="cari" class="form-control" name="fname-floating-icon" placeholder="Search">
                                 <div class="form-control-position">
                                     <i class="feather icon-search"></i>
                                 </div>
@@ -70,12 +68,9 @@
                                 </td>
                                 <td class="table-report__action w-56">
                                     <div class="btn-group" role="group" aria-label="Basic example">
-                                        <a class="ml-1" href="/anggota/{{\Crypt::encrypt($d->no_anggota)}}/edit"><i
-                                                class="feather icon-edit"></i></a>
-                                        <a class="ml-1" href="/anggota/{{\Crypt::encrypt($d->no_anggota)}}/show"><i
-                                                class="feather icon-user info"></i></a>
-                                        <form method="POST" class="deleteform"
-                                            action="/anggota/{{Crypt::encrypt($d->no_anggota)}}/delete">
+                                        <a class="ml-1" href="/anggota/{{\Crypt::encrypt($d->no_anggota)}}/edit"><i class="feather icon-edit"></i></a>
+                                        <a class="ml-1" href="/anggota/{{\Crypt::encrypt($d->no_anggota)}}/show"><i class="feather icon-user info"></i></a>
+                                        <form method="POST" class="deleteform" action="/anggota/{{Crypt::encrypt($d->no_anggota)}}/delete">
                                             @csrf
                                             @method('DELETE')
                                             <a class="delete-confirm ml-1">
@@ -100,21 +95,25 @@
 @endsection
 @push('myscript')
 <script>
-    $(function(){
-        $('.delete-confirm').on('click', function (event) {
+    $(function() {
+        $('.delete-confirm').click(function(event) {
+            var form = $(this).closest("form");
+            var name = $(this).data("name");
             event.preventDefault();
-            const url = $(this).attr('href');
             swal({
-                title: 'Anda Yakin?',
-                text: 'Data ini akan didelete secara permanen!',
-                icon: 'warning',
-                buttons: ["Cancel", "Yes!"],
-            }).then(function(value) {
-                if (value) {
-                   $(".deleteform").submit();
-                }
-            });
+                    title: `Are you sure you want to delete this record?`
+                    , text: "If you delete this, it will be gone forever."
+                    , icon: "warning"
+                    , buttons: true
+                    , dangerMode: true
+                , })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        form.submit();
+                    }
+                });
         });
-      });
+    });
+
 </script>
 @endpush

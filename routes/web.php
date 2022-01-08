@@ -110,6 +110,7 @@ Route::middleware(['auth', 'ceklevel:admin'])->group(function () {
     Route::get('/rekaptabungan', [TabunganController::class, 'rekaptabungan']);
     Route::post('/cetakbayartabungan', [TabunganController::class, 'cetakbayartabungan']);
     Route::post('/cetakrekaptabungan', [TabunganController::class, 'cetakrekaptabungan']);
+    Route::delete('/rekening/{no_rekening}/deletehistori', [TabunganController::class, 'destroyhistori']);
 
     //Jenis Simpanan
     Route::get('/jenispembiayaan', [JenispembiayaanController::class, 'index']);

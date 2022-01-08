@@ -26,8 +26,7 @@
             <div class="col-md-6">
                 <div class="card">
                     <div class="card-body">
-                        <a href="/jenissimpanan/create" class="btn btn-primary"><i
-                                class="feather icon-file-plus mr-1"></i>Tambah</a>
+                        <a href="/jenissimpanan/create" class="btn btn-primary"><i class="feather icon-file-plus mr-1"></i>Tambah</a>
 
                         <div class="table-responsive mt-2">
                             <table class="table table-bordered table-striped">
@@ -47,11 +46,8 @@
                                         <td class="">{{$d->nama_simpanan}}</td>
                                         <td class="table-report__action w-56">
                                             <div class="btn-group" role="group" aria-label="Basic example">
-                                                <a class="ml-1"
-                                                    href="/jenissimpanan/{{\Crypt::encrypt($d->kode_simpanan)}}/edit"><i
-                                                        class="feather icon-edit"></i></a>
-                                                <form method="POST" class="deleteform"
-                                                    action="/jenissimpanan/{{\Crypt::encrypt($d->kode_simpanan)}}/delete">
+                                                <a class="ml-1" href="/jenissimpanan/{{\Crypt::encrypt($d->kode_simpanan)}}/edit"><i class="feather icon-edit"></i></a>
+                                                <form method="POST" class="deleteform" action="/jenissimpanan/{{\Crypt::encrypt($d->kode_simpanan)}}/delete">
                                                     @csrf
                                                     @method('DELETE')
                                                     <a class="delete-confirm ml-1">
@@ -78,21 +74,25 @@
 @endsection
 @push('myscript')
 <script>
-    $(function(){
-        $('.delete-confirm').on('click', function (event) {
+    $(function() {
+        $('.delete-confirm').click(function(event) {
+            var form = $(this).closest("form");
+            var name = $(this).data("name");
             event.preventDefault();
-            const url = $(this).attr('href');
             swal({
-                title: 'Anda Yakin?',
-                text: 'Data ini akan didelete secara permanen!',
-                icon: 'warning',
-                buttons: ["Cancel", "Yes!"],
-            }).then(function(value) {
-                if (value) {
-                   $(".deleteform").submit();
-                }
-            });
+                    title: `Are you sure you want to delete this record?`
+                    , text: "If you delete this, it will be gone forever."
+                    , icon: "warning"
+                    , buttons: true
+                    , dangerMode: true
+                , })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        form.submit();
+                    }
+                });
         });
-      });
+    });
+
 </script>
 @endpush

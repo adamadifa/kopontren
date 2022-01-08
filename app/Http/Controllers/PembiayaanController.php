@@ -17,6 +17,11 @@ class PembiayaanController extends Controller
         $query->select('koperasi_pembiayaan.*', 'nama_lengkap', 'nama_pembiayaan');
         $query->join('koperasi_anggota', 'koperasi_pembiayaan.no_anggota', '=', 'koperasi_anggota.no_anggota');
         $query->join('koperasi_jenispembiayaan', 'koperasi_pembiayaan.kode_pembiayaan', '=', 'koperasi_jenispembiayaan.kode_pembiayaan');
+        if (isset($request->nama)) {
+            $query->where('nama_lengkap', 'like', "%" . $request->nama . "%");
+        }
+
+      
         $pembiayaan = $query->paginate(10);
         $pembiayaan->appends($request->all());
         return view('pembiayaan.index', compact('pembiayaan'));

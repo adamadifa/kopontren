@@ -153,8 +153,11 @@ class SimpananController extends Controller
 
     public function destroy($no_transaksi)
     {
+        
         $no_transaksi = Crypt::decrypt($no_transaksi);
+        
         $cekanggota = DB::table('koperasi_simpanan')->where('no_transaksi', $no_transaksi)->first();
+     
         $no_anggota = $cekanggota->no_anggota;
         $kode_simpanan = $cekanggota->kode_simpanan;
         $jenis_transaksi = $cekanggota->jenis_transaksi;

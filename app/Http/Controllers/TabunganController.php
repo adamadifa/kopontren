@@ -134,6 +134,44 @@ class TabunganController extends Controller
             return redirect('/rekening')->with(['failed' => 'Data Gagal Dihapus']);
         }
     }
+    
+    
+    public function destroyhistori($no_transaksi)
+    {
+        
+        $no_transaksi = Crypt::decrypt($no_transaksi);
+        
+        $cekrekening = DB::table('koperasi_tabungan_histori')->where('no_transaksi', $no_transaksi)->first();
+     
+        $no_rekening = $cekrekening->no_rekening;
+        //$kode_tabungan = $cekanggota->kode_simpanan;
+        $jenis_transaksi = $cekrekening->jenis_transaksi;
+        $jumlah = $cekrekening->jumlah;
+        if ($jenis_transaksi == "S") {
+            $operator = "-";
+        } else if ($jenis_transaksi == "T") {
+            $operator = "+";
+        }
+        DB::beginTransaction();
+        try {
+
+            DB::table('koperasi_tabungan_histori')->where('no_transaksi', $no_transaksi)->delete();
+            DB::table('koperasi_tabungan')
+                ->where('no_rekening', $no_rekening)
+                ->update([
+                    'saldo' => DB::raw('saldo' . $operator . $jumlah)
+                ]);
+            DB::commit();
+            return redirect('/rekening/' . Crypt::encrypt($no_rekening) . '/show')->with(['success' => 'Data Berhasil Dihapus']);
+        } catch (\Exception $e) {
+            //dd($e);
+            DB::rollback();
+            return redirect('/rekening/' . Crypt::encrypt($no_rekening) . '/show')->with(['warning' => 'Data Gagal Dihapus']);
+        }
+    }
+    
+    
+    
 
 
     public function showrekening($no_rekening, Request $request)

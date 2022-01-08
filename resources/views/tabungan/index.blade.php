@@ -75,19 +75,22 @@
 @push('myscript')
 <script>
     $(function() {
-        $('.delete-confirm').on('click', function(event) {
+        $('.delete-confirm').click(function(event) {
+            var form = $(this).closest("form");
+            var name = $(this).data("name");
             event.preventDefault();
-            const url = $(this).attr('href');
             swal({
-                title: 'Anda Yakin?'
-                , text: 'Data ini akan didelete secara permanen!'
-                , icon: 'warning'
-                , buttons: ["Cancel", "Yes!"]
-            , }).then(function(value) {
-                if (value) {
-                    $(".deleteform").submit();
-                }
-            });
+                    title: `Are you sure you want to delete this record?`
+                    , text: "If you delete this, it will be gone forever."
+                    , icon: "warning"
+                    , buttons: true
+                    , dangerMode: true
+                , })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        form.submit();
+                    }
+                });
         });
     });
 

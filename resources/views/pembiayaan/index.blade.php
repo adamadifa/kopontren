@@ -30,7 +30,7 @@
                 </div>
                 <div class="row">
                     <div class="col-md-12">
-                        <form action="/pembiayaan">
+                        <form action="/pembiayaan" method="GET">
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class=" form-label-group position-relative has-icon-left">
@@ -59,6 +59,11 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="row mb-3">
+                                <div class="form-group">
+                                     <button type="submit" class="btn btn-primary"><i class="feather icon-search mr-1"></i>Search</button>
+                                </div>
+                            </div>
                         </form>
                     </div>
                 </div>
@@ -75,7 +80,7 @@
                                 <th>JENIS PEMBIAYAAN</th>
                                 <th>POKOK</th>
                                 <th>JUMLAH PEMBIAYAAN</th>
-                                <th>STATUS</th>
+                               
                                 <th>ACTIONS</th>
                             </tr>
                         </thead>
@@ -90,13 +95,7 @@
                                 <td>{{ $d->kode_pembiayaan }} - {{ $d->nama_pembiayaan }}</td>
                                 <td align="right">{{ number_format($d->jumlah,'0','','.') }}</td>
                                 <td align="right">{{ number_format($d->jumlah + ($d->jumlah * ($d->persentase /100)),'0','','.') }}</td>
-                                <td>
-                                    @if ($d->status==0)
-                                    <span class="badge bg-danger">Belum Lunas</span>
-                                    @else
-                                    <span class="badge bg-success">Lunas</span>
-                                    @endif
-                                </td>
+                               
                                 <td>
                                     <div class="btn-group" role="group" aria-label="Basic example">
                                         <div class="btn-group" role="group" aria-label="Basic example">
@@ -115,7 +114,7 @@
                             @endforeach
                         </tbody>
                     </table>
-
+                     {{ $pembiayaan->links('vendor.pagination.vuexy') }}
                 </div>
 
                 <!-- DataTable ends -->
