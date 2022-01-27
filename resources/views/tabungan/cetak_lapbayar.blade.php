@@ -41,7 +41,7 @@
     .datatable3 td {
         border: 1px solid #000000;
         padding: 6px;
-        font-size: 12px;
+        font-size: 10px;
 
     }
 
@@ -64,7 +64,7 @@
 <table style="width:100%">
     <tr>
         <td style="width:10%">
-            <img src="{{ public_path('dist\images\logo.png') }}" alt="" width="100px" height="80px">
+            <img src="{{ URL::to('/')}}/dist/images/logo.png" alt="" width="100px" height="80px">
         </td>
         <td style="text-align: center">
             <h1>
@@ -109,8 +109,10 @@
     $tarik = 0;
     @endphp
     @else
+    @php
     $setor = 0;
-    $tarik = d->jumlah;
+    $tarik = $d->jumlah;
+    @endphp
     @endif
     @php
     $totalsetor += $setor;
@@ -121,7 +123,7 @@
         <td align="center">{{ $d->no_transaksi }}</td>
         <td align="center">{{ date("d-m-Y",strtotime($d->tgl_transaksi)) }}</td>
         <td align="center">{{ $d->no_rekening }}</td>
-        <td align="center">{{ $d->nama_lengkap }}</td>
+        <td align="">{{ $d->nama_lengkap }}</td>
         <td align="right">{{ number_format($setor,'0','','.') }}</td>
         <td align="right">{{ number_format($tarik,'0','','.') }}</td>
         <td align="center">{{ $d->id_petugas }}</td>

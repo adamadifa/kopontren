@@ -63,7 +63,7 @@
 <table style="width:100%">
     <tr>
         <td style="width:10%">
-            <img src="{{ public_path('dist\images\logo.png') }}" alt="" width="100px" height="80px">
+            <img src="{{ URL::to('/')}}/dist/images/logo.png" alt="" width="100px" height="80px">
         </td>
         <td style="text-align: center">
             <h1>

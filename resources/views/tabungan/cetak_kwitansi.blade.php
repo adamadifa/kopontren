@@ -63,7 +63,7 @@
 <table style="width:100%">
     <tr>
         <td style="width:10%">
-            <img src="{{ public_path('dist\images\logo.png') }}" alt="" width="100px" height="80px">
+             <img src="{{ URL::to('/')}}/dist/images/logo.png" alt="" width="100px" height="80px">
         </td>
         <td style="text-align: center">
             <h1>
@@ -116,10 +116,10 @@
 <br>
 <table style="width: 100%">
     <tr>
-        <td align="center"><br>Penyetor</td>
+        <td align="center"><br>{{($transaksi->jenis_transaksi =='T' ? 'Pemberi ' : 'Penyetor')}}</td>
         <td align="center">
             Ciamis, {{ date("d M Y") }}<br>
-            Petugas,
+            {{($transaksi->jenis_transaksi =='T' ? 'Penerima ' : 'Petugas')}}
         </td>
     </tr>
     <tr>
@@ -127,7 +127,12 @@
         <td></td>
     </tr>
     <tr>
-        <td align="center">{{ $transaksi->nama_lengkap }}</td>
-        <td align="center">{{ Auth::user()->name }}</td>
+        <td align="center">
+             {{($transaksi->jenis_transaksi =='T' ?  Auth::user()->name : $transaksi->nama_lengkap)}}
+        </td>
+        <td align="center">
+            {{($transaksi->jenis_transaksi =='T' ? $transaksi->nama_lengkap   :  Auth::user()->name)}}
+            
+        </td>
     </tr>
 </table>
