@@ -372,6 +372,31 @@
                                     </div>
                                 </div>
                                 <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group  @error('npp') error @enderror">
+                                            <select name="npp" id="npp" class="form-control">
+                                                <option value="">Npp</option>
+                                                @foreach ($karyawan as $d)
+                                                <option @isset($anggota->npp) @if (old('npp'))
+                                                    {{ old('npp') == $d->npp ? 'selected' : '' }} @else
+                                                    {{ $anggota->npp == $d->npp ? 'selected' : '' }} @endif @else
+                                                    {{ old('npp') == $d->npp ? 'selected' : '' }}
+                                                    @endisset {{ old('npp') == $d->npp ? 'selected' : '' }} value="{{ $d->npp }}">
+                                                    {{ $d->npp }} - {{$d->nama_lengkap}}
+                                                </option>
+                                                @endforeach
+                                            </select>
+                                            @error('id_propinsi')
+                                            <div class="help-block">
+                                                <ul role="alert">
+                                                    <li>{{ $message }}</li>
+                                                </ul>
+                                            </div>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
                                     <div class="col-12">
                                         <button type="submit" class="btn btn-primary mr-1 mb-1">Submit</button>
                                         <button type="reset" class="btn btn-outline-warning mr-1 mb-1">Reset</button>
@@ -389,7 +414,7 @@
 @push('myscript')
 <script>
     $(function() {
-
+        $('#npp').select2();
         function loadkota() {
             var id_propinsi = $("#id_propinsi").val();
             var id_kota = "{{ $anggota->id_kota }}";

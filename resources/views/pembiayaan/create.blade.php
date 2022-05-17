@@ -353,6 +353,18 @@
                                                         <option {{ old('jangka_waktu')=='10' ? 'selected' : '' }} value="10">10 Bulan</option>
                                                         <option {{ old('jangka_waktu')=='11' ? 'selected' : '' }} value="11">11 Bulan</option>
                                                         <option {{ old('jangka_waktu')=='12' ? 'selected' : '' }} value="12">12 Bulan</option>
+                                                        <option {{ old('jangka_waktu')=='13' ? 'selected' : '' }} value="13">13 Bulan</option>
+                                                        <option {{ old('jangka_waktu')=='14' ? 'selected' : '' }} value="14">14 Bulan</option>
+                                                        <option {{ old('jangka_waktu')=='15' ? 'selected' : '' }} value="15">15 Bulan</option>
+                                                        <option {{ old('jangka_waktu')=='16' ? 'selected' : '' }} value="16">16 Bulan</option>
+                                                        <option {{ old('jangka_waktu')=='17' ? 'selected' : '' }} value="17">17 Bulan</option>
+                                                        <option {{ old('jangka_waktu')=='18' ? 'selected' : '' }} value="18">18 Bulan</option>
+                                                        <option {{ old('jangka_waktu')=='19' ? 'selected' : '' }} value="19">19 Bulan</option>
+                                                        <option {{ old('jangka_waktu')=='20' ? 'selected' : '' }} value="20">20 Bulan</option>
+                                                        <option {{ old('jangka_waktu')=='21' ? 'selected' : '' }} value="21">21 Bulan</option>
+                                                        <option {{ old('jangka_waktu')=='22' ? 'selected' : '' }} value="22">22 Bulan</option>
+                                                        <option {{ old('jangka_waktu')=='23' ? 'selected' : '' }} value="23">23 Bulan</option>
+                                                        <option {{ old('jangka_waktu')=='24' ? 'selected' : '' }} value="24">24 Bulan</option>
                                                     </select>
                                                     @error('jangka_waktu')
                                                     <div class="help-block">

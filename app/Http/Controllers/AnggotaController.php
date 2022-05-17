@@ -33,9 +33,10 @@ class AnggotaController extends Controller
     {
         $title = "Edit Data Anggota";
         $no_anggota = Crypt::decrypt($no_anggota);
+        $karyawan = DB::table('karyawan')->orderBy('nama_lengkap','asc')->get();
         $propinsi = DB::table('provinces')->orderBy('prov_name', 'asc')->get();
         $anggota = DB::table('koperasi_anggota')->where('no_anggota', $no_anggota)->first();
-        return view('anggota.edit', compact('propinsi', 'anggota'));
+        return view('anggota.edit', compact('propinsi', 'anggota','karyawan'));
     }
 
     public function show($no_anggota)
@@ -89,7 +90,8 @@ class AnggotaController extends Controller
                 'id_kelurahan' => $request->id_kelurahan,
                 'kode_pos' => $request->kode_pos,
                 'status_tinggal' => $request->status_tinggal,
-                'no_hp' => $request->no_hp
+                'no_hp' => $request->no_hp,
+                'npp' => $request->npp
             ]);
 
         if ($update) {

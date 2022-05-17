@@ -51,7 +51,7 @@
                                 <div class="card-header d-flex align-items-start pb-0">
                                     <div>
                                         <h2 class="text-bold-700 mb-0">{{ number_format($simpanan->jmlsetoran,'0','','.') }}</h2>
-                                        <p>Penerimaan Simpanan Hari Ini</p>
+                                        <p>Penerimaan Simpanan Bulan Ini</p>
                                     </div>
                                     <div class="avatar bg-rgba-success p-50 m-0">
                                         <div class="avatar-content">
@@ -68,7 +68,7 @@
                                 <div class="card-header d-flex align-items-start pb-0">
                                     <div>
                                         <h2 class="text-bold-700 mb-0">{{ number_format($simpanan->jmlpenarikan,'0','','.') }}</h2>
-                                        <p>Penarikan Simpanan Hari Ini</p>
+                                        <p>Penarikan Simpanan Bulan Ini</p>
                                     </div>
                                     <div class="avatar bg-rgba-danger p-50 m-0">
                                         <div class="avatar-content">
