@@ -153,11 +153,11 @@ class SimpananController extends Controller
 
     public function destroy($no_transaksi)
     {
-        
+
         $no_transaksi = Crypt::decrypt($no_transaksi);
-        
+
         $cekanggota = DB::table('koperasi_simpanan')->where('no_transaksi', $no_transaksi)->first();
-     
+
         $no_anggota = $cekanggota->no_anggota;
         $kode_simpanan = $cekanggota->kode_simpanan;
         $jenis_transaksi = $cekanggota->jenis_transaksi;
@@ -195,8 +195,9 @@ class SimpananController extends Controller
             ->join('koperasi_jenissimpanan', 'koperasi_simpanan.kode_simpanan', '=', 'koperasi_jenissimpanan.kode_simpanan')
             ->where('no_transaksi', $no_transaksi)->first();
 
-        $pdf = PDF::loadview('simpanan.cetak_kwitansi', compact('transaksi'))->setPaper('a5', 'landscape');;
-        return $pdf->stream();
+        return view('simpanan.cetak_kwitansi', compact('transaksi'));
+        // $pdf = PDF::loadview('simpanan.cetak_kwitansi', compact('transaksi'))->setPaper('a5', 'landscape');;
+        // return $pdf->stream();
         //return view('pendaftar.cetak', compact('pendaftar', 'qrcode'));
     }
 
@@ -218,8 +219,9 @@ class SimpananController extends Controller
             ->where('koperasi_simpanan.kode_simpanan', $request->kode_simpanan)
             ->whereBetween('tgl_transaksi', [$request->dari, $request->sampai])->get();
 
-        $pdf = PDF::loadview('simpanan.cetak_lapbayar', compact('transaksi', 'dari', 'sampai', 'simpanan'))->setPaper('a4');
-        return $pdf->stream();
+        return view('simpanan.cetak_lapbayar', compact('transaksi', 'dari', 'sampai', 'simpanan'));
+        // $pdf = PDF::loadview('simpanan.cetak_lapbayar', compact('transaksi', 'dari', 'sampai', 'simpanan'))->setPaper('a4');
+        // return $pdf->stream();
         //return view('pendaftar.cetak', compact('pendaftar', 'qrcode'));
     }
 
@@ -282,16 +284,18 @@ class SimpananController extends Controller
                 DB::raw("(
                     SELECT no_anggota,saldo as saldoawal
                         FROM koperasi_simpanan
-                        WHERE no_transaksi IN (SELECT max(no_transaksi) as no_transaksi FROM koperasi_simpanan)
-                        AND tgl_transaksi BETWEEN '$lastdari' AND '$lastsampai'
+                        WHERE no_transaksi IN (SELECT max(no_transaksi) as no_transaksi FROM koperasi_simpanan WHERE tgl_transaksi BETWEEN '$lastdari' AND '$lastsampai' GROUP BY no_anggota)
+
                 ) sa"),
                 function ($join) {
                     $join->on('ka.no_anggota', '=', 'sa.no_anggota');
                 }
             )
             ->groupBy('ka.no_anggota', 'nama_lengkap', 'jan', 'feb', 'mar', 'apr', 'mei', 'jun', 'jul', 'agu', 'sep', 'okt', 'nov', 'des', 'saldoawal')->get();
-        $pdf = PDF::loadview('simpanan.cetak_rekap', compact('transaksi', 'dari', 'sampai', 'lasttahun'))->setPaper('legal', 'landscape');
-        return $pdf->stream();
+
+        return view('simpanan.cetak_rekap', compact('transaksi', 'dari', 'sampai', 'lasttahun'));
+        // $pdf = PDF::loadview('simpanan.cetak_rekap', compact('transaksi', 'dari', 'sampai', 'lasttahun'))->setPaper('legal', 'landscape');
+        // return $pdf->stream();
         //return view('pendaftar.cetak', compact('pendaftar', 'qrcode'));
     }
 }

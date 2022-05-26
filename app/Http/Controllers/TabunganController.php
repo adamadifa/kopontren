@@ -134,15 +134,15 @@ class TabunganController extends Controller
             return redirect('/rekening')->with(['failed' => 'Data Gagal Dihapus']);
         }
     }
-    
-    
+
+
     public function destroyhistori($no_transaksi)
     {
-        
+
         $no_transaksi = Crypt::decrypt($no_transaksi);
-        
+
         $cekrekening = DB::table('koperasi_tabungan_histori')->where('no_transaksi', $no_transaksi)->first();
-     
+
         $no_rekening = $cekrekening->no_rekening;
         //$kode_tabungan = $cekanggota->kode_simpanan;
         $jenis_transaksi = $cekrekening->jenis_transaksi;
@@ -169,9 +169,9 @@ class TabunganController extends Controller
             return redirect('/rekening/' . Crypt::encrypt($no_rekening) . '/show')->with(['warning' => 'Data Gagal Dihapus']);
         }
     }
-    
-    
-    
+
+
+
 
 
     public function showrekening($no_rekening, Request $request)
@@ -300,8 +300,9 @@ class TabunganController extends Controller
             ->join('koperasi_jenistabungan', 'koperasi_tabungan.kode_tabungan', '=', 'koperasi_jenistabungan.kode_tabungan')
             ->where('no_transaksi', $no_transaksi)->first();
 
-        $pdf = PDF::loadview('tabungan.cetak_kwitansi', compact('transaksi'))->setPaper('a5', 'landscape');;
-        return $pdf->stream();
+        return view('tabungan.cetak_kwitansi', compact('transaksi'));
+        // $pdf = PDF::loadview('tabungan.cetak_kwitansi', compact('transaksi'))->setPaper('a5', 'landscape');;
+        //return $pdf->stream();
         //return view('pendaftar.cetak', compact('pendaftar', 'qrcode'));
     }
 
@@ -323,9 +324,11 @@ class TabunganController extends Controller
             ->join('koperasi_jenistabungan', 'koperasi_tabungan.kode_tabungan', '=', 'koperasi_jenistabungan.kode_tabungan')
             ->where('koperasi_tabungan.kode_tabungan', $request->jenis_tabungan)
             ->whereBetween('tgl_transaksi', [$request->dari, $request->sampai])->get();
+        //dd($transaksi);
 
-        $pdf = PDF::loadview('tabungan.cetak_lapbayar', compact('transaksi', 'dari', 'sampai', 'tabungan'))->setPaper('a4');
-        return $pdf->stream();
+        return view('tabungan.cetak_lapbayar', compact('transaksi', 'dari', 'sampai', 'tabungan'));
+        // $pdf = PDF::loadview('tabungan.cetak_lapbayar', compact('transaksi', 'dari', 'sampai', 'tabungan'))->setPaper('a4');
+        // return $pdf->stream();
         //return view('pendaftar.cetak', compact('pendaftar', 'qrcode'));
     }
 
@@ -391,8 +394,7 @@ class TabunganController extends Controller
                 DB::raw("(
                     SELECT no_rekening,saldo as saldoawal
                         FROM koperasi_tabungan_histori
-                        WHERE no_transaksi IN (SELECT max(no_transaksi) as no_transaksi FROM koperasi_tabungan_histori)
-                        AND tgl_transaksi BETWEEN '$lastdari' AND '$lastsampai'
+                        WHERE no_transaksi IN (SELECT max(no_transaksi) as no_transaksi FROM koperasi_tabungan_histori WHERE tgl_transaksi BETWEEN '$lastdari' AND '$lastsampai' GROUP BY no_rekening)
                 ) sa"),
                 function ($join) {
                     $join->on('kt.no_rekening', '=', 'sa.no_rekening');
@@ -400,8 +402,9 @@ class TabunganController extends Controller
             )
             ->where('kt.kode_tabungan', $request->jenis_tabungan)
             ->groupBy('kt.no_rekening', 'nama_lengkap', 'jan', 'feb', 'mar', 'apr', 'mei', 'jun', 'jul', 'agu', 'sep', 'okt', 'nov', 'des', 'saldoawal')->get();
-        $pdf = PDF::loadview('tabungan.cetak_rekap', compact('transaksi', 'dari', 'sampai', 'tabungan', 'lasttahun'))->setPaper('legal', 'landscape');
-        return $pdf->stream();
+        return view('tabungan.cetak_rekap', compact('transaksi', 'dari', 'sampai', 'tabungan', 'lasttahun'));
+        // $pdf = PDF::loadview('tabungan.cetak_rekap', compact('transaksi', 'dari', 'sampai', 'tabungan', 'lasttahun'))->setPaper('legal', 'landscape');
+        // return $pdf->stream();
         //return view('pendaftar.cetak', compact('pendaftar', 'qrcode'));
     }
 }

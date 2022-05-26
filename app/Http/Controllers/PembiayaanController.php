@@ -21,7 +21,12 @@ class PembiayaanController extends Controller
             $query->where('nama_lengkap', 'like', "%" . $request->nama . "%");
         }
 
-      
+        if (!empty($request->dari) && !empty($request->sampai)) {
+            $query->whereBetween('tgl_permohonan', [$request->dari, $request->sampai]);
+        }
+        $query->orderBy('tgl_permohonan', 'desc');
+        $query->orderBy('no_akad', 'desc');
+
         $pembiayaan = $query->paginate(10);
         $pembiayaan->appends($request->all());
         return view('pembiayaan.index', compact('pembiayaan'));
@@ -246,15 +251,14 @@ class PembiayaanController extends Controller
                     //$cicilan .=  $d->cicilan_ke . ",";
                     $sisapercicilan = $d->jumlah - $d->bayar;
                     $sisa = $sisa - $sisapercicilan;
-                     
-                    if($sisa==0){
+
+                    if ($sisa == 0) {
                         $cicilan .=  $d->cicilan_ke;
-                    }else{
+                    } else {
                         $cicilan .=  $d->cicilan_ke . ",";
                     }
-                    
+
                     $coba = $cicilan;
-                   
                 } else {
                     if ($sisa != 0) {
                         $sisapercicilan = $d->jumlah - $d->bayar;
@@ -277,9 +281,9 @@ class PembiayaanController extends Controller
                                     ]);
                                 //$cicilan .= $d->cicilan_ke . ",";
                                 $sisa = $sisa - $sisa;
-                                if($sisa==0){
+                                if ($sisa == 0) {
                                     $cicilan .=  $d->cicilan_ke;
-                                }else{
+                                } else {
                                     $cicilan .=  $d->cicilan_ke . ",";
                                 }
                             }
@@ -292,9 +296,9 @@ class PembiayaanController extends Controller
                                 ]);
                             //$cicilan .= $d->cicilan_ke;
                             $sisa = $sisa - $sisa;
-                            if($sisa==0){
+                            if ($sisa == 0) {
                                 $cicilan .=  $d->cicilan_ke;
-                            }else{
+                            } else {
                                 $cicilan .=  $d->cicilan_ke . ",";
                             }
                         }
@@ -305,7 +309,7 @@ class PembiayaanController extends Controller
 
                 $i++;
             }
-    
+
             //$c = '$cicilan';
             DB::table('koperasi_bayarpembiayaan')
                 ->insert([
@@ -404,9 +408,9 @@ class PembiayaanController extends Controller
             ->join('koperasi_anggota', 'koperasi_pembiayaan.no_anggota', '=', 'koperasi_anggota.no_anggota')
             ->where('no_transaksi', $no_transaksi)->first();
 
-
-        $pdf = PDF::loadview('pembiayaan.cetak_kwitansi', compact('transaksi'))->setPaper('a5', 'landscape');;
-        return $pdf->stream();
+        return view('pembiayaan.cetak_kwitansi', compact('transaksi'));
+        // $pdf = PDF::loadview('pembiayaan.cetak_kwitansi', compact('transaksi'))->setPaper('a5', 'landscape');;
+        // return $pdf->stream();
         //return view('pendaftar.cetak', compact('pendaftar', 'qrcode'));
     }
 
@@ -425,8 +429,9 @@ class PembiayaanController extends Controller
             ->join('koperasi_pembiayaan', 'koperasi_bayarpembiayaan.no_akad', '=', 'koperasi_pembiayaan.no_akad')
             ->join('koperasi_anggota', 'koperasi_pembiayaan.no_anggota', '=', 'koperasi_anggota.no_anggota')
             ->whereBetween('tgl_transaksi', [$request->dari, $request->sampai])->get();
-        $pdf = PDF::loadview('pembiayaan.cetak_lapbayar', compact('transaksi', 'dari', 'sampai'))->setPaper('a4', 'landscape');
-        return $pdf->stream();
+        return view('pembiayaan.cetak_lapbayar', compact('transaksi', 'dari', 'sampai'));
+        // $pdf = PDF::loadview('pembiayaan.cetak_lapbayar', compact('transaksi', 'dari', 'sampai'))->setPaper('a4', 'landscape');
+        // return $pdf->stream();
         //return view('pendaftar.cetak', compact('pendaftar', 'qrcode'));
     }
     function cetakrekappembiayaan()
@@ -448,8 +453,9 @@ class PembiayaanController extends Controller
                 }
             )
             ->get();
-        $pdf = PDF::loadview('pembiayaan.cetak_rekap', compact('pembiayaan'))->setPaper('a4', 'landscape');
-        return $pdf->stream();
+        return view('pembiayaan.cetak_rekap', compact('pembiayaan'));
+        // $pdf = PDF::loadview('pembiayaan.cetak_rekap', compact('pembiayaan'))->setPaper('a4', 'landscape');
+        // return $pdf->stream();
         //return view('pendaftar.cetak', compact('pendaftar', 'qrcode'));
     }
 }

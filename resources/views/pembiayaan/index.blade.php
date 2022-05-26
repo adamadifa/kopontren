@@ -60,8 +60,10 @@
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <div class="form-group">
-                                     <button type="submit" class="btn btn-primary"><i class="feather icon-search mr-1"></i>Search</button>
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-primary btn-block"><i class="feather icon-search mr-1"></i>Search</button>
+                                    </div>
                                 </div>
                             </div>
                         </form>
@@ -80,7 +82,7 @@
                                 <th>JENIS PEMBIAYAAN</th>
                                 <th>POKOK</th>
                                 <th>JUMLAH PEMBIAYAAN</th>
-                               
+
                                 <th>ACTIONS</th>
                             </tr>
                         </thead>
@@ -95,7 +97,7 @@
                                 <td>{{ $d->kode_pembiayaan }} - {{ $d->nama_pembiayaan }}</td>
                                 <td align="right">{{ number_format($d->jumlah,'0','','.') }}</td>
                                 <td align="right">{{ number_format($d->jumlah + ($d->jumlah * ($d->persentase /100)),'0','','.') }}</td>
-                               
+
                                 <td>
                                     <div class="btn-group" role="group" aria-label="Basic example">
                                         <div class="btn-group" role="group" aria-label="Basic example">
@@ -114,7 +116,7 @@
                             @endforeach
                         </tbody>
                     </table>
-                     {{ $pembiayaan->links('vendor.pagination.vuexy') }}
+                    {{ $pembiayaan->links('vendor.pagination.vuexy') }}
                 </div>
 
                 <!-- DataTable ends -->
