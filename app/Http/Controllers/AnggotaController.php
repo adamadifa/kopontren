@@ -6,6 +6,7 @@ use App\Models\Anggota;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redirect;
 
 class AnggotaController extends Controller
 {
@@ -33,10 +34,11 @@ class AnggotaController extends Controller
     {
         $title = "Edit Data Anggota";
         $no_anggota = Crypt::decrypt($no_anggota);
-        $karyawan = DB::table('karyawan')->orderBy('nama_lengkap','asc')->get();
+        $karyawan = DB::table('karyawan')->orderBy('nama_lengkap', 'asc')->get();
+        $siswa = DB::table('siswa')->orderBy('nama_lengkap', 'asc')->get();
         $propinsi = DB::table('provinces')->orderBy('prov_name', 'asc')->get();
         $anggota = DB::table('koperasi_anggota')->where('no_anggota', $no_anggota)->first();
-        return view('anggota.edit', compact('propinsi', 'anggota','karyawan'));
+        return view('anggota.edit', compact('propinsi', 'anggota', 'karyawan', 'siswa'));
     }
 
     public function show($no_anggota)
@@ -64,7 +66,8 @@ class AnggotaController extends Controller
             'id_kecamatan' => 'required',
             'id_kelurahan' => 'required',
             'status_tinggal' => 'required',
-            'no_hp' => 'required'
+            'no_hp' => 'required',
+
         ]);
 
         $update = DB::table('koperasi_anggota')
@@ -91,13 +94,14 @@ class AnggotaController extends Controller
                 'kode_pos' => $request->kode_pos,
                 'status_tinggal' => $request->status_tinggal,
                 'no_hp' => $request->no_hp,
-                'npp' => $request->npp
+                'npp' => $request->npp,
+                'id_siswa' => $request->id_siswa
             ]);
 
         if ($update) {
-            return redirect('/anggota')->with(['success' => 'Data Berhasil Disimpan']);
+            return Redirect::back()->with(['success' => 'Data Berhasil Disimpan']);
         } else {
-            return redirect('/anggota')->with(['warning' => 'Data Gagal Disimpan']);
+            return Redirect::back()->with(['warning' => 'Data Gagal Disimpan']);
         }
     }
     public function store(Request $request)

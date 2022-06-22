@@ -386,7 +386,30 @@
                                                 </option>
                                                 @endforeach
                                             </select>
-                                            @error('id_propinsi')
+                                            @error('npp')
+                                            <div class="help-block">
+                                                <ul role="alert">
+                                                    <li>{{ $message }}</li>
+                                                </ul>
+                                            </div>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group  @error('id_siswa') error @enderror">
+                                            <select name="id_siswa" id="id_siswa" class="form-control">
+                                                <option value="">ID Siswa</option>
+                                                @foreach ($siswa as $d)
+                                                <option @isset($anggota->id_siswa) @if (old('id_siswa'))
+                                                    {{ old('id_siswa') == $d->id_siswa ? 'selected' : '' }} @else
+                                                    {{ $anggota->id_siswa == $d->id_siswa ? 'selected' : '' }} @endif @else
+                                                    {{ old('id_siswa') == $d->id_siswa ? 'selected' : '' }}
+                                                    @endisset {{ old('id_siswa') == $d->id_siswa ? 'selected' : '' }} value="{{ $d->id_siswa }}">
+                                                    {{ $d->id_siswa }} - {{$d->nama_lengkap}}
+                                                </option>
+                                                @endforeach
+                                            </select>
+                                            @error('id_siswa')
                                             <div class="help-block">
                                                 <ul role="alert">
                                                     <li>{{ $message }}</li>
@@ -414,7 +437,8 @@
 @push('myscript')
 <script>
     $(function() {
-        $('#npp').select2();
+        $('#npp, #id_siswa').select2();
+
         function loadkota() {
             var id_propinsi = $("#id_propinsi").val();
             var id_kota = "{{ $anggota->id_kota }}";
