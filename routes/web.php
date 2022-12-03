@@ -35,7 +35,7 @@ Route::get('/', function () {
 
 Route::post('/postlogin', [AuthController::class, 'postlogin']);
 Route::post('/postlogout', [AuthController::class, 'postlogout']);
-
+Route::get('/pembiayaan/{no_transaksi}/cetakkwitansi', [PembiayaanController::class, 'cetakkwitansi']);
 Route::middleware(['auth', 'ceklevel:admin'])->group(function () {
     Route::get('/dashboardadmin', [DashboardController::class, 'dashboardadmin']);
 
@@ -139,7 +139,7 @@ Route::middleware(['auth', 'ceklevel:admin'])->group(function () {
     Route::get('/pembiayaan/{no_akad}/show', [PembiayaanController::class, 'show']);
     Route::post('/pembiayaan/bayar', [PembiayaanController::class, 'bayar']);
     Route::delete('/pembiayaan/{no_transaksi}/deletebayar', [PembiayaanController::class, 'deletebayar']);
-    Route::get('/pembiayaan/{no_transaksi}/cetakkwitansi', [PembiayaanController::class, 'cetakkwitansi']);
+
     Route::get('/laporanpembiayaan', [PembiayaanController::class, 'laporanpembiayaan']);
     Route::post('/cetakbayarpembiayaan', [PembiayaanController::class, 'cetakbayarpembiayaan']);
     Route::get('/cetakrekappembiayaan', [PembiayaanController::class, 'cetakrekappembiayaan']);

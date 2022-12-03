@@ -233,8 +233,6 @@ class PembiayaanController extends Controller
         DB::beginTransaction();
         try {
 
-
-
             $jumlah = str_replace(".", "", $request->jumlah);
             $sisa = $jumlah;
             $cicilan = "";
@@ -304,9 +302,6 @@ class PembiayaanController extends Controller
                         }
                     }
                 }
-
-
-
                 $i++;
             }
 
@@ -326,6 +321,40 @@ class PembiayaanController extends Controller
                     'jmlbayar' => DB::raw('jmlbayar +' . str_replace(".", "", $request->jumlah))
                 ]);
 
+            $detail = DB::table('koperasi_pembiayaan')->where('no_akad', $no_akad)
+                ->select('no_akad', 'koperasi_anggota.nama_lengkap', 'jumlah', 'persentase', 'jmlbayar', 'karyawan.no_hp')
+                ->join('koperasi_anggota', 'koperasi_pembiayaan.no_anggota', '=', 'koperasi_anggota.no_anggota')
+                ->leftjoin('karyawan', 'koperasi_anggota.npp', '=', 'karyawan.npp')
+                ->first();
+            $tagihan = $detail->jumlah + ($detail->jumlah * ($detail->persentase / 100));
+            $jmlbayar = number_format($detail->jmlbayar, '0', '', '.');
+            $sisa =  number_format($tagihan - $detail->jmlbayar, '0', '', '.');
+            $data = [
+                'api_key' => 'NHoqE4TUf6YLQhJJQAGSUjj4wOMyzh',
+                'sender' => '6289670444321',
+                'number' => $detail->no_hp,
+                'message' => 'Terimakasih Bp/Ibu ' . $detail->nama_lengkap . ' telah melakukan pembayaran Cicilan ke ' . $cicilan . ' untuk Pembiayaan dengan No. Akad ' . $no_akad . ' Sebesar *' . $request->jumlah . '* Total Tagihan Sebesar :*' . number_format($tagihan, '0', '', '.') . '* Jumlah Yang Telah Dibayarkan Sebesar: *' . $jmlbayar . '* Sisa Yang Harus Dibayarkan Sejumlah : *' . $sisa . '* Lihat Kwitansi => http://tsarwah.persisalamin.com/pembiayaan/eyJpdiI6ImlGODRPK0pXMGdERi9kM2JZUXIvdVE9PSIsInZhbHVlIjoiWHRIZTBPS0JNT0RPTW5rajNiU0xZL21SSEZhVG9hQlZsWGl3aWtKY3Awcz0iLCJtYWMiOiJkYTZiMDQyMmMwYmYxYjhhNjg5ZjMxOGNlNjNkZDAzNDNiYWMzYWM3ZjdiY2E0MjYzODJlMzQ0ZTA5MjYyYmFlIiwidGFnIjoiIn0=/cetakkwitansi'
+            ];
+            $curl = curl_init();
+
+            curl_setopt_array($curl, array(
+                CURLOPT_URL => 'https://wa.pedasalami.com/send-message',
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => '',
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 0,
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => 'POST',
+                CURLOPT_POSTFIELDS => json_encode($data),
+                CURLOPT_HTTPHEADER => array(
+                    'Content-Type: application/json'
+                ),
+            ));
+
+            $response = curl_exec($curl);
+
+            curl_close($curl);
             DB::commit();
 
             return redirect('/pembiayaan/' . Crypt::encrypt($no_akad) . '/show')->with(['success' => 'Data Pembiayaan Berhasil di Simpan']);
