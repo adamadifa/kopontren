@@ -62,6 +62,8 @@
 
 </style>
 <body class="A5 landscape">
+
+
     <section class="sheet padding-10mm">
         <table style="width:100%">
             <tr>
@@ -127,7 +129,7 @@
             </tr>
             <tr>
                 <td align="center">{{ $transaksi->nama_lengkap }}</td>
-                <td align="center">{{ Auth::user()->name }}</td>
+                <td align="center">{{ Auth::check() != false ? Auth::user()->name : $transaksi->name }}</td>
             </tr>
         </table>
     </section>

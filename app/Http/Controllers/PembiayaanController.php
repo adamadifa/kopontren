@@ -432,9 +432,10 @@ class PembiayaanController extends Controller
     {
         $no_transaksi = Crypt::decrypt($no_transaksi);
         $transaksi = DB::table('koperasi_bayarpembiayaan')
-            ->select('koperasi_bayarpembiayaan.*', 'koperasi_pembiayaan.no_akad', 'keperluan', 'koperasi_pembiayaan.no_anggota', 'nama_lengkap')
+            ->select('koperasi_bayarpembiayaan.*', 'koperasi_pembiayaan.no_akad', 'keperluan', 'koperasi_pembiayaan.no_anggota', 'nama_lengkap', 'name')
             ->join('koperasi_pembiayaan', 'koperasi_bayarpembiayaan.no_akad', '=', 'koperasi_pembiayaan.no_akad')
             ->join('koperasi_anggota', 'koperasi_pembiayaan.no_anggota', '=', 'koperasi_anggota.no_anggota')
+            ->join('users', 'koperasi_bayarpembiayaan.id_petugas', '=', 'users.id')
             ->where('no_transaksi', $no_transaksi)->first();
 
         return view('pembiayaan.cetak_kwitansi', compact('transaksi'));
