@@ -329,11 +329,12 @@ class PembiayaanController extends Controller
             $tagihan = $detail->jumlah + ($detail->jumlah * ($detail->persentase / 100));
             $jmlbayar = number_format($detail->jmlbayar, '0', '', '.');
             $sisa =  number_format($tagihan - $detail->jmlbayar, '0', '', '.');
+            $no_k = Crypt::encrypt($no_transaksi);
             $data = [
                 'api_key' => 'NHoqE4TUf6YLQhJJQAGSUjj4wOMyzh',
                 'sender' => '6289670444321',
                 'number' => $detail->no_hp,
-                'message' => 'Terimakasih Bp/Ibu ' . $detail->nama_lengkap . ' telah melakukan pembayaran Cicilan ke ' . $cicilan . ' untuk Pembiayaan dengan No. Akad ' . $no_akad . ' Sebesar *' . $request->jumlah . '* Total Tagihan Sebesar :*' . number_format($tagihan, '0', '', '.') . '* Jumlah Yang Telah Dibayarkan Sebesar: *' . $jmlbayar . '* Sisa Yang Harus Dibayarkan Sejumlah : *' . $sisa . '* Lihat Kwitansi => http://tsarwah.persisalamin.com/pembiayaan/eyJpdiI6ImlGODRPK0pXMGdERi9kM2JZUXIvdVE9PSIsInZhbHVlIjoiWHRIZTBPS0JNT0RPTW5rajNiU0xZL21SSEZhVG9hQlZsWGl3aWtKY3Awcz0iLCJtYWMiOiJkYTZiMDQyMmMwYmYxYjhhNjg5ZjMxOGNlNjNkZDAzNDNiYWMzYWM3ZjdiY2E0MjYzODJlMzQ0ZTA5MjYyYmFlIiwidGFnIjoiIn0=/cetakkwitansi'
+                'message' => 'Terimakasih Bp/Ibu ' . $detail->nama_lengkap . ' telah melakukan pembayaran Cicilan ke ' . $cicilan . ' untuk Pembiayaan dengan No. Akad ' . $no_akad . ' Sebesar *' . $request->jumlah . '* Total Tagihan Sebesar :*' . number_format($tagihan, '0', '', '.') . '* Jumlah Yang Telah Dibayarkan Sebesar: *' . $jmlbayar . '* Sisa Yang Harus Dibayarkan Sejumlah : *' . $sisa . '* Lihat Kwitansi => http://tsarwah.persisalamin.com/pembiayaan/' . $no_k . '/cetakkwitansi'
             ];
             $curl = curl_init();
 
