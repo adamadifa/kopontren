@@ -129,7 +129,7 @@
             </tr>
             <tr>
                 <td align="center">{{ $transaksi->nama_lengkap }}</td>
-                <td align="center">{{ Auth::check() != false ? Auth::user()->name : $transaksi->name }}</td>
+                <td align="center">{{ Auth::user()->name  }}</td>
             </tr>
         </table>
     </section>
