@@ -73,10 +73,10 @@ class TabunganController extends Controller
     function destroy($kode_tabungan)
     {
         $kode_tabungan = Crypt::decrypt($kode_tabungan);
-        $hapus = DB::table('koperasi_jenistabungan')->where('kode_tabungan', $kode_tabungan)->delete();
-        if ($hapus) {
+        try {
+            DB::table('koperasi_jenistabungan')->where('kode_tabungan', $kode_tabungan)->delete();
             return redirect('/tabungan')->with(['success' => 'Data Berhasil dihapus']);
-        } else {
+        } catch (\Exception $e) {
             return redirect('/tabungan')->with(['warning' => 'Data Gagal dihapus']);
         }
     }
@@ -125,13 +125,13 @@ class TabunganController extends Controller
     public function destroyrekening($no_rekening)
     {
         $no_rekening = Crypt::decrypt($no_rekening);
-        $hapus = DB::table('koperasi_tabungan')
-            ->where('no_rekening', $no_rekening)
-            ->delete();
-        if ($hapus) {
+        try {
+            DB::table('koperasi_tabungan')
+                ->where('no_rekening', $no_rekening)
+                ->delete();
             return redirect('/rekening')->with(['success' => 'Data Berhasil Dihapus']);
-        } else {
-            return redirect('/rekening')->with(['failed' => 'Data Gagal Dihapus']);
+        } catch (\Exception $e) {
+            return redirect('/rekening')->with(['warning' => 'Data Gagal Dihapus']);
         }
     }
 

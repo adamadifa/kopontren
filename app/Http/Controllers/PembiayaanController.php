@@ -11,6 +11,11 @@ use PDF;
 
 class PembiayaanController extends Controller
 {
+
+    function is_decimal($val)
+    {
+        return is_numeric($val) && floor($val) != $val;
+    }
     public function index(Request $request)
     {
         $query = Pembiayaan::query();
@@ -84,13 +89,29 @@ class PembiayaanController extends Controller
 
         $tagihan = str_replace(".", "", $request->jumlah) + (str_replace(".", "", $request->jumlah) * ($request->persentase / 100));
         $no_akad = buatkode($no_akad_terakhir, $format . "-", 3);
-        $cicilan10 = $tagihan / $request->jangka_waktu;
 
 
-        if ($request->jangka_waktu == 12) {
-            $cicilan12 = str_replace(substr(ROUND($cicilan10), -4), "0000", ROUND($cicilan10));
-            $sisacicilan = $tagihan - ($cicilan12 * 11);
+        $cicilanperbulan = $tagihan / $request->jangka_waktu;
+        if ($this->is_decimal($cicilanperbulan)) {
+            $jmlangsuran = $cicilanperbulan;
+            $jmlangsuran = ceil($jmlangsuran);
+            //dd(substr($jmlangsuran, -3));
+            if (substr($jmlangsuran, -3) > 500) {
+                $jumlah_angsuran = round($jmlangsuran, -3);
+            } else {
+                $jumlah_angsuran = round($jmlangsuran, -3) + 1000;
+            }
+        } else {
+            $jumlah_angsuran = $cicilanperbulan;
         }
+
+        $angsuran = $request->jangka_waktu;
+
+        $cicilan_terakhir =  ($tagihan - ($jumlah_angsuran * ($angsuran - 1)));
+        // if ($request->jangka_waktu == 12) {
+        //     $cicilan12 = str_replace(substr(ROUND($cicilan10), -4), "0000", ROUND($cicilan10));
+        //     $sisacicilan = $tagihan - ($cicilan12 * 11);
+        // }
 
         $bln = $bulan + 1;
         DB::beginTransaction();
@@ -114,33 +135,36 @@ class PembiayaanController extends Controller
                 ]);
 
 
-            for ($i = 1; $i <= $request->jangka_waktu; $i++) {
+            for ($i = 1; $i <= $angsuran; $i++) {
                 if ($bln > 12) {
-                    $bln = 1;
+                    $blncicilan = $bln - 12;
                     $tahun = $tahun + 1;
                 } else {
-                    $bln = $bln;
+                    $blncicilan = $bln;
                     $tahun = $tahun;
                 }
 
-                if ($request->jangka_waktu == 12) {
-                    if ($i == 12) {
-                        $cicilan = $sisacicilan;
-                    } else {
-                        $cicilan = $cicilan12;
-                    }
+
+                if ($i == $angsuran) {
+                    $cicilan = $cicilan_terakhir;
                 } else {
-                    $cicilan = $cicilan10;
+                    $cicilan = $jumlah_angsuran;
                 }
+
                 DB::table('koperasi_rencanapembiayaan')
                     ->insert([
                         'no_akad' => $no_akad,
                         'cicilan_ke' => $i,
-                        'bulan' => $bln,
+                        'bulan' => $blncicilan,
                         'tahun' => $tahun,
                         'jumlah' => $cicilan
                     ]);
 
+                // echo "No Akad :" . $no_akad . "<br>";
+                // echo "Cicilan Ke :" . $i . "<br>";
+                // echo "Bulan :" . $blncicilan . "<br>";
+                // echo "Tahun :" . $tahun . "<br>";
+                // echo "Jumlah :" . $cicilan . "<br>";
                 $bln++;
             }
 
@@ -157,6 +181,8 @@ class PembiayaanController extends Controller
     public function delete($no_akad)
     {
         $no_akad = Crypt::decrypt($no_akad);
+
+
         DB::beginTransaction();
         try {
             DB::table('koperasi_pembiayaan')
@@ -488,5 +514,172 @@ class PembiayaanController extends Controller
         // $pdf = PDF::loadview('pembiayaan.cetak_rekap', compact('pembiayaan'))->setPaper('a4', 'landscape');
         // return $pdf->stream();
         //return view('pendaftar.cetak', compact('pendaftar', 'qrcode'));
+    }
+
+
+    public function updaterencanabayar($no_akad)
+    {
+
+
+        $no_akad = Crypt::decrypt($no_akad);
+        $pembiayaan = DB::table('koperasi_pembiayaan')->where('no_akad', $no_akad)->first();
+        $rencana = DB::table('koperasi_rencanapembiayaan')->where('no_akad', $no_akad)->where('cicilan_ke', 1)->first();
+        $bln = $rencana->bulan;
+        $tahunangsuran = $rencana->tahun;
+        $angsuran = $pembiayaan->jangka_waktu;
+        $jml_pembiayaan = $pembiayaan->jumlah;
+        $persentase = $pembiayaan->persentase;
+        $jumlah_pinjaman = $jml_pembiayaan + ($jml_pembiayaan * ($persentase / 100));
+        $cicilanperbulan = $jumlah_pinjaman / $angsuran;
+        //dd($cicilanperbulan);
+        if ($this->is_decimal($cicilanperbulan)) {
+            $jmlangsuran = $cicilanperbulan;
+            $jmlangsuran = ceil($jmlangsuran);
+            //dd(substr($jmlangsuran, -3));
+            if (substr($jmlangsuran, -3) > 500) {
+                $jumlah_angsuran = round($jmlangsuran, -3);
+            } else {
+                $jumlah_angsuran = round($jmlangsuran, -3) + 1000;
+            }
+        } else {
+            $jumlah_angsuran = $cicilanperbulan;
+        }
+
+
+
+
+        // echo "Jumlah Angsuran * Angsuran = " .  $jumlah_angsuran * ($angsuran - 1) . "<br>";
+        // echo "Jumlah Pinjaman = " .  $jumlah_pinjaman . "<br>";
+        // echo "Sisa = " . ($jumlah_pinjaman - ($jumlah_angsuran * ($angsuran - 1))) . "<br>";
+        $cicilan_terakhir =  ($jumlah_pinjaman - ($jumlah_angsuran * ($angsuran - 1)));
+        //echo $cicilan_terakhir;
+
+        DB::beginTransaction();
+        try {
+            DB::table('koperasi_rencanapembiayaan')->where('no_akad', $no_akad)->delete();
+            for ($i = 1; $i <= $angsuran; $i++) {
+                if ($bln > 12) {
+                    $blncicilan = $bln - 12;
+                    $tahun = $tahunangsuran + 1;
+                } else {
+                    $blncicilan = $bln;
+                    $tahun = $tahunangsuran;
+                }
+
+
+                if ($i == $angsuran) {
+                    $cicilan = $cicilan_terakhir;
+                } else {
+                    $cicilan = $jumlah_angsuran;
+                }
+
+                DB::table('koperasi_rencanapembiayaan')
+                    ->insert([
+                        'no_akad' => $no_akad,
+                        'cicilan_ke' => $i,
+                        'bulan' => $blncicilan,
+                        'tahun' => $tahun,
+                        'jumlah' => $cicilan
+                    ]);
+
+                // echo "No Akad :" . $no_akad . "<br>";
+                // echo "Cicilan Ke :" . $i . "<br>";
+                // echo "Bulan :" . $blncicilan . "<br>";
+                // echo "Tahun :" . $tahun . "<br>";
+                // echo "Jumlah :" . $cicilan . "<br>";
+                $bln++;
+            }
+
+
+            $jumlah = $pembiayaan->jmlbayar;
+            $sisa = $jumlah;
+            $cicilan = "";
+            $mulaicicilan = DB::table('koperasi_rencanapembiayaan')
+                ->where('no_akad', $no_akad)
+                ->whereRaw('jumlah != bayar')
+                ->orderBy('cicilan_ke', 'asc')
+                ->first();
+            $i = $mulaicicilan->cicilan_ke;
+            $rencana2 = DB::table('koperasi_rencanapembiayaan')
+                ->where('no_akad', $no_akad)
+                ->whereRaw('jumlah != bayar')
+                ->orderBy('cicilan_ke', 'asc')
+                ->get();
+
+            //dd($sisa);
+
+            foreach ($rencana2 as $d) {
+
+                if ($sisa >= $d->jumlah) {
+                    DB::table('koperasi_rencanapembiayaan')
+                        ->where('no_akad', $no_akad)
+                        ->where('cicilan_ke', $i)
+                        ->update([
+                            'bayar' => $d->jumlah
+                        ]);
+                    //$cicilan .=  $d->cicilan_ke . ",";
+                    $sisapercicilan = $d->jumlah - $d->bayar;
+                    $sisa = $sisa - $sisapercicilan;
+
+                    if ($sisa == 0) {
+                        $cicilan .=  $d->cicilan_ke;
+                    } else {
+                        $cicilan .=  $d->cicilan_ke . ",";
+                    }
+
+                    $coba = $cicilan;
+                } else {
+                    if ($sisa != 0) {
+                        $sisapercicilan = $d->jumlah - $d->bayar;
+                        if ($d->bayar != 0) {
+                            if ($sisa >= $sisapercicilan) {
+                                DB::table('koperasi_rencanapembiayaan')
+                                    ->where('no_akad', $no_akad)
+                                    ->where('cicilan_ke', $i)
+                                    ->update([
+                                        'bayar' =>  DB::raw('bayar +' . $sisapercicilan)
+                                    ]);
+                                $cicilan .= $d->cicilan_ke . ",";
+                                $sisa = $sisa - $sisapercicilan;
+                            } else {
+                                DB::table('koperasi_rencanapembiayaan')
+                                    ->where('no_akad', $no_akad)
+                                    ->where('cicilan_ke', $i)
+                                    ->update([
+                                        'bayar' =>  DB::raw('bayar +' . $sisa)
+                                    ]);
+                                //$cicilan .= $d->cicilan_ke . ",";
+                                $sisa = $sisa - $sisa;
+                                if ($sisa == 0) {
+                                    $cicilan .=  $d->cicilan_ke;
+                                } else {
+                                    $cicilan .=  $d->cicilan_ke . ",";
+                                }
+                            }
+                        } else {
+                            DB::table('koperasi_rencanapembiayaan')
+                                ->where('no_akad', $no_akad)
+                                ->where('cicilan_ke', $i)
+                                ->update([
+                                    'bayar' =>  DB::raw('bayar +' . $sisa)
+                                ]);
+                            //$cicilan .= $d->cicilan_ke;
+                            $sisa = $sisa - $sisa;
+                            if ($sisa == 0) {
+                                $cicilan .=  $d->cicilan_ke;
+                            } else {
+                                $cicilan .=  $d->cicilan_ke . ",";
+                            }
+                        }
+                    }
+                }
+                $i++;
+            }
+            DB::commit();
+            echo "Sukses";
+        } catch (\Exception $e) {
+            DB::rollBack();
+            dd($e);
+        }
     }
 }

@@ -147,4 +147,6 @@ Route::middleware(['auth', 'ceklevel:admin'])->group(function () {
     Route::post('/loaddata/getkota', [LoaddataController::class, 'getkota']);
     Route::post('/loaddata/getkecamatan', [LoaddataController::class, 'getkecamatan']);
     Route::post('/loaddata/getkelurahan', [LoaddataController::class, 'getkelurahan']);
+
+    Route::get('/pembiayaan/{no_akad}/updaterencanabayar', [PembiayaanController::class, 'updaterencanabayar']);
 });

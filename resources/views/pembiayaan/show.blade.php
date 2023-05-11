@@ -60,11 +60,7 @@
                                             <td class="font-weight-bold"><i class="feather icon-calendar mr-1"></i>TTL
                                             </td>
                                             <td>{{ $anggota->tempat_lahir }},
-                                                {{ date(
-                                                        "d M
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                Y",
-                                                        strtotime($anggota->tanggal_lahir),
-                                                    ) }}
+                                                {{ date("d M Y",strtotime($anggota->tanggal_lahir),) }}
                                             </td>
                                         </tr>
                                         <tr>
@@ -225,6 +221,7 @@
                         </div>
                         <div class="card-content">
                             <div class="card-body">
+                                <a href="/pembiayaan/{{ Crypt::encrypt($anggota->no_akad) }}/updaterencanabayar" class="btn btn-primary mb-2"><i class="feather icon-refresh-cw mr-1"></i> Update Rencana Bayar</a>
                                 <table class="table table-bordered table-striped" style="width:100% !important">
                                     <thead>
                                         <th>NO</th>
