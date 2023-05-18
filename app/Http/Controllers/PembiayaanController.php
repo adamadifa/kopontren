@@ -103,9 +103,8 @@ class PembiayaanController extends Controller
                 $jumlah_angsuran = round($jmlangsuran, -3) + 1000;
             }
         } else {
-            $jmlangsuran = $cicilanperbulan;
+            $jumlah_angsuran = $cicilanperbulan;
         }
-
 
         $angsuran = $request->jangka_waktu;
 
@@ -544,7 +543,7 @@ class PembiayaanController extends Controller
                 $jumlah_angsuran = round($jmlangsuran, -3) + 1000;
             }
         } else {
-            $jmlangsuran = $cicilanperbulan;
+            $jumlah_angsuran = $cicilanperbulan;
         }
 
 
