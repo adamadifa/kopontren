@@ -545,13 +545,6 @@ class PembiayaanController extends Controller
             }
         } else {
             $jmlangsuran = $cicilanperbulan;
-            $jmlangsuran = ceil($jmlangsuran);
-            //dd(substr($jmlangsuran, -3));
-            if (substr($jmlangsuran, -3) > 500) {
-                $jumlah_angsuran = round($jmlangsuran, -3);
-            } else {
-                $jumlah_angsuran = round($jmlangsuran, -3) + 1000;
-            }
         }
 
 
