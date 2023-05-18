@@ -113,6 +113,7 @@ class PembiayaanController extends Controller
             }
         }
 
+
         $angsuran = $request->jangka_waktu;
 
         $cicilan_terakhir =  ($tagihan - ($jumlah_angsuran * ($angsuran - 1)));
@@ -550,7 +551,14 @@ class PembiayaanController extends Controller
                 $jumlah_angsuran = round($jmlangsuran, -3) + 1000;
             }
         } else {
-            $jumlah_angsuran = $cicilanperbulan;
+            $jmlangsuran = $cicilanperbulan;
+            $jmlangsuran = ceil($jmlangsuran);
+            //dd(substr($jmlangsuran, -3));
+            if (substr($jmlangsuran, -3) > 500) {
+                $jumlah_angsuran = round($jmlangsuran, -3);
+            } else {
+                $jumlah_angsuran = round($jmlangsuran, -3) + 1000;
+            }
         }
 
 
