@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redirect;
 use PDF;
 
 class PembiayaanController extends Controller
@@ -676,7 +677,7 @@ class PembiayaanController extends Controller
                 $i++;
             }
             DB::commit();
-            echo "Sukses";
+            return Redirect::back()->with(['success' => 'Berhasil Di update']);
         } catch (\Exception $e) {
             DB::rollBack();
             dd($e);
